@@ -87,7 +87,6 @@
   .tag-custom { background: #200a0a; color: #e06050; border: 1px solid #401010; }
   .tag-tiktok { background: #1a0d1a; color: #d070d0; border: 1px solid #3a1a3a; }
   .tag-twitch { background: #100d1a; color: #9070e0; border: 1px solid #2a1a3a; }
-  .tag-youtube { background: #1a0a0a; color: #e06060; border: 1px solid #401010; }
   .tag-website { background: #0a1a1a; color: #60c0c0; border: 1px solid #1a4040; }
   .tag-telegram { background: #0a1a2a; color: #60a0e0; border: 1px solid #1a2a40; }
   .tag-instagram { background: #2a0a2a; color: #d070b0; border: 1px solid #4a1a4a; }
@@ -236,43 +235,79 @@ function matchesFormat(builder, format) {
   return false;
 }
 
-const rowLabelMap = {
+// Dictionary for row labels translations
+const rowLabels = {
   ru: {
-    'Подписчики': 'Подписчики', 'Форматы': 'Форматы', 'Кастомные базы': 'Кастомные базы',
-    'Цена кастома': 'Цена кастома', 'Стоимость постройки': 'Стоимость постройки',
-    'Patreon': 'Patreon', 'Публичные базы': 'Публичные базы', 'Цена базы': 'Цена базы',
-    'Топ базы': 'Топ базы', 'Ниша': 'Ниша', 'Фишки': 'Фишки', 'Особенности': 'Особенности',
-    'Минусы': 'Минусы', 'Услуги': 'Услуги', 'Упор': 'Упор', 'Частота': 'Частота',
-    'Discord': 'Discord', 'Сильные стороны': 'Сильные стороны', 'Фокус': 'Фокус',
-    'Статус': 'Статус', 'Активность': 'Активность', 'Проблема': 'Проблема',
-    'Качество': 'Качество', 'Особенность': 'Особенность', 'Patreon доход': 'Patreon доход',
-    'Публичный контент': 'Публичный контент', 'Последняя база': 'Последняя база'
+    'Подписчики': 'Подписчики',
+    'Форматы': 'Форматы',
+    'Кастомные базы': 'Кастомные базы',
+    'Цена кастома': 'Цена кастома',
+    'Patreon': 'Patreon',
+    'Публичные базы': 'Публичные базы',
+    'Цена базы': 'Цена базы',
+    'Топ базы': 'Топ базы',
+    'Ниша': 'Ниша',
+    'Фишки': 'Фишки',
+    'Особенности': 'Особенности',
+    'Минусы': 'Минусы',
+    'Услуги': 'Услуги',
+    'Упор': 'Упор',
+    'Частота': 'Частота',
+    'Discord': 'Discord',
+    'Сильные стороны': 'Сильные стороны',
+    'Фокус': 'Фокус',
+    'Статус': 'Статус',
+    'Активность': 'Активность',
+    'Проблема': 'Проблема',
+    'Качество': 'Качество',
+    'Особенность': 'Особенность',
+    'Patreon доход': 'Patreon доход',
+    'Публичный контент': 'Публичный контент',
+    'Последняя база': 'Последняя база'
   },
   en: {
-    'Подписчики': 'Subscribers', 'Форматы': 'Group size', 'Кастомные базы': 'Custom bases',
-    'Цена кастома': 'Custom price', 'Стоимость постройки': 'Build cost (resources)',
-    'Patreon': 'Patreon', 'Публичные базы': 'Public bases', 'Цена базы': 'Base price',
-    'Топ базы': 'Top bases', 'Ниша': 'Niche', 'Фишки': 'Features', 'Особенности': 'Features',
-    'Минусы': 'Cons', 'Услуги': 'Services', 'Упор': 'Focus', 'Частота': 'Frequency',
-    'Discord': 'Discord', 'Сильные стороны': 'Strengths', 'Фокус': 'Focus',
-    'Статус': 'Status', 'Активность': 'Activity', 'Проблема': 'Issue',
-    'Качество': 'Quality', 'Особенность': 'Note', 'Patreon доход': 'Patreon revenue',
-    'Публичный контент': 'Public content', 'Последняя база': 'Latest base'
+    'Подписчики': 'Subscribers',
+    'Форматы': 'Group size',
+    'Кастомные базы': 'Custom bases',
+    'Цена кастома': 'Custom price',
+    'Patreon': 'Patreon',
+    'Публичные базы': 'Public bases',
+    'Цена базы': 'Base price',
+    'Топ базы': 'Top bases',
+    'Ниша': 'Niche',
+    'Фишки': 'Features',
+    'Особенности': 'Features',
+    'Минусы': 'Cons',
+    'Услуги': 'Services',
+    'Упор': 'Focus',
+    'Частота': 'Frequency',
+    'Discord': 'Discord',
+    'Сильные стороны': 'Strengths',
+    'Фокус': 'Focus',
+    'Статус': 'Status',
+    'Активность': 'Activity',
+    'Проблема': 'Issue',
+    'Качество': 'Quality',
+    'Особенность': 'Note',
+    'Patreon доход': 'Patreon revenue',
+    'Публичный контент': 'Public content',
+    'Последняя база': 'Latest base'
   }
 };
 
+// Builder data
 const builders = [
   { name:"Limi Lab", handle:"@LimiLab · EN · с 2023", rating:"★★★★★", ratingValue:5,
-    tags:["Patreon $7+","Заказы баз","Discord","TikTok"],
-    rows:[{label:"Подписчики",val:"~28K",c:""},{label:"Форматы",val:"Solo — Clan",c:""},{label:"Кастомные базы",val:"Да — через Discord",c:"good"}],
+    tags:["Patreon","Кастомные базы","Discord","TikTok"],
+    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Кастомные базы",val:"Да — через Discord",c:"good"}],
     desc:"<strong>Принимает персональные заказы на базы под конкретные нужды — через Discord.</strong> Нестандартные механики: floor stacking, многоуровневые бункеры, pixel gap-комбинации. Патреон полностью оправдывает вложения — базы там действительно уникальные, но и публичные работы ничем не хуже. <strong>Минус:</strong> в некоторых постройках обязательны p2w скины (например Shipping Containers), без них база может не работать как задумано.",
     descEN:"<strong>Accepts custom base orders — via Discord.</strong> Unique mechanics: floor stacking, multi-level bunkers, pixel gap combos. Patreon is worth every penny — bases there are genuinely unique. <strong>Downside:</strong> some builds require p2w skins (e.g. Shipping Containers) to function as intended.",
     links:[{t:"Discord",u:"https://discord.com/invite/PeFQnPZyPd"},{t:"Patreon",u:"https://www.patreon.com/LimiLAB"},{t:"YouTube",u:"https://youtube.com/@LimiLab"},{t:"TikTok",u:"https://tiktok.com/@limilab"}],
     formats:["solo","trio","clan"], lang:"en", isYours:true },
 
   { name:"Brader Fik", handle:"@BraderFik · EN", rating:"★★★★½", ratingValue:4.5,
-    tags:["YouTube"],
-    rows:[{label:"Форматы",val:"Solo — Small Group",c:""},{label:"Фишки",val:"Double Bunker, ChinaWall, Floor Stack",c:"good"},{label:"Стоимость постройки",val:"Средняя",c:""}],
+    tags:[],
+    rows:[{label:"Форматы",val:"Solo — Small Group",c:""},{label:"Фишки",val:"Double Bunker, ChinaWall, Floor Stack",c:"good"}],
     desc:"<strong>Автор заморачивается и не зря!</strong> Базы очень хорошие — пики супер, но как и почти у всех основная проблема — крыша. Кодов не оставляет, что минус. Патреона и дискорда нет. В целом — качественный билдер, которому стоит доверять.",
     descEN:"<strong>The effort shows and it pays off!</strong> Bases are very good — shoots are excellent, but like almost everyone else the main weakness is the roof. No codes left, which is a minus. No Patreon or Discord. Overall — a quality builder worth trusting.",
     links:[{t:"YouTube",u:"https://youtube.com/@BraderFik"}],
@@ -280,7 +315,7 @@ const builders = [
 
   { name:"Erebus", handle:"@ErebusBuilds · EN", rating:"★★★★½", ratingValue:4.5,
     tags:["Discord","TikTok","Кастомные базы"],
-    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Цена кастома",val:"$50–250",c:"good"},{label:"Стоимость постройки",val:"Выше среднего",c:"warn"}],
+    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Цена кастома",val:"$50–250",c:"good"}],
     desc:"<strong>Главная фишка — реальные футажи геймплея в построенных домах.</strong> Показывает как база работает в боевых условиях, а не просто в креативе. Это огромный плюс — ты сразу видишь, будет ли база работать или рассыплется при первом же рейде. Базы качественные, но не позиционируются как доступные — нужно будет неплохо пофармить. Кастом через Discord: Budget $50 (код без тура), Standard $100 (базовый тур), Ultimate $250 (полный тур + редактирование).",
     descEN:"<strong>Key feature — real gameplay footage inside built bases.</strong> Shows how the base performs in actual raid conditions, not just creative mode. A huge plus — you immediately see if it'll hold or collapse on first contact. Bases are quality but not budget-friendly. Custom via Discord: Budget $50 (code only), Standard $100 (basic tour), Ultimate $250 (full tour + edits).",
     links:[{t:"Discord",u:"https://discord.com/invite/NSGg8ykrx9"},{t:"TikTok",u:"https://tiktok.com/@erebusbuilds"},{t:"YouTube",u:"https://youtube.com/@ErebusRust"}],
@@ -294,17 +329,17 @@ const builders = [
     links:[{t:"Discord",u:"https://discord.com/invite/m8WNpc6hqD"},{t:"Patreon",u:"https://www.patreon.com/c/CrowBuilds"},{t:"YouTube",u:"https://youtube.com/@CrowBuilds"},{t:"TikTok",u:"https://tiktok.com/@crowbuilds"}],
     formats:["solo","trio"], lang:"en" },
 
-  { name:"Faded", handle:"@FadedRust · EN · 🇱🇹 Литва", rating:"★★★★☆", ratingValue:4,
+  { name:"Faded", handle:"@FadedRust · EN · 🇱🇹 Литва", rating:"★★★½☆", ratingValue:3.5,
     tags:["Shop","TikTok"],
     rows:[{label:"Форматы",val:"Solo — Trio+",c:""},{label:"Цена базы",val:"€17–20",c:"good"},{label:"Топ базы",val:"The Apex, The Revenant, Hydra V2",c:""}],
-    desc:"Свой Shopify-магазин вместо Patreon — <strong>разовая покупка</strong> конкретной базы. The Apex позиционирует как сильнейшую из всех. Обновления бесплатно — это редкость в индустрии, плюс огромный. Есть достойные базы, но иногда красивая анимация и подача важнее реальной работоспособности — тут уже каждый решает сам.",
-    descEN:"Own Shopify store instead of Patreon — <strong>one-time purchase</strong> per base. The Apex is positioned as his strongest ever. Free updates — rare in the industry, a big plus. Some bases are genuinely solid, but sometimes the presentation and animation matter more than real-world performance.",
+    desc:"Свой Shopify-магазин вместо Patreon — <strong>разовая покупка</strong> конкретной базы. The Apex позиционирует как сильнейшую из всех. Обновления бесплатно — это редкость в индустрии. Есть достойные базы, но есть и мусорные (например Dune). В общем, качество неровное.",
+    descEN:"Own Shopify store instead of Patreon — <strong>one-time purchase</strong> per base. The Apex is positioned as his strongest ever. Free updates — rare in the industry. There are solid bases, but also some questionable ones (like Dune). Overall, quality is inconsistent.",
     links:[{t:"fadedbuilds.com",u:"https://fadedbuilds.com"},{t:"TikTok",u:"https://tiktok.com/@fadedrust"},{t:"YouTube",u:"https://youtube.com/@FadedRust"}],
     formats:["solo","trio"], lang:"en" },
 
   { name:"BuckyBuilds", handle:"@BuckyBuildz · EN", rating:"★★★★☆", ratingValue:4,
     tags:["Discord"],
-    rows:[{label:"Форматы",val:"Solo — Small Group",c:""},{label:"Фишки",val:"Куча бункеров, хорошие пики",c:"good"},{label:"Стоимость постройки",val:"Средняя",c:""}],
+    rows:[{label:"Форматы",val:"Solo — Small Group",c:""},{label:"Фишки",val:"Куча бункеров, хорошие пики",c:"good"}],
     desc:"Куча бункеров, хорошие пики, интересные решения. Для оффлайн и онлайн рейдов — золотая середина. Минус: крыша опять убогая. По личному мнению — не нравится как отводит мультики, но в целом молодец. Базы качественные, рекомендую.",
     descEN:"Tons of bunkers, good shoots, interesting solutions. A solid middle ground for both offline and online raids. Downside: the roof is poor again. Personally — not a fan of how he handles multi-TC layouts, but overall solid. Quality bases, recommended.",
     links:[{t:"Discord",u:"https://discord.com/invite/W3qGzbM3ar"},{t:"YouTube",u:"https://youtube.com/@BuckyBuildz"}],
@@ -312,54 +347,54 @@ const builders = [
 
   { name:"Build Lab", handle:"@rust_build_lab · EN", rating:"★★★★☆", ratingValue:4,
     tags:["Patreon","YouTube Sponsors"],
-    rows:[{label:"Форматы",val:"Solo — Quad",c:""},{label:"Patreon",val:"Приват базы + реворки",c:"good"},{label:"Особенности",val:"Крыши прикольные, пики неплохие",c:"good"}],
+    rows:[{label:"Форматы",val:"Solo — Quad",c:""},{label:"Patreon",val:"Private bases + reworks",c:"good"},{label:"Особенности",val:"Крыши прикольные, пики неплохие",c:"good"}],
     desc:"На канале каждое второе видео — интро к платной версии базы. Бесплатных баз мало. Есть простенькие бункеры, крыши прикольные, пики неплохие, есть минимальные фишки. Также есть уникальные базы. Если готов платить — есть что посмотреть.",
     descEN:"Every other video on the channel is a teaser for a paid base. Few free builds available. Some simple bunkers, decent roofs, solid shoots, minimal tricks. Also has unique bases. If you're willing to pay — there's content worth watching.",
     links:[{t:"Patreon",u:"https://www.patreon.com/cw/Build_Lab"},{t:"YouTube",u:"https://youtube.com/@rust_build_lab"}],
     formats:["solo","trio"], lang:"en" },
 
-  { name:"aloneintokyo", handle:"@aloneintokyo · EN · 🇦🇺", rating:"★★★★☆", ratingValue:4,
+  { name:"aloneintokyo", handle:"@aloneintokyo · EN · 🇦🇺", rating:"★★★½☆", ratingValue:3.5,
     tags:["Patreon","YouTube Sponsors"],
-    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Patreon",val:"patreon.com/cw/Aloneintokyo",c:"good"},{label:"Стоимость постройки",val:"Средняя",c:""}],
-    desc:"<strong>Уникальный стиль, которого нет ни у кого.</strong> Миллион пиков, миллион retake, много простора, открывашки с турелями. Крыши — слабое место, но в остальном очень интересные и продуманные базы. Играет соло, но дома спокойно вмещают до трёх человек. Основной контент закрыт на Patreon'е — часть построек ходит по интернету в открытом виде (ищи сам). Если возьмёшь Patreon — не пожалеешь.",
-    descEN:"<strong>A unique style that no one else has.</strong> Tons of shoots, tons of retake positions, open layouts, autoturret openers. Roofs are the weak spot, but otherwise the bases are genuinely creative and well thought out. Plays solo, but bases comfortably fit up to three. Main content is Patreon-locked — some builds float around online (find them yourself). If you get the Patreon, you won't regret it.",
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""}],
+    desc:"<strong>Уникальный стиль, которого нет ни у кого.</strong> Миллион пиков, миллион retake, много простора, открывашки с турелями. Крыши — слабое место, но в остальном очень интересные и продуманные базы. Играет соло, но дома спокойно вмещают до трёх человек. Часть построек ходит по интернету в открытом виде (ищи сам).",
+    descEN:"<strong>A unique style that no one else has.</strong> Tons of shoots, tons of retake positions, open layouts, autoturret openers. Roofs are the weak spot, but otherwise the bases are genuinely creative and well thought out. Plays solo, but bases comfortably fit up to three. Some builds float around online (find them yourself).",
     links:[{t:"Patreon",u:"https://patreon.com/cw/Aloneintokyo"},{t:"YouTube",u:"https://youtube.com/@aloneintokyo"}],
     formats:["solo","trio"], lang:"en" },
 
   { name:"Tarre", handle:"@tarrerust · EN", rating:"★★★★☆", ratingValue:4,
     tags:["TikTok","Discord","YouTube Sponsors"],
-    rows:[{label:"Форматы",val:"Solo · Duo · Trio",c:""},{label:"Ниша",val:"Доступные snowball базы",c:"good"}],
+    rows:[{label:"Форматы",val:"Solo · Duo · Trio",c:""},{label:"Ниша",val:"Affordable snowball bases",c:"good"}],
     desc:"<strong>Лучший для ДОСТУПНЫХ solo/duo snowball баз.</strong> Своя чёткая ниша — дешёвые удобные базы для быстрого старта. Отлично подходит для новичков и игроков которые хотят быстро зайти на сервер и начать играть без доната. Видео на YouTube сначала выходят для спонсоров — если хочешь получать базы раньше всех, это твой вариант.",
     descEN:"<strong>Best for affordable solo/duo snowball bases.</strong> A clear, focused niche — cheap and comfortable bases for a fast start. Perfect for beginners or players who want to hit a server without p2w gear. YouTube videos go to sponsors first — if you want early access, that's your route.",
     links:[{t:"Discord",u:"https://discord.com/invite/W4nQHsPCnJ"},{t:"YouTube",u:"https://youtube.com/@tarrerust"},{t:"TikTok",u:"https://tiktok.com/@tarrerust"}],
     formats:["solo","trio"], lang:"en" },
 
   { name:"Spinky", handle:"@spinky · EN", rating:"★★★½☆", ratingValue:3.5,
-    tags:["Patreon 4700+","Discord 15K"],
+    tags:["Patreon","Discord"],
     rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Patreon доход",val:"~$3680/мес · 24+ приват базы",c:"good"},{label:"Публичный контент",val:"Неровный",c:"warn"}],
     desc:"Самый крупный активный билдер по подписчикам. Patreon серьёзный и активный — SpinkBox Mini вышел в декабре 2025, народ доволен. Публично неровный — иногда выдаёт шедевры, иногда проходняк, но приватки стабильные. Коллаборация с Epic Desk на лимитированный дескмат — признание в индустрии.",
     descEN:"Biggest active builder by subscriber count. Patreon is serious and active — SpinkBox Mini dropped December 2025, well received. Public content is inconsistent — sometimes brilliant, sometimes average, but private bases are reliable. Collab with Epic Desk on a limited deskmat — industry recognition.",
     links:[{t:"Discord",u:"https://discord.gg/Zcf83nJ3YV"},{t:"Patreon",u:"https://www.patreon.com/spinkyRUST"},{t:"YouTube",u:"https://youtube.com/@spinky"},{t:"TikTok",u:"https://tiktok.com/@spinkyrust"}],
     formats:["solo","trio","clan"], lang:"en" },
 
-  { name:"Akame", handle:"@AkameBuilds · EN", rating:"★★★½☆", ratingValue:3.5,
+  { name:"Akame", handle:"@AkameBuilds · EN", rating:"★★★☆☆", ratingValue:3.2,
     tags:["Boosty","Кастомные базы"],
     rows:[{label:"Форматы",val:"Small group — Large group",c:""},{label:"Услуги",val:"ТОЛЬКО кастомные базы",c:"good"},{label:"Упор",val:"Онлайн рейд",c:"good"}],
-    desc:"Билдер сильнейшего клана R2 — это само по себе говорит о многом. Строит в основном для небольших и больших групп. Основной упор на защиту во время онлайн рейда — если вы планируете принимать рейды в онлайне, это ваш человек. Есть предположение, что вдохновляется базами Erebus, но без той же глубины. Работает только под заказ через Boosty.",
-    descEN:"Builder for the top clan R2 — that speaks for itself. Builds primarily for small and large groups. Main focus is online raid defense — if you're planning to defend raids in real time, he's your guy. Possibly inspired by Erebus, but without the same depth. Works by custom order only via Boosty.",
+    desc:"Билдер сильнейшего клана R2 — это само по себе говорит о многом. Строит в основном для небольших и больших групп. Основной упор на защиту во время онлайн рейда. <strong>Минус:</strong> редко строит дома которые в мете, хотя бывают перформансы. Работает только под заказ через Boosty.",
+    descEN:"Builder for the top clan R2 — that speaks for itself. Builds primarily for small and large groups. Main focus is online raid defense. <strong>Downside:</strong> rarely builds meta bases, though there are occasional performances. Works by custom order only via Boosty.",
     links:[{t:"Boosty",u:"https://boosty.to/akamexebet"},{t:"YouTube",u:"https://youtube.com/@Akame_Rust"}],
     formats:["medium","clan"], lang:"en" },
 
   { name:"Nini Rust", handle:"@NiniRust · EN · nini-rust.com", rating:"★★★½☆", ratingValue:3.5,
     tags:["Patreon","TikTok","Twitch","Discord","Website"],
-    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Patreon",val:"Приват + reworks + VIP",c:"good"},{label:"Стоимость постройки",val:"Недешёвые",c:"warn"}],
+    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Patreon",val:"Приват + reworks + VIP",c:"good"}],
     desc:"<strong>Vantix</strong> (6 бункеров), <strong>Ward V2</strong> (pixel gaps + floor stack), <strong>The Royal</strong> (MultiTC + compound). Один из самых подробных Patreon в нише — там не просто базы, а целые гайды с rework'ами. Тестирует базы вживую на Twitch — можно зайти и посмотреть как работает база до того как её построить. На сайте nini-rust.com есть калькулятор для подбора базы под твои нужды. Базы недешёвые по ресурсам, но качество соответствует цене.",
     descEN:"<strong>Vantix</strong> (6 bunkers), <strong>Ward V2</strong> (pixel gaps + floor stack), <strong>The Royal</strong> (MultiTC + compound). One of the most detailed Patreons in the niche — not just bases, full guides with reworks. Tests bases live on Twitch — you can watch how a base performs before you build it. nini-rust.com has a base selector calculator. Builds aren't cheap on resources, but quality matches the cost.",
     links:[{t:"Website",u:"https://nini-rust.com"},{t:"Discord",u:"https://discord.com/invite/fhDmyx5v9w"},{t:"Patreon",u:"https://patreon.com/NiniRust"},{t:"Twitch",u:"https://twitch.tv/ninirust"},{t:"YouTube",u:"https://youtube.com/@NiniRust"},{t:"TikTok",u:"https://tiktok.com/@ninirust"}],
     formats:["solo","trio","clan"], lang:"en" },
 
   { name:"Darvel", handle:"@darvels · EN", rating:"★★★☆☆", ratingValue:3,
-    tags:["YouTube"],
+    tags:[],
     rows:[{label:"Форматы",val:"Solo — Quad",c:""},{label:"Особенности",val:"Бункеры, интересные решения",c:"good"},{label:"Минусы",val:"Завышенный raid cost, нет кодов",c:"warn"}],
     desc:"Строит Solo-Quad. Есть бункеры, удивляющие решения, интересные базы. Хорошие пики, неплохие крыши. <strong>Минусы:</strong> нет Patreon, нет Discord, приватные базы не делает, кодов не оставляет. Есть ощущение что завышает raid cost в своих видео. В целом — крепкий середняк.",
     descEN:"Builds Solo–Quad. Has bunkers, surprising solutions, interesting designs. Good shoots, decent roofs. <strong>Downsides:</strong> no Patreon, no Discord, no private bases, no codes left. Seems to exaggerate raid cost in videos. Overall — a solid mid-tier.",
@@ -368,7 +403,7 @@ const builders = [
 
   { name:"GrinchTheBuilder", handle:"@GrinchTheBuilder · EN", rating:"★★★☆☆", ratingValue:3,
     tags:["Discord","Кастомные базы"],
-    rows:[{label:"Форматы",val:"Solo — Zerg",c:""},{label:"Цена кастома",val:"$15–20",c:"good"},{label:"Стоимость постройки",val:"Очень высокая",c:"bad"}],
+    rows:[{label:"Форматы",val:"Solo — Zerg",c:""},{label:"Цена кастома",val:"$15–20",c:"good"}],
     desc:"В основном строит таверки — дорогие по ресурсам, такие подойдут либо очень большим группам вплоть до кланов, либо для средних групп которые играют на 2x-3x серверах. По некоторым базам есть неприятные минусы: например отсутствие пиков в китайку или ужасные неиграбельные крыши. Из плюсов — очень хорошие пики, и мобильность по базе. P.S. мне нравятся твои постройки, не слезай с тяжёлых веществ.",
     descEN:"Mostly builds large expensive bases — suited for very large groups up to clans, or medium groups on 2x–3x servers. Some bases have notable downsides: no shoots into the china wall, unplayable roofs. Upsides — very good shoot positions and good mobility inside the base. P.S. love the builds, stay on whatever you're on.",
     links:[{t:"YouTube",u:"https://youtube.com/@GrinchTheBuilder"}],
@@ -376,7 +411,7 @@ const builders = [
 
   { name:"S4", handle:"@S4Rust · EN", rating:"★★★☆☆", ratingValue:3,
     tags:["Patreon","Discord","Кастомные базы"],
-    rows:[{label:"Форматы",val:"Solo — Medium Group",c:""},{label:"Patreon",val:"patreon.com/S4Rust",c:"good"},{label:"Стоимость постройки",val:"Соответствует числу игроков",c:""}],
+    rows:[{label:"Форматы",val:"Solo — Medium Group",c:""},{label:"Patreon",val:"patreon.com/S4Rust",c:"good"}],
     desc:"Строит как 'все' — серая масса, максимально неинтересные базы. Классных фишек не имеет. Работает в связке с Kredbic — у них общий Discord сервер. Делает кастомные базы и приватки на Patreon'е. Если хочешь что-то стандартное без выкрутасов — норм вариант, но ничего выдающегося.",
     descEN:"Builds like everyone else — generic, nothing interesting. No standout mechanics. Partners with Kredbic, shared Discord server. Makes custom bases and private content on Patreon. If you want something safe and standard — it works, but nothing special.",
     links:[{t:"Discord",u:"https://discord.gg/DZRVsUcYSE"},{t:"Patreon",u:"https://patreon.com/S4Rust"},{t:"YouTube",u:"https://youtube.com/@S4Rust"}],
@@ -400,7 +435,7 @@ const builders = [
 
   { name:"Krub", handle:"@KrubRust · EN", rating:"★★★☆☆", ratingValue:3,
     tags:["Discord"],
-    rows:[{label:"Форматы",val:"Solo — Medium Group",c:""},{label:"Discord",val:"Обучающие посты",c:"good"},{label:"Стоимость постройки",val:"Ресурсы можно вложить интереснее",c:"warn"}],
+    rows:[{label:"Форматы",val:"Solo — Medium Group",c:""},{label:"Discord",val:"Обучающие посты",c:"good"}],
     desc:"Базы по механике неплохие, но стоимость постройки (в ресурсах) не совсем оправдана. По личному мнению, ресурсы потраченные на базу можно было вложить более интересно. В Discord канале есть полезные обучающие посты по билдингу — плюс. Связан с Pandabuilds.",
     descEN:"Bases are mechanically decent, but the resource cost isn't fully justified. Personally feel those resources could be spent more cleverly. Discord has useful building educational posts — a plus. Connected to Pandabuilds.",
     links:[{t:"Discord",u:"https://discord.com/invite/buildingbulletin"},{t:"YouTube",u:"https://youtube.com/@KrubRust"}],
@@ -424,7 +459,7 @@ const builders = [
 
   { name:"Mellarrkk / Rust Tricks / Rust Concepts", handle:"YouTube · EN", rating:"★★★☆☆", ratingValue:3,
     tags:[],
-    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Стоимость постройки",val:"20–30 ракет",c:"good"},{label:"Patreon",val:"Нет",c:"bad"}],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Patreon",val:"Нет",c:"bad"}],
     desc:"Простые базы для новичков, ничего нового. Ведёт три канала под разными именами: Mellarrkk, Rust Tricks и Rust Concepts. Зачем три — загадка.",
     descEN:"Simple beginner bases, nothing new. Runs three channels under different names: Mellarrkk, Rust Tricks and Rust Concepts. Why three — a mystery.",
     links:[{t:"Mellarrkk",u:"https://youtube.com/@Mellarrkk"},{t:"Rust Tricks",u:"https://youtube.com/@RustTricks"},{t:"Rust Concepts",u:"https://youtube.com/@RustConcepts"}],
@@ -471,7 +506,7 @@ const builders = [
     formats:["solo","trio"], lang:"en" },
 
   { name:"Willjum", handle:"@Willjum · EN", rating:"★★☆☆☆", ratingValue:2,
-    tags:["YouTube","Patreon","Discord"],
+    tags:["Patreon","Discord"],
     rows:[{label:"Форматы",val:"Solo — Duo",c:""},{label:"Patreon",val:"Есть, но без баз",c:"warn"},{label:"Особенность",val:"Киношный формат, не гайдовый строитель",c:"warn"}],
     desc:"Известный ютубер, но он не гайдовый строитель — у него кинематографичные соло-выживания, а не туториалы. В его видео преимущественно небольшие solo/duo базы которые не отличаются сложностью механик. Patreon есть, но приватных баз там нет.",
     descEN:"Well-known YouTuber, but not a guide-format builder — he makes cinematic solo survival content, not tutorials. His bases are predominantly small solo/duo builds without complex mechanics. Has a Patreon, but no private bases there.",
@@ -479,8 +514,8 @@ const builders = [
     formats:["solo"], lang:"en" },
 
   { name:"pagdawg", handle:"@pagdawg · EN", rating:"★★☆☆☆", ratingValue:2,
-    tags:["YouTube"],
-    rows:[{label:"Форматы",val:"Solo — Duo",c:""},{label:"Стоимость постройки",val:"Очень дешёвые",c:"good"},{label:"Качество",val:"Странные решения",c:"bad"}],
+    tags:[],
+    rows:[{label:"Форматы",val:"Solo — Duo",c:""},{label:"Качество",val:"Странные решения",c:"bad"}],
     desc:"Выкладывает два одинаковых видео про один и тот же дом. В описании оставляет коды под сервер 'Builders Sanctuary', хотя по факту это коды под сервер 'Rusticated'. Пики не очень хорошие, крыши отстойные, решения порой очень странные.",
     descEN:"Posts two identical videos about the same base. Lists codes for 'Builders Sanctuary' in the description but they actually work on 'Rusticated'. Shoots aren't great, roofs are bad, decisions are sometimes very strange.",
     links:[{t:"YouTube",u:"https://youtube.com/@pagdawg"}],
@@ -535,7 +570,7 @@ const builders = [
     formats:["solo","trio"], lang:"en", pending:true },
 
   { name:"Builder", handle:"@BuilderRust · EN", rating:"⏳", ratingValue:0,
-    tags:["YouTube"],
+    tags:[],
     rows:[{label:"Patreon",val:"Неизвестно",c:"warn"},{label:"Проблема",val:"Нет тура, нет кодов",c:"bad"}],
     desc:"Строит базы очевидно для новичков. Не даёт конечного результата в быстром формате (тура или кодов). В комментариях мнения рознятся. Пока без оценки.",
     descEN:"Clearly builds for beginners. Doesn't provide quick evaluation format (no tour, no codes). Comment section is divided. No rating for now.",
@@ -662,9 +697,55 @@ function render(list) {
     const desc = (currentLang === 'en' && b.descEN) ? b.descEN : b.desc;
     const ratingNum = b.ratingValue >= 1 ? `${b.ratingValue % 1 === 0 ? b.ratingValue + '.0' : b.ratingValue} / 5` : '';
     
+    // Translate row labels and values if needed
     const rowsHtml = (b.rows || []).map(r => {
-      const labelTrans = (currentLang === 'en' && rowLabelMap.en[r.label]) ? rowLabelMap.en[r.label] : r.label;
-      return `<div class="row"><span class="row-label">${labelTrans}</span><span class="row-val ${r.c}">${r.val}</span></div>`;
+      const labelTrans = (currentLang === 'en' && rowLabels.en[r.label]) ? rowLabels.en[r.label] : r.label;
+      // Values that need translation
+      let valTrans = r.val;
+      if (currentLang === 'en') {
+        if (r.val === "Да — через Discord") valTrans = "Yes — via Discord";
+        else if (r.val === "от $5/мес · приват базы") valTrans = "from $5/mo · private bases";
+        else if (r.val === "Мало актуальных") valTrans = "Few recent";
+        else if (r.val === "Выше среднего") valTrans = "Above average";
+        else if (r.val === "Недешёвые") valTrans = "Expensive";
+        else if (r.val === "Обучающие посты") valTrans = "Educational posts";
+        else if (r.val === "Нет данных") valTrans = "No data";
+        else if (r.val === "Нет") valTrans = "No";
+        else if (r.val === "Есть, но без баз") valTrans = "Exists, no bases";
+        else if (r.val === "Киношный формат, не гайдовый строитель") valTrans = "Cinematic style, not guide builder";
+        else if (r.val === "Очень дешёвые") valTrans = "Very cheap";
+        else if (r.val === "Странные решения") valTrans = "Strange decisions";
+        else if (r.val === "Не оправдывает ожиданий") valTrans = "Doesn't meet expectations";
+        else if (r.val === "Сливает базы Good Joint") valTrans = "Leaks Good Joint bases";
+        else if (r.val === "Ошибки в постройках") valTrans = "Building mistakes";
+        else if (r.val === "PvP + tips + базы") valTrans = "PvP + tips + bases";
+        else if (r.val === "Тёмная лошадка") valTrans = "Dark horse";
+        else if (r.val === "Долгий перерыв, недавно вернулся") valTrans = "Long break, recently returned";
+        else if (r.val === "Неизвестно") valTrans = "Unknown";
+        else if (r.val === "Нет тура, нет кодов") valTrans = "No tours, no codes";
+        else if (r.val === "~$3680/мес · 24+ приват базы") valTrans = "~$3680/mo · 24+ private bases";
+        else if (r.val === "Неровный") valTrans = "Inconsistent";
+        else if (r.val === "Редко") valTrans = "Rare";
+        else if (r.val === "Куча бункеров, хорошие пики") valTrans = "Lots of bunkers, good peaks";
+        else if (r.val === "Крыши прикольные, пики неплохие") valTrans = "Cool roofs, decent peaks";
+        else if (r.val === "Бункеры, интересные решения") valTrans = "Bunkers, interesting solutions";
+        else if (r.val === "Завышенный raid cost, нет кодов") valTrans = "Overstated raid cost, no codes";
+        else if (r.val === "Хорошие пики") valTrans = "Good peaks";
+        else if (r.val === "Есть бункеры") valTrans = "Has bunkers";
+        else if (r.val === "Нет тура и кодов баз") valTrans = "No tours, no codes";
+        else if (r.val === "ТОЛЬКО кастомные базы") valTrans = "CUSTOM ORDERS ONLY";
+        else if (r.val === "Онлайн рейд") valTrans = "Online raid defense";
+        else if (r.val === "Приват + reworks + VIP") valTrans = "Private + reworks + VIP";
+        else if (r.val === "1–2 приват базы/мес") valTrans = "1–2 private bases/month";
+        else if (r.val === "Есть · доступные базы") valTrans = "Yes · affordable bases";
+        else if (r.val === "patreon.com/S4Rust") valTrans = "patreon.com/S4Rust";
+        else if (r.val === "patreon.com/cw/Aloneintokyo") valTrans = "patreon.com/cw/Aloneintokyo";
+        else if (r.val === "The Cobalt (2 мес.)") valTrans = "The Cobalt (2 months ago)";
+        else if (r.val === "20–30 ракет") valTrans = "20–30 rockets";
+        else if (r.val === "Private bases + reworks") valTrans = "Private bases + reworks";
+        else if (r.val === "Affordable snowball bases") valTrans = "Affordable snowball bases";
+      }
+      return `<div class="row"><span class="row-label">${labelTrans}</span><span class="row-val ${r.c}">${valTrans}</span></div>`;
     }).join('');
     
     const linksHtml = b.links.length ? `<div class="links">${b.links.map(l => `<a href="${l.u}" target="_blank" class="link">${l.t} ↗</a>`).join('')}</div>` : '';
