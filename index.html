@@ -7,206 +7,79 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d0d;
-    --surface: #161616;
-    --surface2: #1e1e1e;
-    --border: #2a2a2a;
-    --border2: #333;
-    --text: #e8e4db;
-    --muted: #666;
-    --muted2: #888;
-    --accent: #c8a96e;
-    --accent2: #e8c88e;
-    --green: #4a9e6e;
-    --green-bg: #0f2018;
-    --green-text: #6ec990;
-    --red: #c85a4a;
-    --red-bg: #200e0d;
-    --red-text: #e07060;
-    --amber: #c8882a;
-    --amber-bg: #1e1400;
-    --amber-text: #e0a84a;
-    --blue: #4a7ec8;
-    --blue-bg: #0d1520;
-    --blue-text: #6a9ee8;
-    --star: #c8a96e;
+    --bg: #0d0d0d; --surface: #161616; --surface2: #1e1e1e;
+    --border: #2a2a2a; --border2: #333; --text: #e8e4db;
+    --muted: #666; --muted2: #888; --accent: #c8a96e; --accent2: #e8c88e;
+    --green-bg: #0f2018; --green-text: #6ec990;
+    --red-text: #e07060; --amber-text: #e0a84a;
+    --blue-bg: #0d1520; --blue-text: #6a9ee8; --star: #c8a96e;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  .noise {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.4;
-  }
-
+  .noise { position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); opacity: 0.4; }
   .page { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 60px 32px 100px; }
 
-  .header { margin-bottom: 48px; }
-  .header-eyebrow {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .header h1 {
-    font-size: clamp(42px, 7vw, 72px);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin-bottom: 24px;
-  }
+  .lang-bar { display: flex; justify-content: flex-end; margin-bottom: 32px; }
+  .lang-switcher { display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .lang-btn { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; padding: 7px 16px; cursor: pointer; color: var(--muted); transition: all 0.18s; border: none; background: none; }
+  .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 700; }
+  .lang-btn:hover:not(.active) { color: var(--accent2); }
+
+  .header { margin-bottom: 40px; }
+  .header-eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+  .header h1 { font-size: clamp(42px, 7vw, 72px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: var(--text); margin-bottom: 20px; }
   .header h1 span { color: var(--accent); }
-  .header-meta {
-    display: flex; gap: 24px; flex-wrap: wrap;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px; color: var(--muted);
-    letter-spacing: 0.05em;
-  }
+  .header-meta { display: flex; gap: 24px; flex-wrap: wrap; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
   .header-meta span { display: flex; align-items: center; gap: 6px; }
   .header-meta span::before { content: '—'; color: var(--accent); }
+  .disclaimer { margin-top: 14px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); padding: 8px 14px; border-left: 2px solid var(--border2); letter-spacing: 0.03em; line-height: 1.5; }
 
-  .filters {
-    margin-bottom: 32px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-  }
-  .filter-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
-  .filter-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .filter-chip {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    padding: 6px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 30px;
-    color: var(--muted2);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .filter-chip:hover {
-    border-color: var(--accent);
-    color: var(--accent2);
-  }
-  .filter-chip.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--bg);
-  }
-
-  .custom-section {
-    background: linear-gradient(135deg, #1a1200 0%, #0d0d0d 60%);
-    border: 1px solid #3a2a00;
-    border-left: 3px solid var(--accent);
-    border-radius: 12px;
-    padding: 28px 32px;
-    margin-bottom: 48px;
-  }
-  .custom-title {
-    font-size: 13px; font-weight: 700;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 20px;
-  }
-  .custom-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-  }
-  .custom-card {
-    background: rgba(200, 169, 110, 0.05);
-    border: 1px solid rgba(200, 169, 110, 0.15);
-    border-radius: 8px;
-    padding: 14px 16px;
-  }
+  .custom-section { background: linear-gradient(135deg, #1a1200 0%, #0d0d0d 60%); border: 1px solid #3a2a00; border-left: 3px solid var(--accent); border-radius: 12px; padding: 28px 32px; margin-bottom: 40px; }
+  .custom-title { font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .custom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .custom-card { background: rgba(200,169,110,0.05); border: 1px solid rgba(200,169,110,0.15); border-radius: 8px; padding: 14px 16px; }
   .custom-name { font-weight: 700; color: var(--accent2); font-size: 14px; margin-bottom: 6px; }
   .custom-desc { font-size: 12px; color: var(--muted2); line-height: 1.5; }
 
-  .section-header {
-    display: flex; align-items: center; gap: 16px;
-    margin-bottom: 20px; margin-top: 48px;
-  }
-  .section-header:first-of-type { margin-top: 0; }
+  .controls { margin-bottom: 32px; display: flex; flex-direction: column; gap: 14px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+  .control-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .control-label { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; min-width: 80px; flex-shrink: 0; }
+
+  .search-wrap { flex: 1; min-width: 200px; max-width: 340px; position: relative; }
+  .search-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 7px 14px 7px 34px; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--text); outline: none; transition: border-color 0.2s; }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+  .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; pointer-events: none; }
+
+  .filter-group { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip { font-family: 'Space Mono', monospace; font-size: 11px; padding: 6px 13px; background: var(--surface); border: 1px solid var(--border); border-radius: 30px; color: var(--muted2); cursor: pointer; transition: all 0.18s; user-select: none; }
+  .chip:hover { border-color: var(--accent); color: var(--accent2); }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
+
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; margin-top: 48px; }
   .section-stars { font-size: 20px; color: var(--star); letter-spacing: -2px; flex-shrink: 0; }
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--muted2);
-  }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted2); }
   .section-line { flex: 1; height: 1px; background: var(--border); }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 16px; margin-bottom: 8px; }
 
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    transition: border-color 0.2s, transform 0.15s;
-    position: relative;
-    overflow: hidden;
-  }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; transition: border-color 0.2s, transform 0.15s; position: relative; overflow: hidden; }
   .card:hover { border-color: var(--border2); transform: translateY(-2px); }
   .card.top { border-color: #3a2800; }
-  .card.top::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(200,169,110,0.04) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .card.pending-review { 
-    border-style: solid; 
-    border-color: #3a3a2a;
-    background: linear-gradient(135deg, #151510 0%, var(--surface) 100%);
-    opacity: 0.9;
-  }
-  .card.pending-review::after {
-    content: '⏳';
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    font-size: 22px;
-    opacity: 0.2;
-    pointer-events: none;
-  }
+  .card.top::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,169,110,0.04) 0%, transparent 60%); pointer-events: none; }
+  .card.pending-review { border-style: dashed; }
 
-  .card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-  .card-name-wrap {}
+  .paid-dot { position: absolute; top: 14px; right: 14px; width: 8px; height: 8px; border-radius: 50%; background: #e0a030; box-shadow: 0 0 6px rgba(224,160,48,0.5); }
+
+  .card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; padding-right: 18px; }
   .card-name { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.3; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .card-handle { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .card-rating { font-size: 17px; color: var(--star); letter-spacing: -2px; flex-shrink: 0; white-space: nowrap; }
+  .card-rating { font-size: 17px; color: var(--star); letter-spacing: -2px; flex-shrink: 0; white-space: nowrap; text-align: right; }
+  .card-rating-num { display: block; font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0; margin-top: 3px; }
 
   .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.05em;
-    padding: 3px 8px; border-radius: 4px;
-    font-weight: 400; text-transform: uppercase;
-  }
+  .tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 4px; font-weight: 400; text-transform: uppercase; }
   .tag-patreon { background: #1a0e00; color: #e0a030; border: 1px solid #3a2800; }
   .tag-boosty { background: #1a0a2a; color: #b070f0; border: 1px solid #3a1a5a; }
   .tag-shop { background: #0d1a0d; color: #80c870; border: 1px solid #1a3a1a; }
@@ -220,8 +93,6 @@
   .tag-instagram { background: #2a0a2a; color: #d070b0; border: 1px solid #4a1a4a; }
 
   .divider { height: 1px; background: var(--border); margin: 12px 0; }
-
-  .rows {}
   .row { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; gap: 12px; }
   .row-label { font-size: 12px; color: var(--muted); flex-shrink: 0; }
   .row-val { font-size: 12px; color: var(--muted2); text-align: right; line-height: 1.4; }
@@ -229,69 +100,31 @@
   .row-val.warn { color: var(--amber-text); }
   .row-val.bad { color: var(--red-text); }
 
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-  }
-  .link {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .link:hover {
-    color: var(--accent2);
-    text-decoration: underline;
-  }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .link { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent); text-decoration: none; transition: color 0.2s; }
+  .link:hover { color: var(--accent2); text-decoration: underline; }
 
-  .card-desc {
-    font-size: 12px; color: var(--muted);
-    line-height: 1.6; margin-top: 12px;
-    padding-top: 10px; border-top: 1px solid var(--border);
-  }
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
   .card-desc strong { color: var(--muted2); font-weight: 600; }
 
-  .badge-creator {
-    display: inline-block;
-    background: #2a1a0a; color: var(--accent2);
-    border: 1px solid #5a3a1a;
-    font-family: 'Space Mono', monospace;
-    font-size: 9px; letter-spacing: 0.05em;
-    padding: 2px 8px; border-radius: 4px;
-    text-transform: uppercase; vertical-align: middle;
-  }
+  .badge-creator { display: inline-block; background: #2a1a0a; color: var(--accent2); border: 1px solid #5a3a1a; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; vertical-align: middle; }
 
-  .footer {
-    margin-top: 72px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; color: var(--muted);
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-    letter-spacing: 0.05em;
-  }
-  
-  .update-note {
-    background: rgba(200, 169, 110, 0.08);
-    border-left: 2px solid var(--accent);
-    padding: 14px 20px;
-    margin-top: 28px;
-    font-size: 12px;
-    color: var(--muted2);
-    font-family: 'Space Mono', monospace;
-  }
+  .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 13px; }
+
+  .update-note { background: rgba(200,169,110,0.08); border-left: 2px solid var(--accent); padding: 14px 20px; margin-top: 28px; font-size: 12px; color: var(--muted2); font-family: 'Space Mono', monospace; }
+
+  .footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--border); font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; letter-spacing: 0.05em; }
+
+  .paid-legend { display: flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); }
+  .paid-legend-dot { width: 8px; height: 8px; border-radius: 50%; background: #e0a030; flex-shrink: 0; }
 
   @media (max-width: 680px) {
-    .page { padding: 40px 20px 80px; }
+    .page { padding: 32px 16px 80px; }
     .grid { grid-template-columns: 1fr; }
     .custom-grid { grid-template-columns: 1fr; }
     .card-name { font-size: 16px; }
-    .filters { flex-direction: column; align-items: flex-start; }
+    .control-row { flex-direction: column; align-items: flex-start; }
+    .lang-bar { margin-bottom: 20px; }
   }
 </style>
 </head>
@@ -299,740 +132,598 @@
 <div class="noise"></div>
 <div class="page">
 
-  <div class="header">
-    <div class="header-eyebrow">// rust builder directory</div>
-    <h1>Кто строит<br><span>лучшие базы</span></h1>
-    <div class="header-meta">
-      <span>Обновлено: март 2026</span>
-      <span>Все оценки — личные</span>
-      <span>Только активные (инактив &lt;2 мес.)</span>
+  <div class="lang-bar">
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-ru">RU</button>
+      <button class="lang-btn" id="btn-en">EN</button>
     </div>
   </div>
 
-  <div class="filters">
-    <span class="filter-label">ФИЛЬТРЫ:</span>
-    <div class="filter-group" id="formatFilters">
-      <span class="filter-chip active" data-format="all">Все</span>
-      <span class="filter-chip" data-format="solo">Solo/Duo</span>
-      <span class="filter-chip" data-format="trio">Trio/Small Group</span>
-      <span class="filter-chip" data-format="clan">Clan/Zerg</span>
+  <div class="header">
+    <div class="header-eyebrow">// rust builder directory</div>
+    <h1 id="h-title-ru">Кто строит<br><span>лучшие базы</span></h1>
+    <h1 id="h-title-en" style="display:none">Who builds<br><span>the best bases</span></h1>
+    <div class="header-meta">
+      <span id="hm-updated-ru">Обновлено: март 2026</span>
+      <span id="hm-updated-en" style="display:none">Updated: March 2026</span>
+      <span id="hm-active-ru">Только активные (инактив &lt;2 мес.)</span>
+      <span id="hm-active-en" style="display:none">Active only (inactive &lt;2 months)</span>
     </div>
-    <div class="filter-group" id="langFilters">
-      <span class="filter-chip active" data-lang="all">Все языки</span>
-      <span class="filter-chip" data-lang="en">EN</span>
-      <span class="filter-chip" data-lang="ru">RU</span>
-    </div>
+    <div class="disclaimer" id="disclaimer-ru">// все оценки — субъективное личное мнение автора гида и не претендуют на абсолютную истину</div>
+    <div class="disclaimer" id="disclaimer-en" style="display:none">// all ratings are the subjective personal opinion of the guide author and do not claim to be absolute truth</div>
   </div>
 
   <div class="custom-section">
-    <div class="custom-title">// кто делает кастомные базы</div>
+    <div class="custom-title" id="custom-title-ru">// кто делает кастомные базы</div>
+    <div class="custom-title" id="custom-title-en" style="display:none">// who makes custom bases</div>
     <div class="custom-grid">
-      <div class="custom-card">
-        <div class="custom-name">Limi Lab</div>
-        <div class="custom-desc">Заказ через Discord — уникальная база под твои нужды. Patreon: $7+</div>
+      <div class="custom-card"><div class="custom-name">Limi Lab</div><div class="custom-desc" data-ru="Заказ через Discord — база под твои нужды. Patreon: $7+" data-en="Order via Discord — base tailored to your needs. Patreon: $7+">Заказ через Discord — база под твои нужды. Patreon: $7+</div></div>
+      <div class="custom-card"><div class="custom-name">Akame</div><div class="custom-desc" data-ru="ТОЛЬКО кастомные базы под заказ. Boosty: boosty.to/akamexebet" data-en="CUSTOM ORDERS ONLY. Boosty: boosty.to/akamexebet">ТОЛЬКО кастомные базы под заказ. Boosty: boosty.to/akamexebet</div></div>
+      <div class="custom-card"><div class="custom-name">Erebus</div><div class="custom-desc" data-ru="Кастом через Discord: Budget $50, Standard $100, Ultimate $250" data-en="Custom via Discord: Budget $50, Standard $100, Ultimate $250">Кастом через Discord: Budget $50, Standard $100, Ultimate $250</div></div>
+      <div class="custom-card"><div class="custom-name">Kredbic & S4</div><div class="custom-desc" data-ru="Кастом через общий Discord. Kredbic: $50–100, S4: уточнять" data-en="Custom via shared Discord. Kredbic: $50–100, S4: inquire">Кастом через общий Discord. Kredbic: $50–100, S4: уточнять</div></div>
+      <div class="custom-card"><div class="custom-name">Pandabuilds</div><div class="custom-desc" data-ru="Кастом через Discord. PayPal / Rust Skins (+15%)" data-en="Custom via Discord. PayPal / Rust Skins (+15%)">Кастом через Discord. PayPal / Rust Skins (+15%)</div></div>
+      <div class="custom-card"><div class="custom-name">GrinchTheBuilder</div><div class="custom-desc" data-ru="Кастом через Discord: @chort228. Цена $15–20" data-en="Custom via Discord: @chort228. Price $15–20">Кастом через Discord: @chort228. Цена $15–20</div></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="control-row">
+      <span class="control-label" id="lbl-search-ru">ПОИСК</span><span class="control-label" id="lbl-search-en" style="display:none">SEARCH</span>
+      <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="searchInput" placeholder="Limi Lab, Erebus..."></div>
+      <div class="paid-legend"><div class="paid-legend-dot"></div><span id="paid-legend-ru">есть платный контент</span><span id="paid-legend-en" style="display:none">paid content available</span></div>
+    </div>
+    <div class="control-row">
+      <span class="control-label" id="lbl-format-ru">ФОРМАТ</span><span class="control-label" id="lbl-format-en" style="display:none">FORMAT</span>
+      <div class="filter-group" id="formatFilters">
+        <span class="chip active" data-format="all" data-ru="Все" data-en="All">Все</span>
+        <span class="chip" data-format="solo" data-ru="Solo / Duo" data-en="Solo / Duo">Solo / Duo</span>
+        <span class="chip" data-format="trio" data-ru="Trio / Small Group" data-en="Trio / Small Group">Trio / Small Group</span>
+        <span class="chip" data-format="medium" data-ru="Medium / Large Group" data-en="Medium / Large Group">Medium / Large Group</span>
+        <span class="chip" data-format="clan" data-ru="Clan / Zerg" data-en="Clan / Zerg">Clan / Zerg</span>
       </div>
-      <div class="custom-card">
-        <div class="custom-name">Faded</div>
-        <div class="custom-desc">fadedbuilds.com — готовые эксклюзивные базы. Разовая покупка €17–20</div>
+    </div>
+    <div class="control-row">
+      <span class="control-label" id="lbl-lang-ru">ЯЗЫК</span><span class="control-label" id="lbl-lang-en" style="display:none">LANGUAGE</span>
+      <div class="filter-group" id="langFilters">
+        <span class="chip active" data-lang="all" data-ru="Все языки" data-en="All languages">Все языки</span>
+        <span class="chip" data-lang="en" data-ru="EN" data-en="EN">EN</span>
+        <span class="chip" data-lang="ru" data-ru="RU" data-en="RU">RU</span>
       </div>
-      <div class="custom-card">
-        <div class="custom-name">Akame</div>
-        <div class="custom-desc">ТОЛЬКО кастомные базы под заказ. Boosty: https://boosty.to/akamexebet</div>
-      </div>
-      <div class="custom-card">
-        <div class="custom-name">Erebus</div>
-        <div class="custom-desc">Кастом через Discord: Budget $50, Standard $100, Ultimate $250</div>
-      </div>
-      <div class="custom-card">
-        <div class="custom-name">Kredbic</div>
-        <div class="custom-desc">Кастом в Discord: Solo/Duo/Trio $50, Small Group $70, Large Group $100</div>
-      </div>
-      <div class="custom-card">
-        <div class="custom-name">Pandabuilds</div>
-        <div class="custom-desc">Кастом через Discord. PayPal / Rust Skins (+15%)</div>
-      </div>
-      <div class="custom-card">
-        <div class="custom-name">GrinchTheBuilder</div>
-        <div class="custom-desc">Кастом через Discord: @chort228. Цены уточнять индивидуально</div>
+    </div>
+    <div class="control-row">
+      <span class="control-label" id="lbl-sort-ru">СОРТИРОВКА</span><span class="control-label" id="lbl-sort-en" style="display:none">SORT</span>
+      <div class="filter-group" id="sortFilters">
+        <span class="chip active" data-sort="rating" data-ru="По рейтингу" data-en="By rating">По рейтингу</span>
+        <span class="chip" data-sort="name" data-ru="По имени" data-en="By name">По имени</span>
+        <span class="chip" data-sort="paid" data-ru="Сначала с платным" data-en="Paid first">Сначала с платным</span>
       </div>
     </div>
   </div>
 
   <div id="cardsContainer"></div>
 
-  <div class="update-note">
+  <div class="update-note" id="update-note-ru">
     <span>// обновление от марта 2026</span><br>
-    • GrinchTheBuilder: новая оценка и описание, добавлены Solo форматы<br>
-    • Убраны дублирующиеся поля во всех карточках<br>
-    • Гид будет обновляться. Если считаешь, что кого-то не хватает — пиши в Discord: <strong>gamunkul8515</strong>
+    • Добавлены Brader Fik (4.5★), BuckyBuilds (4★), Build Lab (4★)<br>
+    • Opy4k добавлен как тёмная лошадка<br>
+    • Гид будет обновляться. Если считаешь что кого-то не хватает — пиши в Discord: <strong>gamunkul8515</strong>
+  </div>
+  <div class="update-note" id="update-note-en" style="display:none">
+    <span>// update March 2026</span><br>
+    • Added Brader Fik (4.5★), BuckyBuilds (4★), Build Lab (4★)<br>
+    • Opy4k added as dark horse<br>
+    • Guide will be updated. If you think someone is missing — write in Discord: <strong>gamunkul8515</strong>
   </div>
 
   <div class="footer">
     <span>// rust builder directory 2026</span>
-    <span>оценки субъективны · только активные каналы · инактив &lt;2 мес.</span>
+    <span id="footer-note-ru">оценки субъективны · только активные каналы · инактив &lt;2 мес.</span>
+    <span id="footer-note-en" style="display:none">ratings are subjective · active channels only · inactive &lt;2 months</span>
   </div>
 
 </div>
 
 <script>
-  const builders = [
-    // ★★★★★
-    {
-      name: "Limi Lab",
-      handle: "@LimiLab · EN · с 2023",
-      rating: "★★★★★",
-      ratingValue: 5,
-      tags: ["Patreon $7+", "Заказы баз", "Discord", "TikTok"],
-      rows: [
-        { label: "Подписчики", val: "~28K", class: "" },
-        { label: "Форматы", val: "Solo — Clan", class: "" },
-        { label: "Кастомные базы", val: "Да — через Discord", class: "good" }
-      ],
-      desc: "<strong>Единственный билдер, принимающий персональные заказы на базы под конкретные нужды.</strong> Нестандартные механики: floor stacking, многоуровневые бункеры, pixel gap-комбинации. Патреон полностью оправдывает вложения — базы там действительно уникальные, но и публичные работы ничем не хуже. За три года вырос с нуля до признанного автора, и это не просто слова — качество говорит само за себя.",
-      links: [
-        { text: "Discord", url: "https://discord.com/invite/PeFQnPZyPd" },
-        { text: "Patreon", url: "https://www.patreon.com/LimiLAB" },
-        { text: "YouTube", url: "https://youtube.com/@LimiLab" },
-        { text: "TikTok", url: "https://tiktok.com/@limilab" }
-      ],
-      formats: ["solo", "trio", "clan"],
-      lang: "en"
-    },
-    // ★★★★½
-    {
-      name: "Erebus",
-      handle: "@ErebusBuilds · EN",
-      rating: "★★★★½",
-      ratingValue: 4.5,
-      tags: ["Discord", "TikTok", "Кастомные базы"],
-      rows: [
-        { label: "Форматы", val: "Solo — Clan", class: "" },
-        { label: "Кастомные базы", val: "$50–250", class: "good" },
-        { label: "Уровень фарма", val: "Выше среднего", class: "warn" }
-      ],
-      desc: "<strong>Главная фишка — реальные футажи геймплея в построенных домах.</strong> Показывает как база работает в боевых условиях, а не просто в креативе. Это огромный плюс — ты сразу видишь, будет ли база работать или рассыплется при первом же рейде. Базы качественные, но не позиционируются как доступные — нужно будет неплохо пофармить. Кастом через Discord: Budget $50 (код без тура), Standard $100 (базовый тур), Ultimate $250 (полный тур + редактирование).",
-      links: [
-        { text: "Discord", url: "https://discord.com/invite/NSGg8ykrx9" },
-        { text: "TikTok", url: "https://tiktok.com/@erebusbuilds" },
-        { text: "YouTube", url: "https://youtube.com/@ErebusRust" }
-      ],
-      formats: ["solo", "trio", "clan"],
-      lang: "en"
-    },
-    // ★★★★☆
-    {
-      name: "Crow",
-      handle: "@CrowBuilds · EN · с 2021 · 13M просмотров",
-      rating: "★★★★☆",
-      ratingValue: 4,
-      tags: ["Patreon", "TikTok", "Discord"],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Patreon", val: "Приват базы · нигде не выходят", class: "good" },
-        { label: "Публичные базы", val: "Мало актуальных", class: "warn" }
-      ],
-      desc: "Культовые базы: <strong>Humbug, Cyclone, Jupiter, Chimera, Synchro, Zion</strong>. Humbug до сих пор копируют тысячи игроков — это уже legacy в мире Rust. Стратегия Patreon осознанная: если база на YouTube, все знают как её рейдить. Видео для спонсоров на YouTube дублируют Patreon-контент. Грамотный билдер с глубоким пониманием игры.",
-      links: [
-        { text: "Discord", url: "https://discord.com/invite/m8WNpc6hqD" },
-        { text: "Patreon", url: "https://www.patreon.com/c/CrowBuilds" },
-        { text: "YouTube", url: "https://youtube.com/@CrowBuilds" },
-        { text: "TikTok", url: "https://tiktok.com/@crowbuilds" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "Faded",
-      handle: "@FadedRust · EN · 🇱🇹 Литва",
-      rating: "★★★★☆",
-      ratingValue: 4,
-      tags: ["Shop", "TikTok"],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio+", class: "" },
-        { label: "Стоимость", val: "€17–20 за базу", class: "good" },
-        { label: "Топ базы", val: "The Apex, The Revenant, Hydra V2", class: "" }
-      ],
-      desc: "Свой Shopify-магазин вместо Patreon — <strong>разовая покупка</strong> конкретной базы. The Apex позиционирует как сильнейшую из всех. Обновления бесплатно — это редкость в индустрии, плюс огромный. Есть достойные базы, но иногда красивая анимация и подача важнее реальной работоспособности — тут уже каждый решает сам.",
-      links: [
-        { text: "fadedbuilds.com", url: "https://fadedbuilds.com" },
-        { text: "TikTok", url: "https://tiktok.com/@fadedrust" },
-        { text: "YouTube", url: "https://youtube.com/@FadedRust" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "Tarre",
-      handle: "@tarrerust · EN",
-      rating: "★★★★☆",
-      ratingValue: 4,
-      tags: ["TikTok", "Discord", "YouTube Sponsors"],
-      rows: [
-        { label: "Форматы", val: "Solo · Duo · Trio", class: "" },
-        { label: "Ниша", val: "Доступные snowball базы", class: "good" }
-      ],
-      desc: "<strong>Лучший для ДОСТУПНЫХ solo/duo snowball баз.</strong> Своя чёткая ниша — дешёвые удобные базы для быстрого старта. Отлично подходит для новичков и игроков которые хотят быстро зайти на сервер и начать играть без доната. Видео на YouTube сначала выходят для спонсоров — если хочешь получать базы раньше всех, это твой вариант.",
-      links: [
-        { text: "Discord", url: "https://discord.com/invite/W4nQHsPCnJ" },
-        { text: "YouTube", url: "https://youtube.com/@tarrerust" },
-        { text: "TikTok", url: "https://tiktok.com/@tarrerust" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "GrinchTheBuilder",
-      handle: "@GrinchTheBuilder · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: ["Discord", "Кастомные базы"],
-      rows: [
-        { label: "Форматы", val: "Solo — Zerg", class: "" },
-        { label: "Кастом", val: "Discord: @chort228", class: "good" },
-        { label: "Стоимость", val: "Очень высокая", class: "bad" }
-      ],
-      desc: "В основном строит таверки — дорогие, такие подойдут либо очень большим группам вплоть до кланов, либо для средних групп которые играют на 2x-3x серверах. Потому что почти все базы пиздец какие дорогие. По некоторым базам есть неприятные минусы: например отсутствие отстрела в китайку или ужасные неиграбельные крыши. Из плюсов — очень хорошие отстрелочные, и мобильность по базе. P.S. мне нравятся твои постройки, не слезай с тяжёлых веществ.",
-      links: [
-        { text: "YouTube", url: "https://youtube.com/@GrinchTheBuilder" }
-      ],
-      formats: ["solo", "trio", "clan"],
-      lang: "en"
-    },
-    // ★★★½☆
-    {
-      name: "Spinky",
-      handle: "@spinky · EN",
-      rating: "★★★½☆",
-      ratingValue: 3.5,
-      tags: ["Patreon 4700+", "Discord 15K"],
-      rows: [
-        { label: "Форматы", val: "Solo — Clan", class: "" },
-        { label: "Patreon доход", val: "~$3680/мес · 24+ приват базы", class: "good" },
-        { label: "Публичный контент", val: "Неровный", class: "warn" }
-      ],
-      desc: "Самый крупный активный билдер по подписчикам. Patreon серьёзный и активный — SpinkBox Mini вышел в декабре 2025, народ доволен. Публично неровный — иногда выдаёт шедевры, иногда проходняк, но приватки стабильные. Коллаборация с Epic Desk на лимитированный дескмат — признание в индустрии.",
-      links: [
-        { text: "Discord", url: "https://discord.gg/Zcf83nJ3YV" },
-        { text: "Patreon", url: "https://www.patreon.com/spinkyRUST" },
-        { text: "YouTube", url: "https://youtube.com/@spinky" },
-        { text: "TikTok", url: "https://tiktok.com/@spinkyrust" }
-      ],
-      formats: ["solo", "trio", "clan"],
-      lang: "en"
-    },
-    {
-      name: "Akame",
-      handle: "@AkameBuilds · EN",
-      rating: "★★★½☆",
-      ratingValue: 3.5,
-      tags: ["Boosty", "Кастомные базы"],
-      rows: [
-        { label: "Форматы", val: "Small group — Large group", class: "" },
-        { label: "Услуги", val: "ТОЛЬКО кастомные базы", class: "good" },
-        { label: "Упор", val: "Онлайн рейд", class: "good" }
-      ],
-      desc: "Билдер сильнейшего клана R2 — это само по себе говорит о многом. Строит в основном для небольших и больших групп. Основной упор на защиту во время онлайн рейда — если вы планируете принимать рейды в онлайне, это ваш человек. Есть предположение, что вдохновляется базами Erebus, но без той же глубины. Работает только под заказ через Boosty.",
-      links: [
-        { text: "Boosty", url: "https://boosty.to/akamexebet" },
-        { text: "YouTube", url: "https://youtube.com/@Akame_Rust" }
-      ],
-      formats: ["trio", "clan"],
-      lang: "en"
-    },
-    {
-      name: "Nini Rust",
-      handle: "@NiniRust · EN · nini-rust.com",
-      rating: "★★★½☆",
-      ratingValue: 3.5,
-      tags: ["Patreon", "TikTok", "Twitch", "Discord", "Website"],
-      rows: [
-        { label: "Форматы", val: "Solo — Clan", class: "" },
-        { label: "Patreon", val: "Приват + reworks + VIP", class: "good" },
-        { label: "Стоимость", val: "Недешёвые", class: "warn" }
-      ],
-      desc: "<strong>Vantix</strong> (6 бункеров), <strong>Ward V2</strong> (pixel gaps + floor stack), <strong>The Royal</strong> (MultiTC + compound). Один из самых подробных Patreon в нише — там не просто базы, а целые гайды с rework'ами. Тестирует базы вживую на Twitch — можно зайти и посмотреть как работает база до того как её построить. На сайте nini-rust.com есть калькулятор для подбора базы под твои нужды. Базы недешёвые, но качество соответствует цене.",
-      links: [
-        { text: "Website", url: "https://nini-rust.com" },
-        { text: "Discord", url: "https://discord.com/invite/fhDmyx5v9w" },
-        { text: "Patreon", url: "https://patreon.com/NiniRust" },
-        { text: "Twitch", url: "https://twitch.tv/ninirust" },
-        { text: "YouTube", url: "https://youtube.com/@NiniRust" },
-        { text: "TikTok", url: "https://tiktok.com/@ninirust" }
-      ],
-      formats: ["solo", "trio", "clan"],
-      lang: "en"
-    },
-    // ★★★☆☆
-    {
-      name: "LeftyyP",
-      handle: "@LeftyyP · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: ["Patreon", "Discord"],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Patreon", val: "Есть · доступные базы", class: "good" }
-      ],
-      desc: "Свежий контент, много актуальных баз. Строит доступные лёгкие базы для соло-трио, без p2w фишек — подойдёт новичкам у которых ещё нет доната. <strong>Однако есть сомнительные базы</strong> (например пирамида, в которой невозможно дефаться). В общем есть хорошие работы, но есть и те что можно построить по приколу. Если хочешь что-то нестандартное и не боишься экспериментов — попробуй.",
-      links: [
-        { text: "Discord", url: "https://discord.com/invite/THfp7TxEHJ" },
-        { text: "YouTube", url: "https://youtube.com/@LeftyyP" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "HiddenJoint / Good Joint",
-      handle: "@HiddenJoint · EN / @GoodJoint · RU",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: ["Patreon", "Boosty"],
-      rows: [
-        { label: "Форматы", val: "Solo — Quad", class: "" },
-        { label: "Частота", val: "1–2 приват базы/мес", class: "good" }
-      ],
-      desc: "Хорош для соло-игроков — базы простые, понятные, без переусложнения. Инновации есть, но часто нежизнеспособные в реальном PvP — тут нужно быть осторожным. Ведёт два канала: HiddenJoint для англоязычной аудитории, Good Joint для русскоязычной. Контент одинаковый, просто языковой дубляж. Подойдёт если хочешь что-то новое и готов тестировать.",
-      links: [
-        { text: "Patreon (EN)", url: "https://www.patreon.com/c/GoodJoint" },
-        { text: "Boosty (RU)", url: "https://boosty.to/goodjoint" },
-        { text: "YouTube (EN)", url: "https://youtube.com/@HiddenJoint" },
-        { text: "YouTube (RU)", url: "https://youtube.com/@GoodJoint" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "both"
-    },
-    {
-      name: "Krub",
-      handle: "@KrubRust · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: ["Discord"],
-      rows: [
-        { label: "Форматы", val: "Solo — Medium Group", class: "" },
-        { label: "Discord", val: "Обучающие посты", class: "good" },
-        { label: "Стоимость vs результат", val: "Ресурсы можно вложить интереснее", class: "warn" }
-      ],
-      desc: "Базы по механике неплохие, но стоимость постройки (в ресурсах) не совсем оправдана. По личному мнению, ресурсы потраченные на базу можно было вложить более интересно — например в большее количество бункеров или более хитрую разводку. В Discord канале есть полезные обучающие посты по билдингу — это плюс. Связан с Pandabuilds — они упоминают друг друга в контенте, возможно работают в связке.",
-      links: [
-        { text: "Discord", url: "https://discord.com/invite/buildingbulletin" },
-        { text: "YouTube", url: "https://youtube.com/@KrubRust" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "Pandabuilds",
-      handle: "@PandaBuildsRust · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: ["Discord", "Кастомные базы"],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Оплата", val: "PayPal / Rust Skins (+15%)", class: "warn" }
-      ],
-      desc: "Связан с Krub — они упоминают друг друга, а базы Pandabuilds выложены на канале Krub. Видимо, работают в команде или один человек ведёт два бренда. Делает кастомные базы под заказ через Discord. Цены не указаны, обсуждаются индивидуально. Принимает PayPal и Rust Skins с наценкой 15% — необычный вариант оплаты, но кому-то может зайти.",
-      links: [
-        { text: "Discord", url: "https://discord.com/invite/XQSztD5JHk" },
-        { text: "YouTube", url: "https://youtube.com/@PandaBuildsRust" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "MrSkeem",
-      handle: "@MrSkeem · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: ["Patreon", "Discord"],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Частота", val: "Редко", class: "warn" }
-      ],
-      desc: "Изменённая классика с удивляющими решениями. Есть базы с золотой серединой — не слишком дорого, не слишком просто. Выпускает редко, но качество стабильное. Если хочешь что-то проверенное временем, но с современными фишками — стоит присмотреться.",
-      links: [
-        { text: "Patreon", url: "https://patreon.com/MrSkeem" },
-        { text: "Discord", url: "https://discord.gg/YnS8zHJvkh" },
-        { text: "YouTube", url: "https://youtube.com/@MrSkeem" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "Mellarrkk / Rust Tricks / Rust Concepts",
-      handle: "YouTube · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: [],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio · 20–30 ракет", class: "" },
-        { label: "Patreon", val: "Нет", class: "bad" }
-      ],
-      desc: "Простые базы для новичков, ничего нового. Активен на rustbaselab.com — там много его работ. Ведёт три канала под разными именами: Mellarrkk, Rust Tricks и Rust Concepts. Зачем три — загадка, но суть контента везде одинаковая. Подойдёт если ты только начинаешь и хочешь простые рабочие схемы.",
-      links: [
-        { text: "Mellarrkk", url: "https://youtube.com/@Mellarrkk" },
-        { text: "Rust Tricks", url: "https://youtube.com/@RustTricks" },
-        { text: "Rust Concepts", url: "https://youtube.com/@RustConcepts" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "Kredbic",
-      handle: "@KredbicRust · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: ["Discord", "Кастомные базы"],
-      rows: [
-        { label: "Форматы", val: "Solo — Duo", class: "" },
-        { label: "Кастомные базы", val: "$50–100 · Tutorial $30", class: "good" }
-      ],
-      desc: "Очень понятно объясняет процесс — для новичков это золото. Базы простые, без глупых решений. Хороший вариант для тех кто только начинает разбираться в строительстве. Делает кастомные базы под заказ: Solo/Duo/Trio $50, Small Group $70, Large Group $100. Tutorial отдельно $30 — если хочешь не просто код, а понимание как это работает.",
-      links: [
-        { text: "Discord", url: "https://discord.com/invite/CdV63mypkx" },
-        { text: "YouTube", url: "https://youtube.com/@KredbicRust" }
-      ],
-      formats: ["solo"],
-      lang: "en"
-    },
-    {
-      name: "slvtv",
-      handle: "@slvtvRust",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: ["Discord", "YouTube Sponsors"],
-      rows: [
-        { label: "Форматы", val: "Solo — Duo", class: "" },
-        { label: "Patreon", val: "Нет данных", class: "warn" }
-      ],
-      desc: "С простыми базами справляется хорошо. Средний уровень без сюрпризов в обе стороны — не будет ни вау-эффекта, ни разочарования. Видео на YouTube сначала выходят для спонсоров. Если хочешь стабильные рабочие базы без лишних выкрутасов — норм вариант.",
-      links: [
-        { text: "Discord", url: "https://discord.gg/9txTRYCVtQ" },
-        { text: "YouTube", url: "https://youtube.com/@slvtvRust" }
-      ],
-      formats: ["solo"],
-      lang: "en"
-    },
-    {
-      name: "Zypic",
-      handle: "@ZypicRust · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: [],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Последняя база", val: "The Cobalt (2 мес.)", class: "" }
-      ],
-      desc: "Дешёвые базы без p2w — подходит тем у кого нет времени фармить. Есть интересные решения, но чего-то не хватает до следующего уровня. Возможно, не хватает опыта или смелости в экспериментах. В любом случае, для бюджетного старта — рабочий вариант.",
-      links: [
-        { text: "YouTube", url: "https://youtube.com/@ZypicRust" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "Relbuild",
-      handle: "@relbuild · EN",
-      rating: "★★★☆☆",
-      ratingValue: 3,
-      tags: [],
-      rows: [
-        { label: "Форматы", val: "Solo — Small Groups", class: "" },
-        { label: "Сильные стороны", val: "Хорошие отстрелы", class: "good" }
-      ],
-      desc: "Строит неплохие базы с хорошими отстрелами — это его главная фишка. Если тебе важно чтобы из базы было удобно обороняться и стрелять по рейдерам — присмотрись. Но ему чего-то не хватает, нужно расти. Есть базы, которые лично мне вообще не понравились — некоторые решения вызывают вопросы. В общем, потенциал есть, но пока не раскрыт полностью.",
-      links: [
-        { text: "YouTube", url: "https://youtube.com/@relbuild" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    // ★★☆☆☆
-    {
-      name: "IndominusRust",
-      handle: "@IndominusRust · EN · 🇬🇧 UK",
-      rating: "★★☆☆☆",
-      ratingValue: 2,
-      tags: ["Patreon", "Discord"],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Качество", val: "Не оправдывает ожиданий", class: "bad" }
-      ],
-      desc: "Patreon есть, позиционирует стиль как уникальный UK-дизайн. По факту базы очень плохие — не рекомендую тратить время или деньги. Есть намного более достойные варианты в этой таблице.",
-      links: [
-        { text: "Patreon", url: "https://www.patreon.com/IndominusRust" },
-        { text: "Discord", url: "https://discord.com/invite/jgMr6YXPqC" },
-        { text: "YouTube", url: "https://youtube.com/@IndominusRust" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    {
-      name: "Ласти Раст",
-      handle: "@ласти_раст · RU",
-      rating: "★★☆☆☆",
-      ratingValue: 2,
-      tags: ["Telegram"],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Особенность", val: "Сливает базы Good Joint", class: "bad" }
-      ],
-      desc: "Нет понимания ванильного билдинга. Скорее игрок с модовых серверов — это видно в подходе к механикам. В Telegram канале сливает платные базы Good Joint с Boosty. Пиратский контент — не поддерживаем такое.",
-      links: [
-        { text: "Telegram", url: "https://t.me/lastycfg" },
-        { text: "YouTube", url: "https://youtube.com/@ласти_раст" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "ru"
-    },
-    {
-      name: "zYn",
-      handle: "@zYnRust · EN",
-      rating: "★☆☆☆☆",
-      ratingValue: 1,
-      tags: ["Website"],
-      rows: [
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Качество", val: "Ошибки в постройках", class: "bad" }
-      ],
-      desc: "Строит базы без p2w фишек, максимально простые — для супер новичков. <strong>Проблема:</strong> даже не билдер увидит ошибки — может забыть перевернуть стенку правильной стороной. Это базовый уровень, который должен быть на автомате. Есть свой сайт zynvids.com где продаёт базы отдельно — как у Faded, но качество совсем другое.",
-      links: [
-        { text: "zynvids.com", url: "https://zynvids.com" },
-        { text: "YouTube", url: "https://youtube.com/@zYnRust" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en"
-    },
-    // ★☆☆☆☆
-    {
-      name: "Stelic",
-      handle: "@stelicRUST · EN · ~43K подписчиков",
-      rating: "★☆☆☆☆",
-      ratingValue: 1,
-      tags: [],
-      rows: [
-        { label: "Фокус", val: "PvP + tips + базы", class: "bad" }
-      ],
-      desc: "Однотипные solo–duo базы. Острелочные делает ужасно — это не его сильная сторона. 43K подписчиков на общем Rust-контенте, не на качестве строительства. Если хочешь советы по PvP — ок, но за базами лучше идти к другим.",
-      links: [
-        { text: "YouTube", url: "https://youtube.com/@stelicRUST" }
-      ],
-      formats: ["solo"],
-      lang: "en"
-    },
-    {
-      name: "RustyYT",
-      handle: "YouTube · EN",
-      rating: "★☆☆☆☆",
-      ratingValue: 1,
-      tags: ["TikTok", "Instagram"],
-      rows: [
-        { label: "Patreon", val: "Нет", class: "bad" }
-      ],
-      desc: "Базы уровня игрока с 10 часами в Rust. Активен в TikTok и Instagram, но качество не соответствует даже базовым стандартам. Для обучения не рекомендуется.",
-      links: [
-        { text: "YouTube", url: "https://youtube.com/@Rusty_Youtube" }
-      ],
-      formats: ["solo"],
-      lang: "en"
-    },
-    // Pending review
-    {
-      name: "Builder",
-      handle: "@BuilderRust · EN",
-      rating: "⏳ ?",
-      ratingValue: 0,
-      tags: ["YouTube"],
-      rows: [
-        { label: "Patreon", val: "Неизвестно", class: "warn" },
-        { label: "Проблема", val: "Не показывает тур, не даёт кодов", class: "bad" }
-      ],
-      desc: "Тяжело оценить базы — нужно смотреть видео от начала до конца. Возможно строит неплохие базы, но времени на полный просмотр пока нет. Если есть инсайды — пиши в Discord.",
-      links: [
-        { text: "YouTube", url: "https://youtube.com/@BuilderRust" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en",
-      pending: true
-    },
-    {
-      name: "Willjum",
-      handle: "@Willjum · EN · известный ютубер",
-      rating: "⏳ ?",
-      ratingValue: 0,
-      tags: ["YouTube", "Patreon", "Discord"],
-      rows: [
-        { label: "Patreon", val: "Есть, но без баз", class: "warn" },
-        { label: "Проблема", val: "Базы сложно быстро оценить", class: "bad" }
-      ],
-      desc: "Известный ютубер, но базы так же трудно быстро оценить — нужно смотреть всё видео целиком. Patreon есть но без приватных баз. Требует глубокого анализа, который будет позже.",
-      links: [
-        { text: "Patreon", url: "https://www.patreon.com/willjum" },
-        { text: "Discord", url: "https://discord.com/invite/WILLJUM" },
-        { text: "YouTube", url: "https://youtube.com/@willjum" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en",
-      pending: true
-    },
-    {
-      name: "RustLogic",
-      handle: "YouTube · EN",
-      rating: "⏳ ?",
-      ratingValue: 0,
-      tags: [],
-      rows: [
-        { label: "Активность", val: "3+ базы за месяц", class: "good" },
-        { label: "Форматы", val: "Solo — Trio", class: "" },
-        { label: "Проблема", val: "Нет тура и кодов баз", class: "bad" }
-      ],
-      desc: "Очень активен на rustbaselab.com — 'META Duo 2026'. Нет тура и кодов — нельзя оценить быстро без полного просмотра видео. Требует времени на анализ.",
-      links: [
-        { text: "YouTube", url: "https://youtube.com/@RustLogic" }
-      ],
-      formats: ["solo", "trio"],
-      lang: "en",
-      pending: true
+const PAID_TAGS = ['Patreon','Boosty','Shop','fadedbuilds','Кастомные базы','Заказы баз','Custom orders','Custom bases','YouTube Sponsors','Website'];
+function hasPaid(tags) { return tags.some(t => PAID_TAGS.some(p => t.includes(p))); }
+
+function matchesFormat(builder, format) {
+  if (format === 'all') return true;
+  if (format === 'solo') return builder.formats.includes('solo');
+  if (format === 'trio') return builder.formats.includes('trio');
+  if (format === 'medium') return builder.formats.includes('medium') || builder.formats.includes('clan');
+  if (format === 'clan') return builder.formats.includes('clan');
+  return false;
+}
+
+const rowLabelMap = {
+  ru: {
+    'Подписчики': 'Подписчики', 'Форматы': 'Форматы', 'Кастомные базы': 'Кастомные базы',
+    'Цена кастома': 'Цена кастома', 'Стоимость постройки': 'Стоимость постройки',
+    'Patreon': 'Patreon', 'Публичные базы': 'Публичные базы', 'Цена базы': 'Цена базы',
+    'Топ базы': 'Топ базы', 'Ниша': 'Ниша', 'Фишки': 'Фишки', 'Особенности': 'Особенности',
+    'Минусы': 'Минусы', 'Услуги': 'Услуги', 'Упор': 'Упор', 'Частота': 'Частота',
+    'Discord': 'Discord', 'Сильные стороны': 'Сильные стороны', 'Фокус': 'Фокус',
+    'Статус': 'Статус', 'Активность': 'Активность', 'Проблема': 'Проблема',
+    'Качество': 'Качество', 'Особенность': 'Особенность', 'Patreon доход': 'Patreon доход',
+    'Публичный контент': 'Публичный контент', 'Последняя база': 'Последняя база'
+  },
+  en: {
+    'Подписчики': 'Subscribers', 'Форматы': 'Group size', 'Кастомные базы': 'Custom bases',
+    'Цена кастома': 'Custom price', 'Стоимость постройки': 'Build cost (resources)',
+    'Patreon': 'Patreon', 'Публичные базы': 'Public bases', 'Цена базы': 'Base price',
+    'Топ базы': 'Top bases', 'Ниша': 'Niche', 'Фишки': 'Features', 'Особенности': 'Features',
+    'Минусы': 'Cons', 'Услуги': 'Services', 'Упор': 'Focus', 'Частота': 'Frequency',
+    'Discord': 'Discord', 'Сильные стороны': 'Strengths', 'Фокус': 'Focus',
+    'Статус': 'Status', 'Активность': 'Activity', 'Проблема': 'Issue',
+    'Качество': 'Quality', 'Особенность': 'Note', 'Patreon доход': 'Patreon revenue',
+    'Публичный контент': 'Public content', 'Последняя база': 'Latest base'
+  }
+};
+
+const builders = [
+  { name:"Limi Lab", handle:"@LimiLab · EN · с 2023", rating:"★★★★★", ratingValue:5,
+    tags:["Patreon $7+","Заказы баз","Discord","TikTok"],
+    rows:[{label:"Подписчики",val:"~28K",c:""},{label:"Форматы",val:"Solo — Clan",c:""},{label:"Кастомные базы",val:"Да — через Discord",c:"good"}],
+    desc:"<strong>Принимает персональные заказы на базы под конкретные нужды — через Discord.</strong> Нестандартные механики: floor stacking, многоуровневые бункеры, pixel gap-комбинации. Патреон полностью оправдывает вложения — базы там действительно уникальные, но и публичные работы ничем не хуже. <strong>Минус:</strong> в некоторых постройках обязательны p2w скины (например Shipping Containers), без них база может не работать как задумано.",
+    descEN:"<strong>Accepts custom base orders — via Discord.</strong> Unique mechanics: floor stacking, multi-level bunkers, pixel gap combos. Patreon is worth every penny — bases there are genuinely unique. <strong>Downside:</strong> some builds require p2w skins (e.g. Shipping Containers) to function as intended.",
+    links:[{t:"Discord",u:"https://discord.com/invite/PeFQnPZyPd"},{t:"Patreon",u:"https://www.patreon.com/LimiLAB"},{t:"YouTube",u:"https://youtube.com/@LimiLab"},{t:"TikTok",u:"https://tiktok.com/@limilab"}],
+    formats:["solo","trio","clan"], lang:"en", isYours:true },
+
+  { name:"Brader Fik", handle:"@BraderFik · EN", rating:"★★★★½", ratingValue:4.5,
+    tags:["YouTube"],
+    rows:[{label:"Форматы",val:"Solo — Small Group",c:""},{label:"Фишки",val:"Double Bunker, ChinaWall, Floor Stack",c:"good"},{label:"Стоимость постройки",val:"Средняя",c:""}],
+    desc:"<strong>Автор заморачивается и не зря!</strong> Базы очень хорошие — пики супер, но как и почти у всех основная проблема — крыша. Кодов не оставляет, что минус. Патреона и дискорда нет. В целом — качественный билдер, которому стоит доверять.",
+    descEN:"<strong>The effort shows and it pays off!</strong> Bases are very good — shoots are excellent, but like almost everyone else the main weakness is the roof. No codes left, which is a minus. No Patreon or Discord. Overall — a quality builder worth trusting.",
+    links:[{t:"YouTube",u:"https://youtube.com/@BraderFik"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Erebus", handle:"@ErebusBuilds · EN", rating:"★★★★½", ratingValue:4.5,
+    tags:["Discord","TikTok","Кастомные базы"],
+    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Цена кастома",val:"$50–250",c:"good"},{label:"Стоимость постройки",val:"Выше среднего",c:"warn"}],
+    desc:"<strong>Главная фишка — реальные футажи геймплея в построенных домах.</strong> Показывает как база работает в боевых условиях, а не просто в креативе. Это огромный плюс — ты сразу видишь, будет ли база работать или рассыплется при первом же рейде. Базы качественные, но не позиционируются как доступные — нужно будет неплохо пофармить. Кастом через Discord: Budget $50 (код без тура), Standard $100 (базовый тур), Ultimate $250 (полный тур + редактирование).",
+    descEN:"<strong>Key feature — real gameplay footage inside built bases.</strong> Shows how the base performs in actual raid conditions, not just creative mode. A huge plus — you immediately see if it'll hold or collapse on first contact. Bases are quality but not budget-friendly. Custom via Discord: Budget $50 (code only), Standard $100 (basic tour), Ultimate $250 (full tour + edits).",
+    links:[{t:"Discord",u:"https://discord.com/invite/NSGg8ykrx9"},{t:"TikTok",u:"https://tiktok.com/@erebusbuilds"},{t:"YouTube",u:"https://youtube.com/@ErebusRust"}],
+    formats:["solo","trio","clan"], lang:"en" },
+
+  { name:"Crow", handle:"@CrowBuilds · EN · с 2021 · 13M просмотров", rating:"★★★★☆", ratingValue:4,
+    tags:["Patreon","TikTok","Discord"],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Patreon",val:"от $5/мес · приват базы",c:"good"},{label:"Публичные базы",val:"Мало актуальных",c:"warn"}],
+    desc:"Культовые базы: <strong>Humbug, Cyclone, Jupiter, Chimera, Synchro, Zion</strong>. Humbug до сих пор копируют тысячи игроков — это уже legacy в мире Rust. Стратегия Patreon осознанная: если база на YouTube, все знают как её рейдить. Видео для спонсоров на YouTube дублируют Patreon-контент. Грамотный билдер с глубоким пониманием игры.",
+    descEN:"Iconic bases: <strong>Humbug, Cyclone, Jupiter, Chimera, Synchro, Zion</strong>. Humbug is still being copied by thousands of players — true Rust legacy. Patreon strategy is intentional: if a base is on YouTube, everyone knows how to raid it. YouTube sponsor videos mirror Patreon content. A skilled builder with deep game knowledge.",
+    links:[{t:"Discord",u:"https://discord.com/invite/m8WNpc6hqD"},{t:"Patreon",u:"https://www.patreon.com/c/CrowBuilds"},{t:"YouTube",u:"https://youtube.com/@CrowBuilds"},{t:"TikTok",u:"https://tiktok.com/@crowbuilds"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Faded", handle:"@FadedRust · EN · 🇱🇹 Литва", rating:"★★★★☆", ratingValue:4,
+    tags:["Shop","TikTok"],
+    rows:[{label:"Форматы",val:"Solo — Trio+",c:""},{label:"Цена базы",val:"€17–20",c:"good"},{label:"Топ базы",val:"The Apex, The Revenant, Hydra V2",c:""}],
+    desc:"Свой Shopify-магазин вместо Patreon — <strong>разовая покупка</strong> конкретной базы. The Apex позиционирует как сильнейшую из всех. Обновления бесплатно — это редкость в индустрии, плюс огромный. Есть достойные базы, но иногда красивая анимация и подача важнее реальной работоспособности — тут уже каждый решает сам.",
+    descEN:"Own Shopify store instead of Patreon — <strong>one-time purchase</strong> per base. The Apex is positioned as his strongest ever. Free updates — rare in the industry, a big plus. Some bases are genuinely solid, but sometimes the presentation and animation matter more than real-world performance.",
+    links:[{t:"fadedbuilds.com",u:"https://fadedbuilds.com"},{t:"TikTok",u:"https://tiktok.com/@fadedrust"},{t:"YouTube",u:"https://youtube.com/@FadedRust"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"BuckyBuilds", handle:"@BuckyBuildz · EN", rating:"★★★★☆", ratingValue:4,
+    tags:["Discord"],
+    rows:[{label:"Форматы",val:"Solo — Small Group",c:""},{label:"Фишки",val:"Куча бункеров, хорошие пики",c:"good"},{label:"Стоимость постройки",val:"Средняя",c:""}],
+    desc:"Куча бункеров, хорошие пики, интересные решения. Для оффлайн и онлайн рейдов — золотая середина. Минус: крыша опять убогая. По личному мнению — не нравится как отводит мультики, но в целом молодец. Базы качественные, рекомендую.",
+    descEN:"Tons of bunkers, good shoots, interesting solutions. A solid middle ground for both offline and online raids. Downside: the roof is poor again. Personally — not a fan of how he handles multi-TC layouts, but overall solid. Quality bases, recommended.",
+    links:[{t:"Discord",u:"https://discord.com/invite/W3qGzbM3ar"},{t:"YouTube",u:"https://youtube.com/@BuckyBuildz"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Build Lab", handle:"@rust_build_lab · EN", rating:"★★★★☆", ratingValue:4,
+    tags:["Patreon","YouTube Sponsors"],
+    rows:[{label:"Форматы",val:"Solo — Quad",c:""},{label:"Patreon",val:"Приват базы + реворки",c:"good"},{label:"Особенности",val:"Крыши прикольные, пики неплохие",c:"good"}],
+    desc:"На канале каждое второе видео — интро к платной версии базы. Бесплатных баз мало. Есть простенькие бункеры, крыши прикольные, пики неплохие, есть минимальные фишки. Также есть уникальные базы. Если готов платить — есть что посмотреть.",
+    descEN:"Every other video on the channel is a teaser for a paid base. Few free builds available. Some simple bunkers, decent roofs, solid shoots, minimal tricks. Also has unique bases. If you're willing to pay — there's content worth watching.",
+    links:[{t:"Patreon",u:"https://www.patreon.com/cw/Build_Lab"},{t:"YouTube",u:"https://youtube.com/@rust_build_lab"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"aloneintokyo", handle:"@aloneintokyo · EN · 🇦🇺", rating:"★★★★☆", ratingValue:4,
+    tags:["Patreon","YouTube Sponsors"],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Patreon",val:"patreon.com/cw/Aloneintokyo",c:"good"},{label:"Стоимость постройки",val:"Средняя",c:""}],
+    desc:"<strong>Уникальный стиль, которого нет ни у кого.</strong> Миллион пиков, миллион retake, много простора, открывашки с турелями. Крыши — слабое место, но в остальном очень интересные и продуманные базы. Играет соло, но дома спокойно вмещают до трёх человек. Основной контент закрыт на Patreon'е — часть построек ходит по интернету в открытом виде (ищи сам). Если возьмёшь Patreon — не пожалеешь.",
+    descEN:"<strong>A unique style that no one else has.</strong> Tons of shoots, tons of retake positions, open layouts, autoturret openers. Roofs are the weak spot, but otherwise the bases are genuinely creative and well thought out. Plays solo, but bases comfortably fit up to three. Main content is Patreon-locked — some builds float around online (find them yourself). If you get the Patreon, you won't regret it.",
+    links:[{t:"Patreon",u:"https://patreon.com/cw/Aloneintokyo"},{t:"YouTube",u:"https://youtube.com/@aloneintokyo"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Tarre", handle:"@tarrerust · EN", rating:"★★★★☆", ratingValue:4,
+    tags:["TikTok","Discord","YouTube Sponsors"],
+    rows:[{label:"Форматы",val:"Solo · Duo · Trio",c:""},{label:"Ниша",val:"Доступные snowball базы",c:"good"}],
+    desc:"<strong>Лучший для ДОСТУПНЫХ solo/duo snowball баз.</strong> Своя чёткая ниша — дешёвые удобные базы для быстрого старта. Отлично подходит для новичков и игроков которые хотят быстро зайти на сервер и начать играть без доната. Видео на YouTube сначала выходят для спонсоров — если хочешь получать базы раньше всех, это твой вариант.",
+    descEN:"<strong>Best for affordable solo/duo snowball bases.</strong> A clear, focused niche — cheap and comfortable bases for a fast start. Perfect for beginners or players who want to hit a server without p2w gear. YouTube videos go to sponsors first — if you want early access, that's your route.",
+    links:[{t:"Discord",u:"https://discord.com/invite/W4nQHsPCnJ"},{t:"YouTube",u:"https://youtube.com/@tarrerust"},{t:"TikTok",u:"https://tiktok.com/@tarrerust"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Spinky", handle:"@spinky · EN", rating:"★★★½☆", ratingValue:3.5,
+    tags:["Patreon 4700+","Discord 15K"],
+    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Patreon доход",val:"~$3680/мес · 24+ приват базы",c:"good"},{label:"Публичный контент",val:"Неровный",c:"warn"}],
+    desc:"Самый крупный активный билдер по подписчикам. Patreon серьёзный и активный — SpinkBox Mini вышел в декабре 2025, народ доволен. Публично неровный — иногда выдаёт шедевры, иногда проходняк, но приватки стабильные. Коллаборация с Epic Desk на лимитированный дескмат — признание в индустрии.",
+    descEN:"Biggest active builder by subscriber count. Patreon is serious and active — SpinkBox Mini dropped December 2025, well received. Public content is inconsistent — sometimes brilliant, sometimes average, but private bases are reliable. Collab with Epic Desk on a limited deskmat — industry recognition.",
+    links:[{t:"Discord",u:"https://discord.gg/Zcf83nJ3YV"},{t:"Patreon",u:"https://www.patreon.com/spinkyRUST"},{t:"YouTube",u:"https://youtube.com/@spinky"},{t:"TikTok",u:"https://tiktok.com/@spinkyrust"}],
+    formats:["solo","trio","clan"], lang:"en" },
+
+  { name:"Akame", handle:"@AkameBuilds · EN", rating:"★★★½☆", ratingValue:3.5,
+    tags:["Boosty","Кастомные базы"],
+    rows:[{label:"Форматы",val:"Small group — Large group",c:""},{label:"Услуги",val:"ТОЛЬКО кастомные базы",c:"good"},{label:"Упор",val:"Онлайн рейд",c:"good"}],
+    desc:"Билдер сильнейшего клана R2 — это само по себе говорит о многом. Строит в основном для небольших и больших групп. Основной упор на защиту во время онлайн рейда — если вы планируете принимать рейды в онлайне, это ваш человек. Есть предположение, что вдохновляется базами Erebus, но без той же глубины. Работает только под заказ через Boosty.",
+    descEN:"Builder for the top clan R2 — that speaks for itself. Builds primarily for small and large groups. Main focus is online raid defense — if you're planning to defend raids in real time, he's your guy. Possibly inspired by Erebus, but without the same depth. Works by custom order only via Boosty.",
+    links:[{t:"Boosty",u:"https://boosty.to/akamexebet"},{t:"YouTube",u:"https://youtube.com/@Akame_Rust"}],
+    formats:["medium","clan"], lang:"en" },
+
+  { name:"Nini Rust", handle:"@NiniRust · EN · nini-rust.com", rating:"★★★½☆", ratingValue:3.5,
+    tags:["Patreon","TikTok","Twitch","Discord","Website"],
+    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Patreon",val:"Приват + reworks + VIP",c:"good"},{label:"Стоимость постройки",val:"Недешёвые",c:"warn"}],
+    desc:"<strong>Vantix</strong> (6 бункеров), <strong>Ward V2</strong> (pixel gaps + floor stack), <strong>The Royal</strong> (MultiTC + compound). Один из самых подробных Patreon в нише — там не просто базы, а целые гайды с rework'ами. Тестирует базы вживую на Twitch — можно зайти и посмотреть как работает база до того как её построить. На сайте nini-rust.com есть калькулятор для подбора базы под твои нужды. Базы недешёвые по ресурсам, но качество соответствует цене.",
+    descEN:"<strong>Vantix</strong> (6 bunkers), <strong>Ward V2</strong> (pixel gaps + floor stack), <strong>The Royal</strong> (MultiTC + compound). One of the most detailed Patreons in the niche — not just bases, full guides with reworks. Tests bases live on Twitch — you can watch how a base performs before you build it. nini-rust.com has a base selector calculator. Builds aren't cheap on resources, but quality matches the cost.",
+    links:[{t:"Website",u:"https://nini-rust.com"},{t:"Discord",u:"https://discord.com/invite/fhDmyx5v9w"},{t:"Patreon",u:"https://patreon.com/NiniRust"},{t:"Twitch",u:"https://twitch.tv/ninirust"},{t:"YouTube",u:"https://youtube.com/@NiniRust"},{t:"TikTok",u:"https://tiktok.com/@ninirust"}],
+    formats:["solo","trio","clan"], lang:"en" },
+
+  { name:"Darvel", handle:"@darvels · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["YouTube"],
+    rows:[{label:"Форматы",val:"Solo — Quad",c:""},{label:"Особенности",val:"Бункеры, интересные решения",c:"good"},{label:"Минусы",val:"Завышенный raid cost, нет кодов",c:"warn"}],
+    desc:"Строит Solo-Quad. Есть бункеры, удивляющие решения, интересные базы. Хорошие пики, неплохие крыши. <strong>Минусы:</strong> нет Patreon, нет Discord, приватные базы не делает, кодов не оставляет. Есть ощущение что завышает raid cost в своих видео. В целом — крепкий середняк.",
+    descEN:"Builds Solo–Quad. Has bunkers, surprising solutions, interesting designs. Good shoots, decent roofs. <strong>Downsides:</strong> no Patreon, no Discord, no private bases, no codes left. Seems to exaggerate raid cost in videos. Overall — a solid mid-tier.",
+    links:[{t:"YouTube",u:"https://youtube.com/@darvels"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"GrinchTheBuilder", handle:"@GrinchTheBuilder · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["Discord","Кастомные базы"],
+    rows:[{label:"Форматы",val:"Solo — Zerg",c:""},{label:"Цена кастома",val:"$15–20",c:"good"},{label:"Стоимость постройки",val:"Очень высокая",c:"bad"}],
+    desc:"В основном строит таверки — дорогие по ресурсам, такие подойдут либо очень большим группам вплоть до кланов, либо для средних групп которые играют на 2x-3x серверах. По некоторым базам есть неприятные минусы: например отсутствие пиков в китайку или ужасные неиграбельные крыши. Из плюсов — очень хорошие пики, и мобильность по базе. P.S. мне нравятся твои постройки, не слезай с тяжёлых веществ.",
+    descEN:"Mostly builds large expensive bases — suited for very large groups up to clans, or medium groups on 2x–3x servers. Some bases have notable downsides: no shoots into the china wall, unplayable roofs. Upsides — very good shoot positions and good mobility inside the base. P.S. love the builds, stay on whatever you're on.",
+    links:[{t:"YouTube",u:"https://youtube.com/@GrinchTheBuilder"}],
+    formats:["solo","medium","clan"], lang:"en" },
+
+  { name:"S4", handle:"@S4Rust · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["Patreon","Discord","Кастомные базы"],
+    rows:[{label:"Форматы",val:"Solo — Medium Group",c:""},{label:"Patreon",val:"patreon.com/S4Rust",c:"good"},{label:"Стоимость постройки",val:"Соответствует числу игроков",c:""}],
+    desc:"Строит как 'все' — серая масса, максимально неинтересные базы. Классных фишек не имеет. Работает в связке с Kredbic — у них общий Discord сервер. Делает кастомные базы и приватки на Patreon'е. Если хочешь что-то стандартное без выкрутасов — норм вариант, но ничего выдающегося.",
+    descEN:"Builds like everyone else — generic, nothing interesting. No standout mechanics. Partners with Kredbic, shared Discord server. Makes custom bases and private content on Patreon. If you want something safe and standard — it works, but nothing special.",
+    links:[{t:"Discord",u:"https://discord.gg/DZRVsUcYSE"},{t:"Patreon",u:"https://patreon.com/S4Rust"},{t:"YouTube",u:"https://youtube.com/@S4Rust"}],
+    formats:["solo","medium"], lang:"en" },
+
+  { name:"LeftyyP", handle:"@LeftyyP · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["Patreon","Discord"],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Patreon",val:"Есть · доступные базы",c:"good"}],
+    desc:"Свежий контент, много актуальных баз. Строит доступные лёгкие базы для соло-трио, без p2w фишек — подойдёт новичкам у которых ещё нет доната. <strong>Однако есть сомнительные базы</strong> (например пирамида, в которой невозможно дефаться). В общем есть хорошие работы, но есть и те что можно построить по приколу.",
+    descEN:"Fresh content, lots of current builds. Makes accessible lightweight bases for solo-trio, no p2w required — great for newer players. <strong>But some bases are questionable</strong> (e.g. a pyramid you literally can't defend). Overall good works mixed with some meme builds.",
+    links:[{t:"Discord",u:"https://discord.com/invite/THfp7TxEHJ"},{t:"YouTube",u:"https://youtube.com/@LeftyyP"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"HiddenJoint / Good Joint", handle:"@HiddenJoint · EN / @GoodJoint · RU", rating:"★★★☆☆", ratingValue:3,
+    tags:["Patreon","Boosty"],
+    rows:[{label:"Форматы",val:"Solo — Quad",c:""},{label:"Частота",val:"1–2 приват базы/мес",c:"good"}],
+    desc:"Хорош для соло-игроков — базы простые, понятные, без переусложнения. Инновации есть, но часто нежизнеспособные в реальном PvP. Ведёт два канала: HiddenJoint для EN, Good Joint для RU — контент одинаковый, просто языковой дубляж.",
+    descEN:"Good for solo players — bases are clean, understandable, not overcomplicated. Innovations exist but often aren't viable in real PvP. Runs two channels: HiddenJoint for EN, Good Joint for RU — same content, just translated.",
+    links:[{t:"Patreon (EN)",u:"https://www.patreon.com/c/GoodJoint"},{t:"Boosty (RU)",u:"https://boosty.to/goodjoint"},{t:"YouTube (EN)",u:"https://youtube.com/@HiddenJoint"},{t:"YouTube (RU)",u:"https://youtube.com/@GoodJoint"}],
+    formats:["solo","trio"], lang:"both" },
+
+  { name:"Krub", handle:"@KrubRust · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["Discord"],
+    rows:[{label:"Форматы",val:"Solo — Medium Group",c:""},{label:"Discord",val:"Обучающие посты",c:"good"},{label:"Стоимость постройки",val:"Ресурсы можно вложить интереснее",c:"warn"}],
+    desc:"Базы по механике неплохие, но стоимость постройки (в ресурсах) не совсем оправдана. По личному мнению, ресурсы потраченные на базу можно было вложить более интересно. В Discord канале есть полезные обучающие посты по билдингу — плюс. Связан с Pandabuilds.",
+    descEN:"Bases are mechanically decent, but the resource cost isn't fully justified. Personally feel those resources could be spent more cleverly. Discord has useful building educational posts — a plus. Connected to Pandabuilds.",
+    links:[{t:"Discord",u:"https://discord.com/invite/buildingbulletin"},{t:"YouTube",u:"https://youtube.com/@KrubRust"}],
+    formats:["solo","medium"], lang:"en" },
+
+  { name:"Pandabuilds", handle:"@PandaBuildsRust · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["Discord","Кастомные базы"],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Оплата",val:"PayPal / Rust Skins (+15%)",c:"warn"}],
+    desc:"Связан с Krub — они упоминают друг друга, а базы Pandabuilds выложены на канале Krub. Видимо работают в команде. Делает кастомные базы под заказ через Discord. Принимает PayPal и Rust Skins с наценкой 15% — необычный вариант оплаты.",
+    descEN:"Connected to Krub — they reference each other, Pandabuilds' bases appear on Krub's channel. Likely a team. Takes custom base orders via Discord. Accepts PayPal and Rust Skins with a 15% markup — unusual payment option.",
+    links:[{t:"Discord",u:"https://discord.com/invite/XQSztD5JHk"},{t:"YouTube",u:"https://youtube.com/@PandaBuildsRust"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"MrSkeem", handle:"@MrSkeem · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["Patreon","Discord"],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Частота",val:"Редко",c:"warn"}],
+    desc:"Изменённая классика с удивляющими решениями. Есть базы с золотой серединой — не слишком дорого по ресурсам, не слишком просто. Выпускает редко, но качество стабильное.",
+    descEN:"Modified classics with surprising solutions. Some bases hit a sweet spot — not too resource-heavy, not too simple. Uploads rarely, but quality is consistent.",
+    links:[{t:"Patreon",u:"https://patreon.com/MrSkeem"},{t:"Discord",u:"https://discord.gg/YnS8zHJvkh"},{t:"YouTube",u:"https://youtube.com/@MrSkeem"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Mellarrkk / Rust Tricks / Rust Concepts", handle:"YouTube · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:[],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Стоимость постройки",val:"20–30 ракет",c:"good"},{label:"Patreon",val:"Нет",c:"bad"}],
+    desc:"Простые базы для новичков, ничего нового. Ведёт три канала под разными именами: Mellarrkk, Rust Tricks и Rust Concepts. Зачем три — загадка.",
+    descEN:"Simple beginner bases, nothing new. Runs three channels under different names: Mellarrkk, Rust Tricks and Rust Concepts. Why three — a mystery.",
+    links:[{t:"Mellarrkk",u:"https://youtube.com/@Mellarrkk"},{t:"Rust Tricks",u:"https://youtube.com/@RustTricks"},{t:"Rust Concepts",u:"https://youtube.com/@RustConcepts"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Kredbic", handle:"@KredbicRust · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["Discord","Кастомные базы"],
+    rows:[{label:"Форматы",val:"Solo — Duo",c:""},{label:"Цена кастома",val:"$50–100 · Tutorial $30",c:"good"}],
+    desc:"Очень понятно объясняет процесс — для новичков это золото. Базы простые, без глупых решений. Делает кастомные базы: Solo/Duo/Trio $50, Small Group $70, Large Group $100. Tutorial отдельно $30. Работает в связке с S4.",
+    descEN:"Explains the process very clearly — gold for beginners. Bases are simple, no dumb decisions. Custom bases: Solo/Duo/Trio $50, Small Group $70, Large Group $100. Tutorial separately $30. Partners with S4.",
+    links:[{t:"Discord",u:"https://discord.com/invite/CdV63mypkx"},{t:"YouTube",u:"https://youtube.com/@KredbicRust"}],
+    formats:["solo"], lang:"en" },
+
+  { name:"slvtv", handle:"@slvtvRust", rating:"★★★☆☆", ratingValue:3,
+    tags:["Discord","YouTube Sponsors"],
+    rows:[{label:"Форматы",val:"Solo — Duo",c:""},{label:"Patreon",val:"Нет данных",c:"warn"}],
+    desc:"С простыми базами справляется хорошо. Средний уровень без сюрпризов в обе стороны. Видео на YouTube сначала выходят для спонсоров.",
+    descEN:"Handles simple bases well. Average level, no surprises either way. YouTube videos go to sponsors first.",
+    links:[{t:"Discord",u:"https://discord.gg/9txTRYCVtQ"},{t:"YouTube",u:"https://youtube.com/@slvtvRust"}],
+    formats:["solo"], lang:"en" },
+
+  { name:"Zypic", handle:"@ZypicRust · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:[],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Последняя база",val:"The Cobalt (2 мес.)",c:""}],
+    desc:"Дешёвые по ресурсам базы без p2w — подходит тем у кого нет времени фармить. Есть интересные решения, но чего-то не хватает до следующего уровня.",
+    descEN:"Resource-cheap bases without p2w — good for players who can't farm much. Some interesting decisions, but something's missing to reach the next level.",
+    links:[{t:"YouTube",u:"https://youtube.com/@ZypicRust"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Relbuild", handle:"@relbuild · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:[],
+    rows:[{label:"Форматы",val:"Solo — Small Groups",c:""},{label:"Сильные стороны",val:"Хорошие пики",c:"good"}],
+    desc:"Строит неплохие базы с хорошими пиками — это его главная фишка. Но ему чего-то не хватает, нужно расти. Есть базы которые лично вообще не понравились — некоторые решения вызывают вопросы.",
+    descEN:"Makes decent bases with good shoot positions — his main strength. But something's missing, he needs to grow. Some bases personally didn't click at all — certain decisions raise questions.",
+    links:[{t:"YouTube",u:"https://youtube.com/@relbuild"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"RustLogic", handle:"YouTube · EN", rating:"★★½☆☆", ratingValue:2.5,
+    tags:[],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Особенности",val:"Есть бункеры",c:"good"},{label:"Проблема",val:"Нет тура и кодов баз",c:"bad"}],
+    desc:"Простые базы для новичков, есть бункеры. Активен на rustbaselab.com. Главная проблема — не вставляет тур и не оставляет коды, поэтому оценить качество быстро невозможно. Оценка неуверенная — 2.5.",
+    descEN:"Simple beginner bases, has bunkers. Active on rustbaselab.com. Main issue — no tour and no codes, so it's impossible to evaluate quality quickly. Uncertain rating — 2.5.",
+    links:[{t:"YouTube",u:"https://youtube.com/@RustLogic"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Willjum", handle:"@Willjum · EN", rating:"★★☆☆☆", ratingValue:2,
+    tags:["YouTube","Patreon","Discord"],
+    rows:[{label:"Форматы",val:"Solo — Duo",c:""},{label:"Patreon",val:"Есть, но без баз",c:"warn"},{label:"Особенность",val:"Киношный формат, не гайдовый строитель",c:"warn"}],
+    desc:"Известный ютубер, но он не гайдовый строитель — у него кинематографичные соло-выживания, а не туториалы. В его видео преимущественно небольшие solo/duo базы которые не отличаются сложностью механик. Patreon есть, но приватных баз там нет.",
+    descEN:"Well-known YouTuber, but not a guide-format builder — he makes cinematic solo survival content, not tutorials. His bases are predominantly small solo/duo builds without complex mechanics. Has a Patreon, but no private bases there.",
+    links:[{t:"Patreon",u:"https://www.patreon.com/willjum"},{t:"Discord",u:"https://discord.com/invite/WILLJUM"},{t:"YouTube",u:"https://youtube.com/@willjum"}],
+    formats:["solo"], lang:"en" },
+
+  { name:"pagdawg", handle:"@pagdawg · EN", rating:"★★☆☆☆", ratingValue:2,
+    tags:["YouTube"],
+    rows:[{label:"Форматы",val:"Solo — Duo",c:""},{label:"Стоимость постройки",val:"Очень дешёвые",c:"good"},{label:"Качество",val:"Странные решения",c:"bad"}],
+    desc:"Выкладывает два одинаковых видео про один и тот же дом. В описании оставляет коды под сервер 'Builders Sanctuary', хотя по факту это коды под сервер 'Rusticated'. Пики не очень хорошие, крыши отстойные, решения порой очень странные.",
+    descEN:"Posts two identical videos about the same base. Lists codes for 'Builders Sanctuary' in the description but they actually work on 'Rusticated'. Shoots aren't great, roofs are bad, decisions are sometimes very strange.",
+    links:[{t:"YouTube",u:"https://youtube.com/@pagdawg"}],
+    formats:["solo"], lang:"en" },
+
+  { name:"IndominusRust", handle:"@IndominusRust · EN · 🇬🇧 UK", rating:"★★☆☆☆", ratingValue:2,
+    tags:["Patreon","Discord"],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Качество",val:"Не оправдывает ожиданий",c:"bad"}],
+    desc:"Patreon есть, позиционирует стиль как уникальный UK-дизайн. По факту базы очень плохие — не рекомендую тратить время или деньги.",
+    descEN:"Has a Patreon, markets himself as a unique UK design style. In reality the bases are very poor — not worth your time or money.",
+    links:[{t:"Patreon",u:"https://www.patreon.com/IndominusRust"},{t:"Discord",u:"https://discord.com/invite/jgMr6YXPqC"},{t:"YouTube",u:"https://youtube.com/@IndominusRust"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Ласти Раст", handle:"@ласти_раст · RU", rating:"★★☆☆☆", ratingValue:2,
+    tags:["Telegram"],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Особенность",val:"Сливает базы Good Joint",c:"bad"}],
+    desc:"Нет понимания ванильного билдинга. Скорее игрок с модовых серверов — это видно в подходе к механикам. В Telegram канале сливает платные базы Good Joint с Boosty. Пиратский контент — не поддерживаем такое.",
+    descEN:"No understanding of vanilla building. More of a modded server player — visible in the approach to mechanics. Telegram channel leaks paid Good Joint bases from Boosty. Pirated content — we don't support this.",
+    links:[{t:"Telegram",u:"https://t.me/lastycfg"},{t:"YouTube",u:"https://youtube.com/@ласти_раст"}],
+    formats:["solo","trio"], lang:"ru" },
+
+  { name:"zYn", handle:"@zYnRust · EN", rating:"★☆☆☆☆", ratingValue:1,
+    tags:["Website"],
+    rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Качество",val:"Ошибки в постройках",c:"bad"}],
+    desc:"Строит базы без p2w фишек, максимально простые — для супер новичков. <strong>Проблема:</strong> даже не билдер увидит ошибки — может забыть перевернуть стенку правильной стороной. Это базовый уровень, который должен быть на автомате. Есть свой сайт zynvids.com где продаёт базы — как у Faded, но качество совсем другое.",
+    descEN:"Builds bases without p2w, maximally simple — for absolute beginners. <strong>Problem:</strong> even a non-builder would spot the errors — like forgetting to flip a wall the right way. This is basics that should be automatic. Has own site zynvids.com selling bases — like Faded, but very different quality level.",
+    links:[{t:"zynvids.com",u:"https://zynvids.com"},{t:"YouTube",u:"https://youtube.com/@zYnRust"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Stelic", handle:"@stelicRUST · EN · ~43K подписчиков", rating:"★☆☆☆☆", ratingValue:1,
+    tags:[],
+    rows:[{label:"Фокус",val:"PvP + tips + базы",c:"bad"}],
+    desc:"Однотипные solo–duo базы. Пики делает ужасно — это не его сильная сторона. 43K подписчиков на общем Rust-контенте, не на качестве строительства.",
+    descEN:"Cookie-cutter solo–duo bases. Shoots are terrible — that's not his strength. 43K subscribers from general Rust content, not building quality.",
+    links:[{t:"YouTube",u:"https://youtube.com/@stelicRUST"}],
+    formats:["solo"], lang:"en" },
+
+  { name:"RustyYT", handle:"YouTube · EN", rating:"★☆☆☆☆", ratingValue:1,
+    tags:["TikTok","Instagram"],
+    rows:[{label:"Patreon",val:"Нет",c:"bad"}],
+    desc:"Базы уровня игрока с 10 часами в Rust. Активен в TikTok и Instagram, но качество не соответствует даже базовым стандартам.",
+    descEN:"Bases at the level of someone with 10 hours in Rust. Active on TikTok and Instagram, but quality doesn't meet even basic standards.",
+    links:[{t:"YouTube",u:"https://youtube.com/@Rusty_Youtube"}],
+    formats:["solo"], lang:"en" },
+
+  { name:"Opy4k", handle:"@Opy4k · EN", rating:"⏳", ratingValue:0,
+    tags:["Discord"],
+    rows:[{label:"Статус",val:"Тёмная лошадка",c:"warn"},{label:"Активность",val:"Долгий перерыв, недавно вернулся",c:"warn"}],
+    desc:"Не выкладывал видео несколько лет, недавно выложил одну базу — она очень понравилась. Оценивать только по одной базе нельзя. В описании видео ссылается на Discord Krub (buildingbulletin). Пока на рассмотрении. Возможно, тёмная лошадка.",
+    descEN:"Went dark for years, recently posted one base — it was impressive. Can't judge from one build. Video description links to Krub's Discord (buildingbulletin). On watch for now. Could be a dark horse.",
+    links:[{t:"Discord",u:"https://discord.com/invite/rSh97aJUVd"},{t:"YouTube",u:"https://youtube.com/@Opy4k"}],
+    formats:["solo","trio"], lang:"en", pending:true },
+
+  { name:"Builder", handle:"@BuilderRust · EN", rating:"⏳", ratingValue:0,
+    tags:["YouTube"],
+    rows:[{label:"Patreon",val:"Неизвестно",c:"warn"},{label:"Проблема",val:"Нет тура, нет кодов",c:"bad"}],
+    desc:"Строит базы очевидно для новичков. Не даёт конечного результата в быстром формате (тура или кодов). В комментариях мнения рознятся. Пока без оценки.",
+    descEN:"Clearly builds for beginners. Doesn't provide quick evaluation format (no tour, no codes). Comment section is divided. No rating for now.",
+    links:[{t:"YouTube",u:"https://youtube.com/@BuilderRust"}],
+    formats:["solo","trio"], lang:"en", pending:true }
+];
+
+// STATE
+let currentLang = 'ru';
+let currentFormat = 'all';
+let currentLangFilter = 'all';
+let currentSort = 'rating';
+let searchQuery = '';
+
+const formatChips = document.querySelectorAll('#formatFilters .chip');
+const langChips = document.querySelectorAll('#langFilters .chip');
+const sortChips = document.querySelectorAll('#sortFilters .chip');
+const searchInput = document.getElementById('searchInput');
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  
+  const ruIds = ['h-title-ru', 'hm-updated-ru', 'hm-active-ru', 'disclaimer-ru', 'custom-title-ru', 'lbl-search-ru', 'lbl-format-ru', 'lbl-lang-ru', 'lbl-sort-ru', 'paid-legend-ru', 'footer-note-ru'];
+  const enIds = ['h-title-en', 'hm-updated-en', 'hm-active-en', 'disclaimer-en', 'custom-title-en', 'lbl-search-en', 'lbl-format-en', 'lbl-lang-en', 'lbl-sort-en', 'paid-legend-en', 'footer-note-en'];
+  
+  ruIds.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = lang === 'ru' ? '' : 'none'; });
+  enIds.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = lang === 'en' ? '' : 'none'; });
+  
+  const ruNote = document.getElementById('update-note-ru');
+  const enNote = document.getElementById('update-note-en');
+  if (ruNote) ruNote.style.display = lang === 'ru' ? '' : 'none';
+  if (enNote) enNote.style.display = lang === 'en' ? '' : 'none';
+  
+  document.querySelectorAll('.chip').forEach(c => { if (c.dataset[lang]) c.textContent = c.dataset[lang]; });
+  document.querySelectorAll('.custom-desc[data-ru]').forEach(el => { el.textContent = el.dataset[lang]; });
+  
+  document.title = lang === 'ru' ? 'Rust Builders — Полный гид 2026' : 'Rust Builders — Full Guide 2026';
+  applyFilters();
+}
+
+function applyFilters() {
+  searchQuery = searchInput.value.toLowerCase().trim();
+  
+  let filtered = builders.filter(b => {
+    if (!matchesFormat(b, currentFormat)) return false;
+    if (currentLangFilter !== 'all') {
+      if (currentLangFilter === 'en' && b.lang !== 'en' && b.lang !== 'both') return false;
+      if (currentLangFilter === 'ru' && b.lang !== 'ru' && b.lang !== 'both') return false;
     }
-  ];
-
-  builders.sort((a, b) => b.ratingValue - a.ratingValue);
-
-  function renderCards(formatFilter = "all", langFilter = "all") {
-    const container = document.getElementById("cardsContainer");
-    if (!container) return;
-    
-    const filtered = builders.filter(b => {
-      if (formatFilter !== "all" && !b.formats.includes(formatFilter)) return false;
-      if (langFilter !== "all") {
-        if (langFilter === "en" && b.lang !== "en" && b.lang !== "both") return false;
-        if (langFilter === "ru" && b.lang !== "ru" && b.lang !== "both") return false;
-      }
-      return true;
+    if (searchQuery && !b.name.toLowerCase().includes(searchQuery)) return false;
+    return true;
+  });
+  
+  if (currentSort === 'rating') {
+    filtered.sort((a, b) => b.ratingValue - a.ratingValue);
+  } else if (currentSort === 'name') {
+    filtered.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (currentSort === 'paid') {
+    filtered.sort((a, b) => {
+      const aPaid = hasPaid(a.tags) ? 1 : 0;
+      const bPaid = hasPaid(b.tags) ? 1 : 0;
+      if (bPaid !== aPaid) return bPaid - aPaid;
+      return b.ratingValue - a.ratingValue;
     });
+  }
+  
+  render(filtered);
+}
+
+function tagClass(tag) {
+  if (tag.includes('Patreon')) return 'tag tag-patreon';
+  if (tag.includes('Boosty')) return 'tag tag-boosty';
+  if (tag.includes('Shop') || tag.includes('fadedbuilds')) return 'tag tag-shop';
+  if (tag.includes('Discord')) return 'tag tag-discord';
+  if (tag.includes('Кастом') || tag.includes('Custom') || tag.includes('Заказы')) return 'tag tag-custom';
+  if (tag.includes('TikTok')) return 'tag tag-tiktok';
+  if (tag.includes('Twitch')) return 'tag tag-twitch';
+  if (tag.includes('YouTube') || tag.includes('Sponsors')) return 'tag tag-youtube';
+  if (tag.includes('Website')) return 'tag tag-website';
+  if (tag.includes('Telegram')) return 'tag tag-telegram';
+  if (tag.includes('Instagram')) return 'tag tag-instagram';
+  return 'tag';
+}
+
+function groupLabel(v) {
+  if (v >= 5) return { stars: '★★★★★', label: currentLang === 'ru' ? 'Лучший' : 'Best' };
+  if (v >= 4.5) return { stars: '★★★★½', label: currentLang === 'ru' ? 'Топ-уровень' : 'Top tier' };
+  if (v >= 4) return { stars: '★★★★☆', label: currentLang === 'ru' ? 'Хорошие' : 'Good' };
+  if (v >= 3.5) return { stars: '★★★½', label: currentLang === 'ru' ? 'Выше среднего' : 'Above average' };
+  if (v >= 3) return { stars: '★★★☆☆', label: currentLang === 'ru' ? 'Средне-хорошие' : 'Decent' };
+  if (v >= 2.5) return { stars: '★★½☆☆', label: currentLang === 'ru' ? 'Ниже среднего' : 'Below average' };
+  if (v >= 2) return { stars: '★★☆☆☆', label: currentLang === 'ru' ? 'Слабые' : 'Weak' };
+  if (v >= 1) return { stars: '★☆☆☆☆', label: currentLang === 'ru' ? 'Провал' : 'Poor' };
+  return { stars: '⌛', label: currentLang === 'ru' ? 'На рассмотрении' : 'Under review' };
+}
+
+function render(list) {
+  const container = document.getElementById('cardsContainer');
+  if (!list.length) {
+    container.innerHTML = `<div class="empty">${currentLang === 'ru' ? 'Никого не найдено' : 'No results found'}</div>`;
+    return;
+  }
+  
+  const useGroups = (currentSort === 'rating');
+  let html = '';
+  let currentGroup = null;
+  
+  list.forEach(b => {
+    const gl = groupLabel(b.ratingValue);
+    const groupKey = gl.label;
     
-    if (filtered.length === 0) {
-      container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--muted);">Нет билдеров под выбранные фильтры</div>';
-      return;
+    if (useGroups && groupKey !== currentGroup) {
+      if (currentGroup !== null) html += '</div>';
+      currentGroup = groupKey;
+      html += `<div class="section-header"><div class="section-stars">${gl.stars}</div><div class="section-label">${gl.label}</div><div class="section-line"></div></div><div class="grid">`;
+    } else if (!useGroups && currentGroup === null) {
+      currentGroup = 'open';
+      html += '<div class="grid">';
     }
     
-    let currentRatingGroup = null;
-    let html = '';
+    const paid = hasPaid(b.tags);
+    const desc = (currentLang === 'en' && b.descEN) ? b.descEN : b.desc;
+    const ratingNum = b.ratingValue >= 1 ? `${b.ratingValue % 1 === 0 ? b.ratingValue + '.0' : b.ratingValue} / 5` : '';
     
-    filtered.forEach(builder => {
-      let groupLabel = "";
-      let groupStars = "";
-      if (builder.ratingValue >= 5) { groupLabel = "Лучший"; groupStars = "★★★★★"; }
-      else if (builder.ratingValue >= 4.5) { groupLabel = "Топ-уровень"; groupStars = "★★★★½"; }
-      else if (builder.ratingValue >= 4) { groupLabel = "Хорошие"; groupStars = "★★★★☆"; }
-      else if (builder.ratingValue >= 3.5) { groupLabel = "Выше среднего"; groupStars = "★★★½"; }
-      else if (builder.ratingValue >= 3) { groupLabel = "Средне-хорошие"; groupStars = "★★★☆☆"; }
-      else if (builder.ratingValue >= 2) { groupLabel = "Слабые"; groupStars = "★★☆☆☆"; }
-      else if (builder.ratingValue >= 1) { groupLabel = "Провал"; groupStars = "★☆☆☆☆"; }
-      else { groupLabel = "На рассмотрении"; groupStars = "⌛"; }
-      
-      if (currentRatingGroup !== groupLabel) {
-        if (currentRatingGroup !== null) html += '</div>';
-        currentRatingGroup = groupLabel;
-        html += `
-          <div class="section-header">
-            <div class="section-stars">${groupStars}</div>
-            <div class="section-label">${groupLabel}</div>
-            <div class="section-line"></div>
+    const rowsHtml = (b.rows || []).map(r => {
+      const labelTrans = (currentLang === 'en' && rowLabelMap.en[r.label]) ? rowLabelMap.en[r.label] : r.label;
+      return `<div class="row"><span class="row-label">${labelTrans}</span><span class="row-val ${r.c}">${r.val}</span></div>`;
+    }).join('');
+    
+    const linksHtml = b.links.length ? `<div class="links">${b.links.map(l => `<a href="${l.u}" target="_blank" class="link">${l.t} ↗</a>`).join('')}</div>` : '';
+    
+    html += `
+      <div class="card ${b.ratingValue >= 5 ? 'top' : ''} ${b.pending ? 'pending-review' : ''}">
+        ${paid ? '<div class="paid-dot" title="' + (currentLang === 'ru' ? 'Есть платный контент' : 'Paid content available') + '"></div>' : ''}
+        <div class="card-head">
+          <div>
+            <div class="card-name">${b.name}${b.isYours ? ` <span class="badge-creator">${currentLang === 'ru' ? 'автор гида' : 'guide author'}</span>` : ''}</div>
+            <div class="card-handle">${b.handle}</div>
           </div>
-          <div class="grid">
-        `;
-      }
-      
-      const ratingDisplay = builder.ratingValue >= 1 ? builder.rating : "⏳ ?";
-      const pendingClass = builder.pending ? "pending-review" : "";
-      const topClass = builder.ratingValue >= 5 ? "top" : "";
-      
-      let tagsHtml = '';
-      builder.tags.forEach(tag => {
-        let tagClass = 'tag';
-        if (tag.includes('Patreon')) tagClass = 'tag tag-patreon';
-        else if (tag.includes('Boosty')) tagClass = 'tag tag-boosty';
-        else if (tag.includes('Shop') || tag.includes('fadedbuilds')) tagClass = 'tag tag-shop';
-        else if (tag.includes('Discord')) tagClass = 'tag tag-discord';
-        else if (tag.includes('Кастом')) tagClass = 'tag tag-custom';
-        else if (tag.includes('TikTok')) tagClass = 'tag tag-tiktok';
-        else if (tag.includes('Twitch')) tagClass = 'tag tag-twitch';
-        else if (tag.includes('YouTube') || tag.includes('Sponsors')) tagClass = 'tag tag-youtube';
-        else if (tag.includes('Website')) tagClass = 'tag tag-website';
-        else if (tag.includes('Telegram')) tagClass = 'tag tag-telegram';
-        else if (tag.includes('Instagram')) tagClass = 'tag tag-instagram';
-        else tagClass = 'tag';
-        tagsHtml += `<span class="${tagClass}">${tag}</span>`;
-      });
-      
-      let rowsHtml = '';
-      builder.rows.forEach(row => {
-        rowsHtml += `
-          <div class="row">
-            <span class="row-label">${row.label}</span>
-            <span class="row-val ${row.class}">${row.val}</span>
-          </div>
-        `;
-      });
-      
-      let linksHtml = '';
-      if (builder.links.length > 0) {
-        linksHtml = '<div class="links">';
-        builder.links.forEach(link => {
-          linksHtml += `<a href="${link.url}" target="_blank" class="link">${link.text} ↗</a>`;
-        });
-        linksHtml += '</div>';
-      }
-      
-      html += `
-        <div class="card ${pendingClass} ${topClass}" data-formats="${builder.formats.join(' ')}" data-lang="${builder.lang}">
-          <div class="card-head">
-            <div class="card-name-wrap">
-              <div class="card-name">${builder.name} ${builder.name === "Limi Lab" ? '<span class="badge-creator">автор гида</span>' : ''}</div>
-              <div class="card-handle">${builder.handle}</div>
-            </div>
-            <div class="card-rating">${ratingDisplay}</div>
-          </div>
-          <div class="tags">${tagsHtml}</div>
-          <div class="divider"></div>
-          <div class="rows">${rowsHtml}</div>
-          ${linksHtml}
-          <div class="card-desc">${builder.desc}</div>
+          <div class="card-rating">${b.ratingValue >= 1 ? b.rating : '⏳'}<span class="card-rating-num">${ratingNum}</span></div>
         </div>
-      `;
-    });
-    
-    if (currentRatingGroup !== null) html += '</div>';
-    container.innerHTML = html;
-  }
+        <div class="tags">${(b.tags || []).map(t => `<span class="${tagClass(t)}">${t}</span>`).join('')}</div>
+        <div class="divider"></div>
+        <div>${rowsHtml}</div>
+        ${linksHtml}
+        <div class="card-desc">${desc}</div>
+      </div>`;
+  });
   
-  function setupFilters() {
-    const formatChips = document.querySelectorAll("#formatFilters .filter-chip");
-    const langChips = document.querySelectorAll("#langFilters .filter-chip");
-    let currentFormat = "all";
-    let currentLang = "all";
-    
-    formatChips.forEach(chip => {
-      chip.addEventListener("click", () => {
-        formatChips.forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        currentFormat = chip.getAttribute("data-format");
-        renderCards(currentFormat, currentLang);
-      });
-    });
-    
-    langChips.forEach(chip => {
-      chip.addEventListener("click", () => {
-        langChips.forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        currentLang = chip.getAttribute("data-lang");
-        renderCards(currentFormat, currentLang);
-      });
-    });
-  }
-  
-  renderCards("all", "all");
-  setupFilters();
+  if (currentGroup !== null) html += '</div>';
+  container.innerHTML = html;
+}
+
+document.getElementById('btn-ru').addEventListener('click', () => setLang('ru'));
+document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
+
+formatChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    formatChips.forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentFormat = chip.dataset.format;
+    applyFilters();
+  });
+});
+
+langChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    langChips.forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentLangFilter = chip.dataset.lang;
+    applyFilters();
+  });
+});
+
+sortChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    sortChips.forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentSort = chip.dataset.sort;
+    applyFilters();
+  });
+});
+
+searchInput.addEventListener('input', applyFilters);
+
+applyFilters();
 </script>
 </body>
 </html>
