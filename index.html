@@ -37,7 +37,7 @@
 
   .custom-section { background: linear-gradient(135deg, #1a1200 0%, #0d0d0d 60%); border: 1px solid #3a2a00; border-left: 3px solid var(--accent); border-radius: 12px; padding: 28px 32px; margin-bottom: 40px; }
   .custom-title { font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
-  .custom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .custom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
   .custom-card { background: rgba(200,169,110,0.05); border: 1px solid rgba(200,169,110,0.15); border-radius: 8px; padding: 14px 16px; }
   .custom-name { font-weight: 700; color: var(--accent2); font-size: 14px; margin-bottom: 6px; }
   .custom-desc { font-size: 12px; color: var(--muted2); line-height: 1.5; }
@@ -159,6 +159,8 @@
       <div class="custom-card"><div class="custom-name">Limi Lab</div><div class="custom-desc" data-ru="Заказ через Discord — база под твои нужды. Patreon: $7+" data-en="Order via Discord — base tailored to your needs. Patreon: $7+">Заказ через Discord — база под твои нужды. Patreon: $7+</div></div>
       <div class="custom-card"><div class="custom-name">Akame</div><div class="custom-desc" data-ru="ТОЛЬКО кастомные базы под заказ. Boosty: boosty.to/akamexebet" data-en="CUSTOM ORDERS ONLY. Boosty: boosty.to/akamexebet">ТОЛЬКО кастомные базы под заказ. Boosty: boosty.to/akamexebet</div></div>
       <div class="custom-card"><div class="custom-name">Erebus</div><div class="custom-desc" data-ru="Кастом через Discord: Budget $50, Standard $100, Ultimate $250" data-en="Custom via Discord: Budget $50, Standard $100, Ultimate $250">Кастом через Discord: Budget $50, Standard $100, Ultimate $250</div></div>
+      <div class="custom-card"><div class="custom-name">2devilzz</div><div class="custom-desc" data-ru="Кастом через Discord: Medium $60+, Large $100+. Оплата: крипта / скины (+10%)" data-en="Custom via Discord: Medium $60+, Large $100+. Payment: crypto / skins (+10%)">Кастом через Discord: Medium $60+, Large $100+. Оплата: крипта / скины (+10%)</div></div>
+      <div class="custom-card"><div class="custom-name">Luca.</div><div class="custom-desc" data-ru="Кастом через Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65" data-en="Custom via Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65">Кастом через Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65</div></div>
       <div class="custom-card"><div class="custom-name">Kredbic & S4</div><div class="custom-desc" data-ru="Кастом через общий Discord. Kredbic: $50–100, S4: уточнять" data-en="Custom via shared Discord. Kredbic: $50–100, S4: inquire">Кастом через общий Discord. Kredbic: $50–100, S4: уточнять</div></div>
       <div class="custom-card"><div class="custom-name">Pandabuilds</div><div class="custom-desc" data-ru="Кастом через Discord. PayPal / Rust Skins (+15%)" data-en="Custom via Discord. PayPal / Rust Skins (+15%)">Кастом через Discord. PayPal / Rust Skins (+15%)</div></div>
       <div class="custom-card"><div class="custom-name">GrinchTheBuilder</div><div class="custom-desc" data-ru="Кастом через Discord: @chort228. Цена $15–20" data-en="Custom via Discord: @chort228. Price $15–20">Кастом через Discord: @chort228. Цена $15–20</div></div>
@@ -203,14 +205,14 @@
 
   <div class="update-note" id="update-note-ru">
     <span>// обновление от марта 2026</span><br>
-    • Добавлены Brader Fik (4.5★), BuckyBuilds (4★), Build Lab (4★)<br>
-    • Opy4k добавлен как тёмная лошадка<br>
+    • Добавлены: Void (2.5★), Rat In The Dark (4★), Memosh (2★), 2devilzz (3.5★), Luca. (3★)<br>
+    • Santess добавлен на рассмотрение<br>
     • Гид будет обновляться. Если считаешь что кого-то не хватает — пиши в Discord: <strong>gamunkul8515</strong>
   </div>
   <div class="update-note" id="update-note-en" style="display:none">
     <span>// update March 2026</span><br>
-    • Added Brader Fik (4.5★), BuckyBuilds (4★), Build Lab (4★)<br>
-    • Opy4k added as dark horse<br>
+    • Added: Void (2.5★), Rat In The Dark (4★), Memosh (2★), 2devilzz (3.5★), Luca. (3★)<br>
+    • Santess added under review<br>
     • Guide will be updated. If you think someone is missing — write in Discord: <strong>gamunkul8515</strong>
   </div>
 
@@ -321,6 +323,14 @@ const builders = [
     links:[{t:"Discord",u:"https://discord.com/invite/NSGg8ykrx9"},{t:"TikTok",u:"https://tiktok.com/@erebusbuilds"},{t:"YouTube",u:"https://youtube.com/@ErebusRust"}],
     formats:["solo","trio","clan"], lang:"en" },
 
+  { name:"Rat In The Dark", handle:"@RatInTheDark · KO", rating:"★★★★☆", ratingValue:4,
+    tags:["YouTube"],
+    rows:[{label:"Форматы",val:"Solo — Clan",c:""},{label:"Особенности",val:"Крутые бункеры, уникальные фишки",c:"good"},{label:"Минусы",val:"Редко выпускает, крыши слабые",c:"warn"}],
+    desc:"Корейский билдер. Язык — корейский, без переводчика сложно. Показал фишки о которых не знал даже я — это дорогого стоит. Есть хорошие бункеры и интересные решения. Крыши, как и у многих, отстойные. Баз мало, выпускает редко. Если готов разбираться с корейским — можно найти жемчужины.",
+    descEN:"Korean builder. Language — Korean, tough without a translator. Showed tricks even I didn't know — that says a lot. Has good bunkers and interesting solutions. Roofs, like so many others, are a weak point. Few bases, rarely uploads. If you're willing to deal with Korean — there are gems to find.",
+    links:[{t:"YouTube",u:"https://youtube.com/@RatInTheDark"}],
+    formats:["solo","trio","clan"], lang:"ko" },
+
   { name:"Crow", handle:"@CrowBuilds · EN · с 2021 · 13M просмотров", rating:"★★★★☆", ratingValue:4,
     tags:["Patreon","TikTok","Discord"],
     rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Patreon",val:"от $5/мес · приват базы",c:"good"},{label:"Публичные базы",val:"Мало актуальных",c:"warn"}],
@@ -328,6 +338,14 @@ const builders = [
     descEN:"Iconic bases: <strong>Humbug, Cyclone, Jupiter, Chimera, Synchro, Zion</strong>. Humbug is still being copied by thousands of players — true Rust legacy. Patreon strategy is intentional: if a base is on YouTube, everyone knows how to raid it. YouTube sponsor videos mirror Patreon content. A skilled builder with deep game knowledge.",
     links:[{t:"Discord",u:"https://discord.com/invite/m8WNpc6hqD"},{t:"Patreon",u:"https://www.patreon.com/c/CrowBuilds"},{t:"YouTube",u:"https://youtube.com/@CrowBuilds"},{t:"TikTok",u:"https://tiktok.com/@crowbuilds"}],
     formats:["solo","trio"], lang:"en" },
+
+  { name:"2devilzz", handle:"@2devilzzRust · EN", rating:"★★★½☆", ratingValue:3.5,
+    tags:["Discord","Кастомные базы"],
+    rows:[{label:"Форматы",val:"Small Group — Zerg",c:""},{label:"Цена кастома",val:"Medium $60+, Large $100+",c:"good"},{label:"Особенности",val:"Очень большие базы, отличные пики",c:"good"},{label:"Минусы",val:"Мобильность страдает",c:"warn"}],
+    desc:"Строит в основном очень большие базы для групп людей — для соло-дуо ничего не найдёте. Кастом через Discord: Medium Group $60+, Large Group $100+. Оплата криптой или скинами (+10%). Постройки качественные, отличные пики, но уникального стиля или суперфишек нет. Мобильность страдает из-за размера.",
+    descEN:"Builds primarily very large bases for groups — nothing for solo/duo. Custom via Discord: Medium Group $60+, Large Group $100+. Payment via crypto or skins (+10%). Quality builds, excellent peaks, but no unique style or standout mechanics. Mobility suffers due to size.",
+    links:[{t:"Discord",u:"https://discord.gg/cdSEfVHYEp"},{t:"YouTube",u:"https://youtube.com/@2devilzzRust"}],
+    formats:["medium","clan"], lang:"en" },
 
   { name:"Faded", handle:"@FadedRust · EN · 🇱🇹 Литва", rating:"★★★½☆", ratingValue:3.5,
     tags:["Shop","TikTok"],
@@ -393,6 +411,14 @@ const builders = [
     links:[{t:"Website",u:"https://nini-rust.com"},{t:"Discord",u:"https://discord.com/invite/fhDmyx5v9w"},{t:"Patreon",u:"https://patreon.com/NiniRust"},{t:"Twitch",u:"https://twitch.tv/ninirust"},{t:"YouTube",u:"https://youtube.com/@NiniRust"},{t:"TikTok",u:"https://tiktok.com/@ninirust"}],
     formats:["solo","trio","clan"], lang:"en" },
 
+  { name:"Luca.", handle:"@Luca.Builds · EN", rating:"★★★☆☆", ratingValue:3,
+    tags:["Discord","Кастомные базы"],
+    rows:[{label:"Форматы",val:"Solo — Large Group",c:""},{label:"Цена кастома",val:"$30–65",c:"good"},{label:"Особенности",val:"Пещерные базы, хорошие пики",c:"good"},{label:"Минусы",val:"Мало отстрелов, мобильность плохая",c:"warn"}],
+    desc:"Билдер показывает как застраивать пещеру — далеко не каждый делает гайды по пещерным базам. Актуальных видео мало. Есть бункеры. Пики хорошие, но отстрелов мало и мобильность плохая. Крыши неплохие. Кастом через Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65.",
+    descEN:"Shows how to build cave bases — not many builders do cave tutorials. Few recent videos. Has bunkers. Peaks are good, but limited shooting positions and poor mobility. Roofs are decent. Custom via Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65.",
+    links:[{t:"Discord",u:"https://discord.com/invite/aY8StUeJXP"},{t:"YouTube",u:"https://youtube.com/@Luca.Builds"}],
+    formats:["solo","trio","medium"], lang:"en" },
+
   { name:"Darvel", handle:"@darvels · EN", rating:"★★★☆☆", ratingValue:3,
     tags:[],
     rows:[{label:"Форматы",val:"Solo — Quad",c:""},{label:"Особенности",val:"Бункеры, интересные решения",c:"good"},{label:"Минусы",val:"Завышенный raid cost, нет кодов",c:"warn"}],
@@ -447,6 +473,22 @@ const builders = [
     desc:"Связан с Krub — они упоминают друг друга, а базы Pandabuilds выложены на канале Krub. Видимо работают в команде. Делает кастомные базы под заказ через Discord. Принимает PayPal и Rust Skins с наценкой 15% — необычный вариант оплаты.",
     descEN:"Connected to Krub — they reference each other, Pandabuilds' bases appear on Krub's channel. Likely a team. Takes custom base orders via Discord. Accepts PayPal and Rust Skins with a 15% markup — unusual payment option.",
     links:[{t:"Discord",u:"https://discord.com/invite/XQSztD5JHk"},{t:"YouTube",u:"https://youtube.com/@PandaBuildsRust"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Void", handle:"@void-build · EN", rating:"★★½☆☆", ratingValue:2.5,
+    tags:[],
+    rows:[{label:"Форматы",val:"Solo — Quad",c:""},{label:"Особенности",val:"Хорошие пики, мобильность, есть бункеры",c:"good"},{label:"Минусы",val:"Ошибки (решётки вместо заборов), крыши слабые",c:"bad"}],
+    desc:"Новый строитель, первое видео вышло пару месяцев назад. Хорошие пики, хорошая мобильность, есть бункеры. Есть ошибки — например ставит решётки вместо сетчатых заборов. Крыши отстойные. Базы классические, ничем не примечательные. Solo-Quad. Стоимость постройки низкая-средняя.",
+    descEN:"New builder, first video a couple months ago. Good peaks, good mobility, has bunkers. Has mistakes — e.g., uses grates instead of chainlink fences. Roofs are poor. Classic bases, nothing special. Solo-Quad. Build cost low-medium.",
+    links:[{t:"YouTube",u:"https://youtube.com/@void-build"}],
+    formats:["solo","trio"], lang:"en" },
+
+  { name:"Memosh", handle:"@Memossh · EN", rating:"★★☆☆☆", ratingValue:2,
+    tags:["Discord"],
+    rows:[{label:"Форматы",val:"Solo — Small Group",c:""},{label:"Особенности",val:"Есть бункеры, интересные и странные базы",c:"warn"},{label:"Минусы",val:"Пики плохие",c:"bad"}],
+    desc:"Есть бункеры. Встречаются как интересные, так и странные базы. Пики плохие, крыши обычные. Стоимость постройки низкая-средняя. Discord есть, патреона нет, ничего не продаёт.",
+    descEN:"Has bunkers. Some interesting builds, some weird ones. Peaks are poor, roofs average. Build cost low-medium. Has Discord, no Patreon, nothing for sale.",
+    links:[{t:"Discord",u:"https://discord.com/invite/RsQDTqn9Qm"},{t:"YouTube",u:"https://youtube.com/@Memossh"}],
     formats:["solo","trio"], lang:"en" },
 
   { name:"MrSkeem", handle:"@MrSkeem · EN", rating:"★★★☆☆", ratingValue:3,
@@ -560,6 +602,14 @@ const builders = [
     descEN:"Bases at the level of someone with 10 hours in Rust. Active on TikTok and Instagram, but quality doesn't meet even basic standards.",
     links:[{t:"YouTube",u:"https://youtube.com/@Rusty_Youtube"}],
     formats:["solo"], lang:"en" },
+
+  { name:"Santess", handle:"@SantessRust · EN", rating:"⏳", ratingValue:0,
+    tags:[],
+    rows:[{label:"Статус",val:"На рассмотрении",c:"warn"},{label:"Активность",val:"Мало видео, редкие выпуски",c:"warn"}],
+    desc:"Видео выпускает не часто, их у него мало. Нужно время для нормальной оценки. Пока на рассмотрении.",
+    descEN:"Doesn't upload often, few videos. Needs more time for proper evaluation. On watch for now.",
+    links:[{t:"YouTube",u:"https://youtube.com/@SantessRust"}],
+    formats:["solo","trio"], lang:"en", pending:true },
 
   { name:"Opy4k", handle:"@Opy4k · EN", rating:"⏳", ratingValue:0,
     tags:["Discord"],
@@ -706,8 +756,6 @@ function render(list) {
         if (r.val === "Да — через Discord") valTrans = "Yes — via Discord";
         else if (r.val === "от $5/мес · приват базы") valTrans = "from $5/mo · private bases";
         else if (r.val === "Мало актуальных") valTrans = "Few recent";
-        else if (r.val === "Выше среднего") valTrans = "Above average";
-        else if (r.val === "Недешёвые") valTrans = "Expensive";
         else if (r.val === "Обучающие посты") valTrans = "Educational posts";
         else if (r.val === "Нет данных") valTrans = "No data";
         else if (r.val === "Нет") valTrans = "No";
@@ -744,6 +792,18 @@ function render(list) {
         else if (r.val === "20–30 ракет") valTrans = "20–30 rockets";
         else if (r.val === "Private bases + reworks") valTrans = "Private bases + reworks";
         else if (r.val === "Affordable snowball bases") valTrans = "Affordable snowball bases";
+        else if (r.val === "Крутые бункеры, уникальные фишки") valTrans = "Cool bunkers, unique tricks";
+        else if (r.val === "Редко выпускает, крыши слабые") valTrans = "Rare uploads, weak roofs";
+        else if (r.val === "Очень большие базы, отличные пики") valTrans = "Very large bases, excellent peaks";
+        else if (r.val === "Мобильность страдает") valTrans = "Mobility suffers";
+        else if (r.val === "Пещерные базы, хорошие пики") valTrans = "Cave bases, good peaks";
+        else if (r.val === "Мало отстрелов, мобильность плохая") valTrans = "Few shooting positions, poor mobility";
+        else if (r.val === "Хорошие пики, мобильность, есть бункеры") valTrans = "Good peaks, mobility, has bunkers";
+        else if (r.val === "Ошибки (решётки вместо заборов), крыши слабые") valTrans = "Mistakes (grates instead of chainlink), weak roofs";
+        else if (r.val === "Есть бункеры, интересные и странные базы") valTrans = "Has bunkers, interesting and weird bases";
+        else if (r.val === "Пики плохие") valTrans = "Peaks are poor";
+        else if (r.val === "На рассмотрении") valTrans = "Under review";
+        else if (r.val === "Мало видео, редкие выпуски") valTrans = "Few videos, rare uploads";
       }
       return `<div class="row"><span class="row-label">${labelTrans}</span><span class="row-val ${r.c}">${valTrans}</span></div>`;
     }).join('');
