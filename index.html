@@ -64,8 +64,8 @@
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 16px; margin-bottom: 8px; }
 
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; transition: border-color 0.2s, transform 0.15s; position: relative; overflow: hidden; }
-  .card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  .card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
   .card.top { border-color: #3a2800; }
   .card.top::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,169,110,0.04) 0%, transparent 60%); pointer-events: none; }
   .card.pending-review { border-style: dashed; }
@@ -99,31 +99,41 @@
   .row-val.warn { color: var(--amber-text); }
   .row-val.bad { color: var(--red-text); }
 
-  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
-  .link { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent); text-decoration: none; transition: color 0.2s; }
-  .link:hover { color: var(--accent2); text-decoration: underline; }
+  /* ЦВЕТНЫЕ КНОПКИ ССЫЛОК */
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .link { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: var(--bg); background: var(--accent); padding: 8px 12px; border-radius: 6px; text-decoration: none; transition: all 0.2s; text-transform: uppercase; display: inline-flex; align-items: center; justify-content: center; }
+  .link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(200,169,110,0.25); color: var(--bg); }
+  .link-yt { background: #cc0000; color: #fff; } .link-yt:hover { background: #ff0000; box-shadow: 0 4px 12px rgba(204,0,0,0.3); color: #fff; }
+  .link-dc { background: #5865F2; color: #fff; } .link-dc:hover { background: #7289DA; box-shadow: 0 4px 12px rgba(88,101,242,0.3); color: #fff; }
+  .link-pt { background: #FF424D; color: #fff; } .link-pt:hover { background: #ff6b74; box-shadow: 0 4px 12px rgba(255,66,77,0.3); color: #fff; }
+  .link-tt { background: #25F4EE; color: #000; } .link-tt:hover { background: #00f2fe; box-shadow: 0 4px 12px rgba(0,242,254,0.3); color: #000; }
+  .link-tw { background: #9146FF; color: #fff; } .link-tw:hover { background: #a970ff; box-shadow: 0 4px 12px rgba(145,70,255,0.3); color: #fff; }
+  .link-bs { background: #f15f2c; color: #fff; } .link-bs:hover { background: #ff7b4d; box-shadow: 0 4px 12px rgba(241,95,44,0.3); color: #fff; }
+  .link-web { background: var(--surface2); color: var(--accent2); border: 1px solid var(--border); } .link-web:hover { border-color: var(--accent); background: var(--bg); color: var(--accent); }
 
-  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); flex-grow: 1; }
   .card-desc strong { color: var(--muted2); font-weight: 600; }
 
-  .badge-creator { display: inline-block; background: #2a1a0a; color: var(--accent2); border: 1px solid #5a3a1a; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; vertical-align: middle; }
+  .badge-creator { display: inline-block; background: #2a1a0a; color: var(--accent2); border: 1px solid #5a3a1a; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; vertical-align: middle; margin-left: 6px; }
 
   .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 13px; }
 
   .update-note { background: rgba(200,169,110,0.08); border-left: 2px solid var(--accent); padding: 14px 20px; margin-top: 28px; font-size: 12px; color: var(--muted2); font-family: 'Space Mono', monospace; }
 
-  .footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--border); font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; letter-spacing: 0.05em; }
+  .footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--border); font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; letter-spacing: 0.05em; padding-bottom: 24px; }
 
   .paid-legend { display: flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); }
   .paid-legend-dot { width: 8px; height: 8px; border-radius: 50%; background: #e0a030; flex-shrink: 0; }
 
   @media (max-width: 680px) {
-    .page { padding: 32px 16px 80px; }
+    .page { padding: 24px 16px 60px; }
     .grid { grid-template-columns: 1fr; }
     .custom-grid { grid-template-columns: 1fr; }
     .card-name { font-size: 16px; }
     .control-row { flex-direction: column; align-items: flex-start; }
     .lang-bar { margin-bottom: 20px; }
+    .links { gap: 6px; }
+    .link { width: calc(50% - 3px); flex-grow: 1; }
   }
 </style>
 </head>
@@ -170,7 +180,7 @@
   <div class="controls">
     <div class="control-row">
       <span class="control-label" id="lbl-search-ru">ПОИСК</span><span class="control-label" id="lbl-search-en" style="display:none">SEARCH</span>
-      <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="searchInput" placeholder="Limi Lab, Erebus..."></div>
+      <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="searchInput" placeholder="Поиск по имени, фишкам или тегам..."></div>
       <div class="paid-legend"><div class="paid-legend-dot"></div><span id="paid-legend-ru">есть платный контент</span><span id="paid-legend-en" style="display:none">paid content available</span></div>
     </div>
     <div class="control-row">
@@ -204,15 +214,17 @@
   <div id="cardsContainer"></div>
 
   <div class="update-note" id="update-note-ru">
-    <span>// обновление от марта 2026</span><br>
+    <span>// обновление от апреля 2026</span><br>
     • Добавлены: Void (2.5★), Rat In The Dark (4★), Memosh (2★), 2devilzz (3.5★), Luca. (3★)<br>
     • Santess добавлен на рассмотрение<br>
+    • Улучшен поиск (теперь ищет по фишкам и описанию)<br>
     • Гид будет обновляться. Если считаешь что кого-то не хватает — пиши в Discord: <strong>gamunkul8515</strong>
   </div>
   <div class="update-note" id="update-note-en" style="display:none">
-    <span>// update March 2026</span><br>
+    <span>// update April 2026</span><br>
     • Added: Void (2.5★), Rat In The Dark (4★), Memosh (2★), 2devilzz (3.5★), Luca. (3★)<br>
     • Santess added under review<br>
+    • Smart search improved<br>
     • Guide will be updated. If you think someone is missing — write in Discord: <strong>gamunkul8515</strong>
   </div>
 
@@ -331,12 +343,12 @@ const builders = [
     links:[{t:"YouTube",u:"https://youtube.com/@RatInTheDark"}],
     formats:["solo","trio","clan"], lang:"ko" },
 
-  { name:"Crow", handle:"@CrowBuilds · EN · с 2021 · 13M просмотров", rating:"★★★★☆", ratingValue:4,
+  { name:"Crow", handle:"@CrowRust · EN · с 2021 · 13M просмотров", rating:"★★★★☆", ratingValue:4,
     tags:["Patreon","TikTok","Discord"],
     rows:[{label:"Форматы",val:"Solo — Trio",c:""},{label:"Patreon",val:"от $5/мес · приват базы",c:"good"},{label:"Публичные базы",val:"Мало актуальных",c:"warn"}],
     desc:"Культовые базы: <strong>Humbug, Cyclone, Jupiter, Chimera, Synchro, Zion</strong>. Humbug до сих пор копируют тысячи игроков — это уже legacy в мире Rust. Стратегия Patreon осознанная: если база на YouTube, все знают как её рейдить. Видео для спонсоров на YouTube дублируют Patreon-контент. Грамотный билдер с глубоким пониманием игры.",
     descEN:"Iconic bases: <strong>Humbug, Cyclone, Jupiter, Chimera, Synchro, Zion</strong>. Humbug is still being copied by thousands of players — true Rust legacy. Patreon strategy is intentional: if a base is on YouTube, everyone knows how to raid it. YouTube sponsor videos mirror Patreon content. A skilled builder with deep game knowledge.",
-    links:[{t:"Discord",u:"https://discord.com/invite/m8WNpc6hqD"},{t:"Patreon",u:"https://www.patreon.com/c/CrowBuilds"},{t:"YouTube",u:"https://youtube.com/@CrowBuilds"},{t:"TikTok",u:"https://tiktok.com/@crowbuilds"}],
+    links:[{t:"Discord",u:"https://discord.com/invite/m8WNpc6hqD"},{t:"Patreon",u:"https://www.patreon.com/c/CrowBuilds"},{t:"YouTube",u:"https://youtube.com/@CrowRust"},{t:"TikTok",u:"https://tiktok.com/@crowbuilds"}],
     formats:["solo","trio"], lang:"en" },
 
   { name:"2devilzz", handle:"@2devilzzRust · EN", rating:"★★★½☆", ratingValue:3.5,
@@ -462,7 +474,7 @@ const builders = [
   { name:"Krub", handle:"@KrubRust · EN", rating:"★★★☆☆", ratingValue:3,
     tags:["Discord"],
     rows:[{label:"Форматы",val:"Solo — Medium Group",c:""},{label:"Discord",val:"Обучающие посты",c:"good"}],
-    desc:"Базы по механике неплохие, но стоимость постройки (в ресурсах) не совсем оправдана. По личному мнению, ресурсы потраченные на базу можно было вложить более интересно. В Discord канале есть полезные обучающие посты по билдингу — плюс. Связан с Pandabuilds.",
+    desc:"Базы по механике неплохие, но стоимость постройки (в ресурсах) не совсем оправдана. По личному мнению, ресурсы потраченные на базу можноблю вложить более интересно. В Discord канале есть полезные обучающие посты по билдингу — плюс. Связан с Pandabuilds.",
     descEN:"Bases are mechanically decent, but the resource cost isn't fully justified. Personally feel those resources could be spent more cleverly. Discord has useful building educational posts — a plus. Connected to Pandabuilds.",
     links:[{t:"Discord",u:"https://discord.com/invite/buildingbulletin"},{t:"YouTube",u:"https://youtube.com/@KrubRust"}],
     formats:["solo","medium"], lang:"en" },
@@ -628,6 +640,18 @@ const builders = [
     formats:["solo","trio"], lang:"en", pending:true }
 ];
 
+// Функция для определения цвета кнопки платформы
+function getLinkClass(title) {
+  const t = title.toLowerCase();
+  if (t.includes('youtube')) return 'link-yt';
+  if (t.includes('discord')) return 'link-dc';
+  if (t.includes('patreon')) return 'link-pt';
+  if (t.includes('tiktok')) return 'link-tt';
+  if (t.includes('twitch')) return 'link-tw';
+  if (t.includes('boosty')) return 'link-bs';
+  return 'link-web';
+}
+
 // STATE
 let currentLang = 'ru';
 let currentFormat = 'all';
@@ -672,7 +696,16 @@ function applyFilters() {
       if (currentLangFilter === 'en' && b.lang !== 'en' && b.lang !== 'both') return false;
       if (currentLangFilter === 'ru' && b.lang !== 'ru' && b.lang !== 'both') return false;
     }
-    if (searchQuery && !b.name.toLowerCase().includes(searchQuery)) return false;
+    
+    if (searchQuery) {
+      const q = searchQuery;
+      const matchName = b.name.toLowerCase().includes(q);
+      const matchTags = (b.tags || []).some(t => t.toLowerCase().includes(q));
+      const matchDesc = (b.desc && b.desc.toLowerCase().includes(q)) || (b.descEN && b.descEN.toLowerCase().includes(q));
+      const matchRows = (b.rows || []).some(r => r.val.toLowerCase().includes(q) || r.label.toLowerCase().includes(q));
+      
+      if (!matchName && !matchTags && !matchDesc && !matchRows) return false;
+    }
     return true;
   });
   
@@ -700,7 +733,6 @@ function tagClass(tag) {
   if (tag.includes('Кастом') || tag.includes('Custom') || tag.includes('Заказы')) return 'tag tag-custom';
   if (tag.includes('TikTok')) return 'tag tag-tiktok';
   if (tag.includes('Twitch')) return 'tag tag-twitch';
-  if (tag.includes('YouTube') || tag.includes('Sponsors')) return 'tag tag-youtube';
   if (tag.includes('Website')) return 'tag tag-website';
   if (tag.includes('Telegram')) return 'tag tag-telegram';
   if (tag.includes('Instagram')) return 'tag tag-instagram';
@@ -747,10 +779,8 @@ function render(list) {
     const desc = (currentLang === 'en' && b.descEN) ? b.descEN : b.desc;
     const ratingNum = b.ratingValue >= 1 ? `${b.ratingValue % 1 === 0 ? b.ratingValue + '.0' : b.ratingValue} / 5` : '';
     
-    // Translate row labels and values if needed
     const rowsHtml = (b.rows || []).map(r => {
       const labelTrans = (currentLang === 'en' && rowLabels.en[r.label]) ? rowLabels.en[r.label] : r.label;
-      // Values that need translation
       let valTrans = r.val;
       if (currentLang === 'en') {
         if (r.val === "Да — через Discord") valTrans = "Yes — via Discord";
@@ -808,7 +838,7 @@ function render(list) {
       return `<div class="row"><span class="row-label">${labelTrans}</span><span class="row-val ${r.c}">${valTrans}</span></div>`;
     }).join('');
     
-    const linksHtml = b.links.length ? `<div class="links">${b.links.map(l => `<a href="${l.u}" target="_blank" class="link">${l.t} ↗</a>`).join('')}</div>` : '';
+    const linksHtml = b.links.length ? `<div class="links">${b.links.map(l => `<a href="${l.u}" target="_blank" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>` : '';
     
     html += `
       <div class="card ${b.ratingValue >= 5 ? 'top' : ''} ${b.pending ? 'pending-review' : ''}">
@@ -823,8 +853,8 @@ function render(list) {
         <div class="tags">${(b.tags || []).map(t => `<span class="${tagClass(t)}">${t}</span>`).join('')}</div>
         <div class="divider"></div>
         <div>${rowsHtml}</div>
-        ${linksHtml}
         <div class="card-desc">${desc}</div>
+        ${linksHtml}
       </div>`;
   });
   
