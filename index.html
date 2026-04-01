@@ -69,7 +69,6 @@
   .card.top::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,169,110,0.04) 0%, transparent 60%); pointer-events: none; }
   .card.pending-review { border-style: dashed; }
   
-  /* Стили для фаворитов (Выбор редакции) */
   .card.favorite { border-color: rgba(200,169,110,0.6); box-shadow: 0 0 20px rgba(200,169,110,0.1); }
   .card.favorite:hover { border-color: var(--accent); box-shadow: 0 8px 30px rgba(200,169,110,0.25); }
 
@@ -299,7 +298,6 @@ const rowLabels = {
 };
 
 // --- МАССИВ ДАННЫХ ЮТУБЕРОВ ---
-// Добавлено: upkeep (1=дешево, 2=средне, 3=дорого), valRU и valEN для идеального перевода фишек.
 const builders = [
   { name:"Limi Lab", handle:"@LimiLab · EN · с 2023", rating:"★★★★★", ratingValue:5, upkeep: 3, favorite: true,
     tags:["Patreon","Кастомные базы","Discord","TikTok"],
@@ -785,7 +783,6 @@ function render(list) {
     
     const linksHtml = b.links.length ? `<div class="links">${b.links.map(l => `<a href="${l.u}" target="_blank" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>` : '';
     
-    // Аватарка генерируется из имени (первые буквы)
     const encodedName = encodeURIComponent(b.name.split(' ')[0]);
     const avatarUrl = `https://ui-avatars.com/api/?name=${encodedName}&background=2a2a2a&color=e8e4db&bold=true`;
     
@@ -821,7 +818,6 @@ function render(list) {
   container.innerHTML = html;
 }
 
-// Функционал кнопки Наверх
 const scrollTopBtn = document.getElementById("scrollTopBtn");
 window.addEventListener('scroll', () => {
   if (window.scrollY > 400) {
