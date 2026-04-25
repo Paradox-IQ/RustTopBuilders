@@ -214,6 +214,56 @@
 
   /* --- Compact hero meta on small heights --- */
   .header h1{margin-bottom:14px}
+
+  /* --- Compare feature --- */
+  .cmp-btn{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:rgba(200,169,110,.06);color:var(--muted);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:'Space Mono',monospace;z-index:2}
+  .cmp-btn:hover{color:var(--accent2);border-color:var(--accent);background:rgba(200,169,110,.12)}
+  .cmp-btn.active{background:var(--accent);color:#0d0d0d;border-color:var(--accent);font-weight:700}
+  .cmp-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .card.cmp-selected{box-shadow:0 0 0 2px var(--accent), 0 0 24px rgba(200,169,110,.18);transform:translateY(-2px)}
+  .card .paid-dot{right:48px}
+  .card.favorite .paid-dot{right:48px}
+
+  .cmp-bar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--surface);border:1px solid var(--accent);border-radius:14px;padding:12px 16px;display:none;align-items:center;gap:12px;flex-wrap:wrap;max-width:calc(100vw - 32px);z-index:100;box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 0 1px rgba(200,169,110,.2);font-family:'Space Mono',monospace;font-size:12px}
+  .cmp-bar.show{display:flex}
+  .cmp-bar-label{color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11px}
+  .cmp-chip{background:rgba(200,169,110,.1);border:1px solid var(--border);border-radius:14px;padding:5px 10px 5px 12px;color:var(--text);font-size:12px;display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:700}
+  .cmp-chip-x{cursor:pointer;color:var(--muted);font-weight:700;font-size:14px;line-height:1;border:none;background:none;padding:0}
+  .cmp-chip-x:hover{color:#e85a4f}
+  .cmp-go,.cmp-clear{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
+  .cmp-go{background:var(--accent);color:#0d0d0d;border-color:var(--accent);font-weight:700}
+  .cmp-go:hover{filter:brightness(1.08)}
+  .cmp-go:disabled{opacity:.5;cursor:not-allowed}
+  .cmp-clear:hover{color:var(--text);border-color:var(--accent)}
+
+  .cmp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:200;display:none;overflow-y:auto;padding:40px 20px}
+  .cmp-overlay.show{display:block}
+  .cmp-modal{max-width:1280px;margin:0 auto;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:32px}
+  .cmp-modal-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .cmp-modal-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.5px;margin:0}
+  .cmp-modal-eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+  .cmp-close{background:none;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:18px;line-height:1;font-family:'Space Mono',monospace}
+  .cmp-close:hover{color:var(--text);border-color:var(--accent)}
+  .cmp-cols{display:grid;gap:18px}
+  .cmp-cols.c2{grid-template-columns:repeat(2,1fr)}
+  .cmp-cols.c3{grid-template-columns:repeat(3,1fr)}
+  .cmp-col{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+  .cmp-col-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin-bottom:2px;letter-spacing:-.3px}
+  .cmp-col-handle{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px}
+  .cmp-col-rating{font-size:14px;color:var(--accent);margin-bottom:12px;letter-spacing:1px}
+  .cmp-col-rating .num{font-family:'Space Mono',monospace;color:var(--muted);font-size:11px;margin-left:8px;letter-spacing:0}
+  .cmp-row{padding:8px 0;border-top:1px dashed var(--border);font-size:12px;line-height:1.5}
+  .cmp-row:first-child{border-top:none}
+  .cmp-row-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  .cmp-row-val{color:var(--text)}
+  .cmp-row-val.good{color:var(--accent2)}
+  .cmp-row-val.warn{color:#d8a070}
+  .cmp-row-val.bad{color:#e85a4f}
+  .cmp-empty{color:var(--muted);font-style:italic}
+  .cmp-tags{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}
+  .cmp-desc{margin-top:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--muted2);line-height:1.55}
+  .cmp-links{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+  @media(max-width:760px){.cmp-cols.c2,.cmp-cols.c3{grid-template-columns:1fr}.cmp-modal{padding:20px}}
 </style>
 </head>
 <body>
@@ -392,6 +442,26 @@
   </div>
 </div>
 <button id="scrollTopBtn" type="button" title="Наверх" aria-label="Наверх страницы / Scroll to top">↑</button>
+
+<div class="cmp-bar" id="cmpBar" role="region" aria-label="Сравнение билдеров">
+  <span class="cmp-bar-label" id="cmpLabel">сравнить</span>
+  <div class="cmp-chips" id="cmpChips"></div>
+  <button class="cmp-go" id="cmpGo" type="button" data-ru="Сравнить →" data-en="Compare →">Сравнить →</button>
+  <button class="cmp-clear" id="cmpClear" type="button" data-ru="Сбросить" data-en="Clear">Сбросить</button>
+</div>
+
+<div class="cmp-overlay" id="cmpOverlay" role="dialog" aria-modal="true" aria-labelledby="cmpModalTitle">
+  <div class="cmp-modal">
+    <div class="cmp-modal-head">
+      <div>
+        <div class="cmp-modal-eyebrow" data-ru="// сравнение" data-en="// comparison">// сравнение</div>
+        <h2 class="cmp-modal-title" id="cmpModalTitle"></h2>
+      </div>
+      <button class="cmp-close" id="cmpClose" type="button" aria-label="Закрыть / Close">×</button>
+    </div>
+    <div class="cmp-cols" id="cmpCols"></div>
+  </div>
+</div>
 
 <script>
 // MINIFIED DATA ENGINE
@@ -664,6 +734,7 @@ function setLang(l){
   document.querySelectorAll('summary span[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   document.querySelectorAll('.custom-table thead th[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   renderCustoms();
+  if(typeof refreshCmpBar==='function') refreshCmpBar();
   document.title=l==='ru'?'Rust Builders — Полный гид 2026':'Rust Builders — Full Guide 2026';
   searchInput.placeholder=l==='ru'?'Поиск...':'Search...';
   searchInput.setAttribute('aria-label',l==='ru'?'Поиск по билдерам':'Search builders');
@@ -810,7 +881,9 @@ function render(list){
     let avAlt=`${b.name}${currentLang==='ru'?' — аватар':' avatar'}`;
     let nameH=hl(esc(b.name)), handleH=hl(esc(b.handle)), descH=hl(desc);
     
-    html+=`<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''}">
+    let cmpOn=cmpSet.has(b.name);
+    html+=`<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''} ${cmpOn?'cmp-selected':''}">
+      <button class="cmp-btn ${cmpOn?'active':''}" data-cmp="${esc(b.name)}" type="button" aria-pressed="${cmpOn}" title="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}" aria-label="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}">${cmpOn?'✓':'+'}</button>
       ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
       <div class="card-head"><div class="card-head-left"><div class="card-avatar" style="${avatarStyle(b.name)}" aria-label="${esc(avAlt)}" role="img">${esc(avatarInitials(b.name))}</div><div>
       <div class="card-name">${nameH}${fav}</div><div class="card-handle">${handleH}</div>
@@ -840,6 +913,89 @@ sortChips.forEach(c=>{c.addEventListener('click',()=>{sortChips.forEach(x=>x.cla
 const customSortChips=document.querySelectorAll('.custom-sort .chip');
 customSortChips.forEach(c=>{c.addEventListener('click',()=>{customSortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); customSort=c.dataset.csort; renderCustoms();})});
 searchInput.addEventListener('input',debouncedApplyFilters);
+
+// --- Compare feature ---
+const CMP_MAX=3;
+const cmpSet=new Set();
+const cmpBar=document.getElementById('cmpBar');
+const cmpChipsEl=document.getElementById('cmpChips');
+const cmpLabel=document.getElementById('cmpLabel');
+const cmpGo=document.getElementById('cmpGo');
+const cmpClear=document.getElementById('cmpClear');
+const cmpOverlay=document.getElementById('cmpOverlay');
+const cmpClose=document.getElementById('cmpClose');
+const cmpCols=document.getElementById('cmpCols');
+const cmpModalTitle=document.getElementById('cmpModalTitle');
+
+function refreshCmpBar(){
+  const arr=[...cmpSet];
+  if(!arr.length){cmpBar.classList.remove('show'); return;}
+  cmpBar.classList.add('show');
+  cmpLabel.textContent=currentLang==='ru'?`сравнить (${arr.length}/${CMP_MAX})`:`compare (${arr.length}/${CMP_MAX})`;
+  cmpChipsEl.innerHTML=arr.map(n=>`<span class="cmp-chip">${esc(n)}<button class="cmp-chip-x" data-rm="${esc(n)}" type="button" aria-label="${currentLang==='ru'?'Убрать':'Remove'}">×</button></span>`).join('');
+  cmpGo.disabled=arr.length<2;
+  cmpGo.textContent=currentLang==='ru'?'Сравнить →':'Compare →';
+  cmpClear.textContent=currentLang==='ru'?'Сбросить':'Clear';
+  document.querySelectorAll('.card').forEach(card=>{
+    const btn=card.querySelector('.cmp-btn'); if(!btn) return;
+    const name=btn.dataset.cmp, on=cmpSet.has(name);
+    btn.classList.toggle('active',on); btn.setAttribute('aria-pressed',on); btn.textContent=on?'✓':'+';
+    card.classList.toggle('cmp-selected',on);
+  });
+}
+
+function toggleCmp(name){
+  if(cmpSet.has(name)){cmpSet.delete(name);}
+  else if(cmpSet.size<CMP_MAX){cmpSet.add(name);}
+  else {alert(currentLang==='ru'?`Максимум ${CMP_MAX} билдеров за раз. Убери одного и добавь нового.`:`Up to ${CMP_MAX} at a time. Remove one before adding another.`); return;}
+  refreshCmpBar();
+}
+
+document.getElementById('cardsContainer').addEventListener('click',e=>{
+  const b=e.target.closest('.cmp-btn'); if(!b) return;
+  e.stopPropagation(); toggleCmp(b.dataset.cmp);
+});
+cmpChipsEl.addEventListener('click',e=>{const x=e.target.closest('[data-rm]'); if(x){toggleCmp(x.dataset.rm);}});
+cmpClear.addEventListener('click',()=>{cmpSet.clear(); refreshCmpBar();});
+
+function openCompare(){
+  const arr=[...cmpSet]; if(arr.length<2) return;
+  const items=arr.map(n=>builders.find(b=>b.name===n)).filter(Boolean);
+  cmpModalTitle.textContent=items.map(b=>b.name).join(' vs ');
+  cmpCols.className='cmp-cols c'+items.length;
+  cmpCols.innerHTML=items.map(b=>{
+    const desc=currentLang==='en'?b.descEN:b.desc;
+    const rNum=b.ratingValue>=1?`${b.ratingValue%1===0?b.ratingValue+'.0':b.ratingValue} / 5`:'';
+    const fav=b.favorite?' 👑':'';
+    const upI=getUpkeepIcons(b.upkeep);
+    const tagsH=b.tags.map(t=>`<span class="${tagClass(t)}">${esc(t)}</span>`).join('');
+    const formats=b.formats?b.formats.replace(/,/g,', '):'';
+    const rowsH=b.rows.map(r=>{
+      let lT=currentLang==='en'&&rowLabels.en[r.label]?rowLabels.en[r.label]:r.label;
+      let vT=currentLang==='en'?r.valEN:r.valRU;
+      return `<div class="cmp-row"><div class="cmp-row-label">${esc(lT)}</div><div class="cmp-row-val ${r.c||''}">${vT||'<span class="cmp-empty">—</span>'}</div></div>`;
+    }).join('');
+    const linksH=b.links.length?`<div class="cmp-links">${b.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer" class="link ${getLinkClass(l.t)}">${esc(l.t)}</a>`).join('')}</div>`:'';
+    const upkRow=upI?`<div class="cmp-row"><div class="cmp-row-label">${currentLang==='ru'?'Апкип':'Upkeep'}</div><div class="cmp-row-val">${upI}</div></div>`:'';
+    const fmtRow=formats?`<div class="cmp-row"><div class="cmp-row-label">${currentLang==='ru'?'Форматы':'Group size'}</div><div class="cmp-row-val">${esc(formats)}</div></div>`:'';
+    return `<div class="cmp-col">
+      <div class="cmp-col-name">${esc(b.name)}${fav}</div>
+      <div class="cmp-col-handle">${esc(b.handle)}</div>
+      <div class="cmp-col-rating">${b.rating}<span class="num">${rNum}</span></div>
+      <div class="cmp-tags">${tagsH}</div>
+      ${fmtRow}${upkRow}${rowsH}
+      <div class="cmp-desc">${esc(desc)}</div>
+      ${linksH}
+    </div>`;
+  }).join('');
+  cmpOverlay.classList.add('show'); document.body.style.overflow='hidden';
+}
+function closeCompare(){cmpOverlay.classList.remove('show'); document.body.style.overflow='';}
+cmpGo.addEventListener('click',openCompare);
+cmpClose.addEventListener('click',closeCompare);
+cmpOverlay.addEventListener('click',e=>{if(e.target===cmpOverlay) closeCompare();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cmpOverlay.classList.contains('show')) closeCompare();});
+
 setLang('ru');
 </script>
 </body>
