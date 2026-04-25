@@ -211,6 +211,24 @@
   #archiveContainer .card.tier-low::after,#archiveContainer .card.tier-3::after{background:repeating-linear-gradient(45deg,#3a3025 0 4px,transparent 4px 8px)}
   .archive-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:6px}
 
+  /* --- Legendary bases: a reference grid of well-known base designs --- */
+  .bases-section .info-body{padding:14px 18px 22px}
+  .bases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px}
+  .base-card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;transition:border-color .18s ease,transform .18s ease}
+  .base-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .base-card .base-name{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;letter-spacing:.01em;color:var(--text);line-height:1.15}
+  .base-card .base-author{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:-4px}
+  .base-card .base-author a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}
+  .base-card .base-author a:hover{color:var(--accent-bright)}
+  .base-card .base-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .base-card .base-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;padding:3px 8px;border-radius:3px;background:rgba(200,169,110,.08);color:var(--accent);border:1px solid rgba(200,169,110,.25);text-transform:uppercase}
+  .base-card .base-tag.fmt{background:rgba(255,255,255,.04);color:var(--muted2);border-color:var(--border)}
+  .base-card .base-desc{font-size:13px;color:var(--muted2);line-height:1.5;margin-top:4px}
+  .base-card .base-link{margin-top:auto;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent);align-self:flex-start}
+  .base-card .base-link:hover{color:var(--accent-bright);border-bottom-style:solid}
+  .base-card .base-link.muted{color:var(--muted);border-bottom-color:var(--muted);pointer-events:none}
+  .bases-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+
   /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
      because resizing a pinned bar shifts the content below by ~150px. */
   .controls.sticky-on{}
@@ -404,6 +422,18 @@
       </table>
     </div>
   </div>
+
+  <details class="info-block bases-section" id="bases-section">
+    <summary>
+      <span data-ru="// легендарные базы — справочник" data-en="// legendary bases — reference">// легендарные базы — справочник</span>
+      <span class="archive-count" id="basesCount"></span>
+    </summary>
+    <div class="info-body">
+      <p data-ru="Известные постройки, на которые ссылается всё сообщество. Если хочешь скачать или посмотреть тур — ищи по имени на YouTube канала автора. Этот раздел — справочник, а не тир-лист." data-en="Famous builds the whole community references. To download or watch a tour, search by name on the author's channel. This section is a reference, not a tier list.">Известные постройки, на которые ссылается всё сообщество. Если хочешь скачать или посмотреть тур — ищи по имени на YouTube канала автора. Этот раздел — справочник, а не тир-лист.</p>
+      <div id="basesContainer"></div>
+      <div class="bases-meta" data-ru="// записи отсортированы по узнаваемости. Имя автора кликабельно — переход на его карточку в гайде." data-en="// entries sorted by notoriety. Author name is clickable — jumps to their card.">// записи отсортированы по узнаваемости. Имя автора кликабельно — переход на его карточку в гайде.</div>
+    </div>
+  </details>
 
   <div class="controls sticky-on">
     <div class="control-row">
@@ -985,6 +1015,7 @@ function setLang(l){
   renderStats();
   applyFilters();
   if(typeof renderArchive==='function') renderArchive();
+  if(typeof renderBases==='function') renderBases();
 }
 
 // Custom-base providers: comparison data
@@ -1176,6 +1207,119 @@ function renderArchive(){
   if(countEl) countEl.textContent=list.length?`(${list.length})`:'';
   if(!list.length){cont.innerHTML=`<div class="archive-empty">${currentLang==='ru'?'архив пуст':'archive is empty'}</div>`;return;}
   cont.innerHTML='<div class="grid">'+list.map(b=>cardHTML(b,{archived:true})).join('')+'</div>';
+}
+
+// --- Legendary bases reference list --------------------------------------
+// Order matters — first entries are surfaced first. Each entry:
+//   name, author, format, tags[], descRU, descEN, link (or null for "no canonical url")
+// To add a base: append a row. To attribute to a different builder: change `author`
+// to that builder's exact name (must match raw[][0]) so the click jumps to their card.
+const legendaryBases = [
+  { name:'Humbug',           author:'Crow',         format:'Solo — Trio',       tags:['Multi-TC','Floor stack','Compact bunker'],
+    descRU:'Самая обсуждаемая Patreon-база Crow. Компактный multi-TC бункер на solo/duo/trio с флор-стаком и плотной защитой шкафов.',
+    descEN:'Crow\u2019s most-discussed Patreon base. A compact multi-TC bunker for solo/duo/trio with floor-stack and tight TC protection.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'Cyclone',          author:'Crow',         format:'Medium — Clan',     tags:['Wide gaps','Online def','Rotation'],
+    descRU:'Крупная клановая база с упором на онлайн-деф и ротацию по периметру. Wide gaps + multi-shot peeks.',
+    descEN:'A large clan base focused on online defense and perimeter rotations. Wide gaps with multi-shot peeks.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'Synchro',          author:'Crow',         format:'Solo — Duo',        tags:['Pixel gaps','Bunker','Meta'],
+    descRU:'Мета solo/duo с пиксель-гапами и скрытым бункером — одна из самых тиражируемых баз 2024-2026.',
+    descEN:'A meta solo/duo with pixel gaps and a hidden bunker — one of the most-copied designs of 2024-2026.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'Jupiter',          author:'Crow',         format:'Clan',              tags:['Heavy upkeep','Shield walls','Zerg-ready'],
+    descRU:'Клановая постройка с тяжёлым upkeep и shield wall по периметру — для зерг-форматов 8+.',
+    descEN:'A clan build with heavy upkeep and a perimeter shield wall — for zerg formats of 8+ players.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'Chimera',          author:'Crow',         format:'Trio — Medium',     tags:['Hybrid','Dual-bunker','Modular'],
+    descRU:'Гибрид соло-бункера и клановой коробки. Двойной бункер с возможностью отключаемых шкафов.',
+    descEN:'A hybrid of a solo bunker and a clan box. Dual bunker with toggleable TC rooms.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'FrostLine',        author:'Opy4k',        format:'Trio (advanced 2x2)', tags:['Compact','High skill cap','2x2'],
+    descRU:'Свежая база-визитка возвращения Opy4k — продвинутый 2x2 trio с высоким skill-cap. Не для новичков.',
+    descEN:'The signature base of Opy4k\u2019s return — an advanced 2x2 trio with a high skill cap. Not for beginners.',
+    link:'https://youtube.com/@Opy4k' },
+
+  { name:'Open Concept Bunker', author:null,        format:'Solo — Duo',        tags:['Open core','Bunker','Generic concept'],
+    descRU:'Архетип, а не одна конкретная база — открытая планировка с центральным бункером. Реализаций много (Faded, b00bster, Brader Fik).',
+    descEN:'An archetype rather than a single base — open layout with a central bunker. Many takes (Faded, b00bster, Brader Fik).',
+    link:null },
+
+  { name:'Egg Base',         author:null,           format:'Solo',              tags:['Solo bunker','Snowball','Cheap'],
+    descRU:'Соло-бункер с минимальным апкипом — стартер первого вайп-вечера. Walder, Tarre и десятки других делают свои версии.',
+    descEN:'A solo bunker with minimal upkeep — a starter for the first wipe night. Walder, Tarre and dozens of others have their takes.',
+    link:null },
+
+  { name:'China Wall Honeycomb', author:null,       format:'Any',               tags:['Defensive technique','Honeycomb','Decoy'],
+    descRU:'Не база, а техника — стена-обманка из дешёвых блоков вокруг ключевого ядра. Используется во всём, от Brader Fik до b00bster.',
+    descEN:'Not a base but a technique — a decoy wall of cheap blocks around the key core. Used everywhere from Brader Fik to b00bster.',
+    link:null },
+
+  { name:'Multi-TC Floor Stack', author:null,       format:'Trio — Clan',       tags:['Floor stack','Multi-TC','Anti-raid'],
+    descRU:'Концепт раскладывать TC и кейсы на разных полах — рейдер тратит втрое больше ресурсов. Crow и Nini Rust — главные пропагандисты.',
+    descEN:'The concept of spreading TCs and boxes across multiple floors — raiders waste 3× the resources. Crow and Nini Rust are the main proponents.',
+    link:null },
+
+  { name:'Akame Online Def Box', author:'Akame',    format:'Small Group — Clan', tags:['Online def','Clan layout','Custom only'],
+    descRU:'Архетип Akame — клановая база, спроектированная под защиту во время онлайн-рейда. Только под заказ через Boosty.',
+    descEN:'Akame\u2019s archetype — a clan base designed for defense during online raids. Custom-only via Boosty.',
+    link:'https://boosty.to/akamexebet' },
+
+  { name:'Limi Lab Patreon Pack', author:'Limi Lab', format:'Solo — Clan',      tags:['Subscription','Custom','Premium'],
+    descRU:'Не одна база, а вся подписка Limi Lab — самый цитируемый pack за $7/мес. С персональным onboarding\'ом.',
+    descEN:'Not a single base but Limi Lab\u2019s whole subscription — the most-cited pack at $7/mo. Includes personal onboarding.',
+    link:'https://www.patreon.com/LimiLAB' }
+];
+
+function renderBases(){
+  const cont=document.getElementById('basesContainer'); if(!cont) return;
+  const countEl=document.getElementById('basesCount');
+  if(countEl) countEl.textContent=`(${legendaryBases.length})`;
+  const isRu=currentLang==='ru';
+  cont.innerHTML='<div class="bases-grid">'+legendaryBases.map(b=>{
+    const desc=isRu?b.descRU:b.descEN;
+    const tags=b.tags.map(t=>`<span class="base-tag">${esc(t)}</span>`).join('');
+    const fmt=`<span class="base-tag fmt">${esc(b.format)}</span>`;
+    let authorH;
+    if(b.author){
+      // Make author clickable — jumps to that builder's card via deep-link.
+      const builderExists = builders.some(x=>x.name===b.author);
+      if(builderExists){
+        const slug=builderSlug(b.author);
+        authorH=`<div class="base-author">${isRu?'автор':'author'}: <a href="?b=${encodeURIComponent(b.author)}#b-${esc(slug)}" data-base-author="${esc(b.author)}">${esc(b.author)}</a></div>`;
+      } else {
+        authorH=`<div class="base-author">${isRu?'автор':'author'}: ${esc(b.author)}</div>`;
+      }
+    } else {
+      authorH=`<div class="base-author">${isRu?'архетип / общий концепт':'archetype / generic concept'}</div>`;
+    }
+    const linkH=b.link
+      ? `<a href="${esc(b.link)}" target="_blank" rel="noopener noreferrer" class="base-link">${isRu?'смотреть →':'view →'}</a>`
+      : `<span class="base-link muted">${isRu?'нет одной канонической ссылки':'no single canonical url'}</span>`;
+    return `<div class="base-card">
+      <div class="base-name">${esc(b.name)}</div>
+      ${authorH}
+      <div class="base-meta">${fmt}${tags}</div>
+      <div class="base-desc">${esc(desc)}</div>
+      ${linkH}
+    </div>`;
+  }).join('')+'</div>';
+  // Wire up author links so they go through focusBuilderFromURL pulse logic.
+  cont.querySelectorAll('a[data-base-author]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      const name=a.getAttribute('data-base-author');
+      const url=new URL(window.location.href);
+      url.searchParams.set('b',name);
+      window.history.replaceState(null,'',url.pathname+url.search+`#b-${builderSlug(name)}`);
+      if(typeof focusBuilderFromURL==='function') focusBuilderFromURL();
+    });
+  });
 }
 
 const stBtn=document.getElementById("scrollTopBtn");
