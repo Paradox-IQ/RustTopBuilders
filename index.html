@@ -21,6 +21,7 @@
 <meta name="twitter:image:alt" content="Rust Builders — Полный гид 2026: 52 билдера, 14 patreon, 11 кастом, шкала 0.25★">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d0d0d'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' dominant-baseline='middle' font-size='22' fill='%23c8a96e' font-family='serif'%3E%E2%98%85%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
   :root{--bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border2:#333;--text:#e8e4db;--muted:#666;--muted2:#888;--accent:#c8a96e;--accent2:#e8c88e;--green-bg:#0f2018;--green-text:#6ec990;--red-text:#e07060;--amber-text:#e0a84a;--blue-bg:#0d1520;--blue-text:#6a9ee8;--star:#c8a96e}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -261,6 +262,8 @@
   .suggest-preview{display:none;margin-top:14px;background:var(--bg);border:1px dashed var(--border);border-radius:4px;padding:12px 14px;font-family:'Space Mono',monospace;font-size:12px;color:var(--muted2);white-space:pre-wrap;line-height:1.5;max-height:280px;overflow:auto}
   .suggest-preview.show{display:block}
   .suggest-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+  .suggest-turnstile{margin-top:12px}
+  .suggest-turnstile .cf-turnstile{display:flex;justify-content:flex-start}
   @media (max-width:560px){.suggest-form{grid-template-columns:1fr}}
 
   /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
@@ -578,6 +581,10 @@
 
         <div class="suggest-preview" id="sug-preview" aria-live="polite"></div>
 
+        <div class="suggest-turnstile full" id="sug-turnstile-wrap" style="display:none">
+          <div id="sug-turnstile" class="cf-turnstile"></div>
+        </div>
+
         <div class="suggest-actions full" id="sug-send-actions" style="display:none">
           <button type="button" id="sug-send-btn" class="suggest-btn primary" data-ru="📨 Отправить заявку" data-en="📨 Send suggestion">📨 Отправить заявку</button>
           <button type="button" id="sug-copy-btn" class="suggest-btn" data-ru="📋 Скопировать" data-en="📋 Copy">📋 Скопировать</button>
@@ -587,7 +594,7 @@
         <div class="suggest-status" id="sug-status" role="status"></div>
       </form>
 
-      <div class="suggest-meta" data-ru="// Кнопка «Отправить заявку» сразу создаёт сообщение в моём приватном Discord-канале — без email, без ручной пересылки. Альтернативно: «Скопировать» и вставить вручную в DM gamunkul8515." data-en="// 'Send suggestion' posts directly to my private Discord channel — no email, no manual forwarding. Alternatively: copy the text and DM it to gamunkul8515.">// Кнопка «Отправить заявку» сразу создаёт сообщение в моём приватном Discord-канале — без email, без ручной пересылки. Альтернативно: «Скопировать» и вставить вручную в DM gamunkul8515.</div>
+      <div class="suggest-meta" data-ru="// Заявка идёт через Cloudflare-прокси с капчей и лимитом 3/час · 10/сутки на IP — webhook-URL не светится. Альтернативно: «Скопировать» и вставить вручную в Discord (gamunkul8515)." data-en="// Submissions go through a Cloudflare proxy with captcha and a 3/hour · 10/day per-IP limit — the webhook URL is never exposed. Alternatively: copy the text and DM it to Discord (gamunkul8515).">// Заявка идёт через Cloudflare-прокси с капчей и лимитом 3/час · 10/сутки на IP — webhook-URL не светится. Альтернативно: «Скопировать» и вставить вручную в Discord (gamunkul8515).</div>
     </div>
   </details>
 
@@ -1450,11 +1457,14 @@ const SUGGEST_DISCORD = 'gamunkul8515';
 // directly. When empty, falls back to t.me/share/url which lets the user
 // paste the prefilled text into any chat.
 const SUGGEST_TG = '';
-// Discord webhook for the private #suggest-builder channel. The URL is
-// public-by-design — worst case a spammer floods one channel and the
-// owner rotates the webhook. No secrets ride on this.
-const SUGGEST_DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1497650640325841006/ZeZ8uBPUoLEOwTvnHW1qg0TzZWLicPOzwHGxCfbKAULZwek5wYoaev_PjweieYiZSBII';
-// Per-device cooldown to prevent accidental double-clicks and casual spam.
+// Cloudflare Worker that proxies suggestions to Discord with Turnstile +
+// per-IP rate limit. Source lives in /worker. Replace these two values
+// after deploying the Worker (see worker/README.md). When SUGGEST_WORKER_URL
+// is empty, the form falls back to the manual Copy/Telegram path.
+const SUGGEST_WORKER_URL = '';
+const SUGGEST_TURNSTILE_SITE_KEY = '';
+// Per-device cooldown — secondary defense in addition to the server-side
+// IP rate limit. Catches accidental double-clicks instantly.
 const SUGGEST_COOLDOWN_MS = 30000;
 const SUGGEST_LS_KEY = 'rtb_suggest_last_send';
 
@@ -1487,33 +1497,20 @@ function buildSuggestText(){
   return lines.join('\n');
 }
 
-function buildSuggestEmbed(){
+function buildSuggestPayload(turnstileToken){
   const get = id => (document.getElementById(id).value || '').trim();
-  const name = get('sug-name');
-  const yt = get('sug-youtube');
   const fmtSel = document.getElementById('sug-format');
   const langSel = document.getElementById('sug-lang');
-  const fmtTxt = fmtSel.value ? fmtSel.options[fmtSel.selectedIndex].textContent.trim() : '—';
-  const langTxt = langSel.value ? langSel.options[langSel.selectedIndex].textContent.trim() : '—';
-  const note = get('sug-note');
-  const contact = get('sug-contact') || '—';
-  const fields = [
-    {name:'YouTube', value:yt, inline:false},
-    {name:'Формат / Format', value:fmtTxt, inline:true},
-    {name:'Язык / Language', value:langTxt, inline:true},
-    {name:'Описание / Note', value:note.length>1000 ? note.slice(0,997)+'…' : note, inline:false},
-    {name:'Контакт автора / Submitter contact', value:contact, inline:false}
-  ];
   return {
-    username: 'Rust Builders — Suggestions',
-    embeds: [{
-      title: `🆕 ${name}`,
-      url: yt,
-      color: 0xc8a96e,
-      fields: fields,
-      footer: {text:'Submitted via paradox-iq.github.io/RustTopBuilders'},
-      timestamp: new Date().toISOString()
-    }]
+    name: get('sug-name'),
+    youtube: get('sug-youtube'),
+    format: fmtSel.value,
+    formatLabel: fmtSel.value ? fmtSel.options[fmtSel.selectedIndex].textContent.trim() : '',
+    lang: langSel.value,
+    langLabel: langSel.value ? langSel.options[langSel.selectedIndex].textContent.trim() : '',
+    note: get('sug-note'),
+    contact: get('sug-contact'),
+    turnstileToken
   };
 }
 
@@ -1543,12 +1540,47 @@ function setupSuggestForm(){
   const copyBtn = document.getElementById('sug-copy-btn');
   const tgLink = document.getElementById('sug-tg-link');
   const sendBtn = document.getElementById('sug-send-btn');
+  const turnstileWrap = document.getElementById('sug-turnstile-wrap');
+  const turnstileEl = document.getElementById('sug-turnstile');
+  const workerConfigured = !!(SUGGEST_WORKER_URL && SUGGEST_TURNSTILE_SITE_KEY);
+  let turnstileToken = '';
+  let turnstileWidgetId = null;
 
   function setStatus(msg, kind){
     statusEl.className = 'suggest-status' + (kind?' '+kind:'');
     statusEl.textContent = msg;
   }
   function clearStatus(){ statusEl.className='suggest-status'; statusEl.textContent=''; }
+
+  function ensureTurnstile(){
+    if(!workerConfigured) return;
+    if(turnstileWidgetId !== null) return;
+    if(typeof window.turnstile === 'undefined'){
+      // Script may still be loading — retry in a moment.
+      setTimeout(ensureTurnstile, 400);
+      return;
+    }
+    turnstileWidgetId = window.turnstile.render(turnstileEl, {
+      sitekey: SUGGEST_TURNSTILE_SITE_KEY,
+      theme: 'dark',
+      callback: tok => { turnstileToken = tok; sendBtn.disabled = false; },
+      'expired-callback': () => { turnstileToken = ''; sendBtn.disabled = true; },
+      'error-callback': () => { turnstileToken = ''; sendBtn.disabled = true; }
+    });
+  }
+
+  function resetTurnstile(){
+    turnstileToken = '';
+    if(workerConfigured && turnstileWidgetId !== null && window.turnstile){
+      try{ window.turnstile.reset(turnstileWidgetId); } catch(_){}
+    }
+  }
+
+  // If the Worker isn't configured yet, hide the auto-send button and
+  // fall back to the manual Copy / Telegram path.
+  if(!workerConfigured){
+    sendBtn.style.display = 'none';
+  }
 
   genBtn.addEventListener('click', ()=>{
     const bad = validateSuggest();
@@ -1560,28 +1592,43 @@ function setupSuggestForm(){
       bad.focus();
       previewEl.classList.remove('show');
       sendActions.style.display='none';
+      turnstileWrap.style.display='none';
       return;
     }
     const text = buildSuggestText();
     previewEl.textContent = text;
     previewEl.classList.add('show');
     sendActions.style.display='flex';
-    // Pre-fill the Telegram share link. With SUGGEST_TG configured we open
-    // t.me/<user> directly; otherwise t.me/share/url so the user can paste
-    // the prefilled text into any chat.
+    if(workerConfigured){
+      turnstileWrap.style.display='block';
+      sendBtn.disabled = !turnstileToken;
+      ensureTurnstile();
+    }
     const body = encodeURIComponent(text);
     tgLink.href = SUGGEST_TG
       ? `https://t.me/${SUGGEST_TG}?text=${body}`
       : `https://t.me/share/url?url=${encodeURIComponent('https://paradox-iq.github.io/RustTopBuilders/')}&text=${body}`;
     setStatus(currentLang==='ru'
-      ? 'Готово. Жми «Отправить заявку» — она сразу попадёт ко мне в Discord-канал.'
-      : "Ready. Click 'Send suggestion' — it'll land straight in my Discord channel.",
+      ? (workerConfigured
+          ? 'Готово. Пройди капчу и жми «Отправить заявку».'
+          : 'Готово. Скопируй текст и отправь в Discord (gamunkul8515) или открой Telegram.')
+      : (workerConfigured
+          ? "Ready. Solve the captcha and click 'Send suggestion'."
+          : 'Ready. Copy the text and DM Discord (gamunkul8515) or open Telegram.'),
       'ok');
   });
 
   sendBtn.addEventListener('click', async ()=>{
+    if(!workerConfigured) return;
     const bad = validateSuggest();
     if(bad){ bad.focus(); return; }
+    if(!turnstileToken){
+      setStatus(currentLang==='ru'
+        ? 'Сначала пройди капчу выше.'
+        : 'Please complete the captcha above first.',
+        'err');
+      return;
+    }
     const last = parseInt(localStorage.getItem(SUGGEST_LS_KEY) || '0', 10);
     const wait = SUGGEST_COOLDOWN_MS - (Date.now() - last);
     if(wait > 0){
@@ -1595,25 +1642,47 @@ function setupSuggestForm(){
     sendBtn.disabled = true;
     setStatus(currentLang==='ru' ? 'Отправляем…' : 'Sending…', '');
     try{
-      const payload = buildSuggestEmbed();
-      const res = await fetch(SUGGEST_DISCORD_WEBHOOK, {
+      const payload = buildSuggestPayload(turnstileToken);
+      const res = await fetch(SUGGEST_WORKER_URL, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify(payload)
       });
-      if(!res.ok) throw new Error('HTTP '+res.status);
+      const data = await res.json().catch(()=>({}));
+      if(res.status === 429){
+        const sec = data.retryAfterSeconds ? Math.ceil(data.retryAfterSeconds/60) : null;
+        setStatus(currentLang==='ru'
+          ? `Слишком много заявок с твоего IP. Попробуй${sec?` через ~${sec} мин`:' позже'}.`
+          : `Too many submissions from your IP. Try${sec?` again in ~${sec} min`:' again later'}.`,
+          'err');
+        resetTurnstile();
+        return;
+      }
+      if(res.status === 403){
+        setStatus(currentLang==='ru'
+          ? 'Капча не прошла. Обнови страницу и попробуй снова.'
+          : 'Captcha rejected. Refresh the page and try again.',
+          'err');
+        resetTurnstile();
+        return;
+      }
+      if(!res.ok || !data.ok){
+        throw new Error('worker_error');
+      }
       localStorage.setItem(SUGGEST_LS_KEY, String(Date.now()));
       setStatus(currentLang==='ru'
-        ? '✓ Заявка отправлена. Спасибо! Если есть что добавить — напиши в Discord (gamunkul8515).'
-        : '✓ Suggestion sent. Thanks! Anything to add — DM me on Discord (gamunkul8515).',
+        ? '✓ Заявка отправлена. Спасибо! Если есть что добавить — пиши в Discord (gamunkul8515).'
+        : '✓ Suggestion sent. Thanks! Anything to add — DM Discord (gamunkul8515).',
         'ok');
       sendBtn.style.display='none';
+      turnstileWrap.style.display='none';
     } catch(err){
       setStatus(currentLang==='ru'
-        ? 'Не получилось отправить автоматически. Скопируй текст кнопкой ниже и отправь в Discord (gamunkul8515) вручную.'
-        : "Couldn't send automatically. Copy the text below and DM it to Discord (gamunkul8515) manually.",
+        ? 'Не получилось отправить автоматически. Скопируй текст и отправь в Discord (gamunkul8515) вручную.'
+        : "Couldn't send automatically. Copy the text and DM it on Discord (gamunkul8515) manually.",
         'err');
       sendBtn.disabled = false;
+      resetTurnstile();
     }
   });
 
@@ -1623,8 +1692,12 @@ function setupSuggestForm(){
     previewEl.classList.remove('show');
     previewEl.textContent='';
     sendActions.style.display='none';
-    sendBtn.style.display='';
-    sendBtn.disabled = false;
+    turnstileWrap.style.display='none';
+    if(workerConfigured){
+      sendBtn.style.display='';
+      sendBtn.disabled = true;
+    }
+    resetTurnstile();
     clearStatus();
   });
 
