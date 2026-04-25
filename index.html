@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Rust Builders — Полный гид 2026</title>
+<meta name="description" content="Гид 2026 по билдерам Rust: рейтинги, обзоры, цены кастомных баз, ссылки на YouTube, Discord, Patreon. Только активные авторы.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rust Builders — Полный гид 2026">
+<meta property="og:description" content="Рейтинг билдеров Rust 2026: пики, крыши, бункеры, кастомные базы, апкип. Только активные каналы.">
+<meta property="og:url" content="https://paradox-iq.github.io/RustTopBuilders/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rust Builders — Полный гид 2026">
+<meta name="twitter:description" content="Рейтинг билдеров Rust 2026: пики, крыши, бункеры, кастомные базы, апкип.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d0d0d'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' dominant-baseline='middle' font-size='22' fill='%23c8a96e' font-family='serif'%3E%E2%98%85%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border2:#333;--text:#e8e4db;--muted:#666;--muted2:#888;--accent:#c8a96e;--accent2:#e8c88e;--green-bg:#0f2018;--green-text:#6ec990;--red-text:#e07060;--amber-text:#e0a84a;--blue-bg:#0d1520;--blue-text:#6a9ee8;--star:#c8a96e}
@@ -42,6 +51,8 @@
   .chip{font-family:'Space Mono',monospace;font-size:11px;padding:6px 13px;background:var(--surface);border:1px solid var(--border);border-radius:30px;color:var(--muted2);cursor:pointer;transition:all .18s;user-select:none}
   .chip:hover{border-color:var(--accent);color:var(--accent2)}
   .chip.active{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:700}
+  .chip:focus-visible,.lang-btn:focus-visible,.link:focus-visible,#scrollTopBtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .search-input:focus-visible{outline:none}
   .section-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;margin-top:48px}
   .section-stars{font-size:20px;color:var(--star);letter-spacing:-2px;flex-shrink:0}
   .section-label{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted2)}
@@ -114,7 +125,7 @@
 <div class="page">
   <div class="lang-bar">
     <div class="lang-switcher">
-      <button class="lang-btn active" id="btn-ru">RU</button><button class="lang-btn" id="btn-en">EN</button>
+      <button class="lang-btn active" id="btn-ru" type="button" aria-label="Русский" aria-pressed="true">RU</button><button class="lang-btn" id="btn-en" type="button" aria-label="English" aria-pressed="false">EN</button>
     </div>
   </div>
   <div class="header">
@@ -149,7 +160,7 @@
   <div class="controls">
     <div class="control-row">
       <span class="control-label" id="lbl-search-ru">ПОИСК</span><span class="control-label" id="lbl-search-en" style="display:none">SEARCH</span>
-      <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="searchInput" placeholder="Поиск..."></div>
+      <div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input class="search-input" id="searchInput" type="search" placeholder="Поиск..." aria-label="Поиск по билдерам" autocomplete="off"></div>
       <div class="paid-legend"><div class="paid-legend-dot"></div><span id="paid-legend-ru">есть платный контент</span><span id="paid-legend-en" style="display:none">paid content available</span></div>
     </div>
     <div class="control-row">
@@ -209,7 +220,7 @@
     <span id="footer-note-en" style="display:none">ratings are subjective · active channels only · inactive &lt;2 months</span>
   </div>
 </div>
-<button id="scrollTopBtn" title="Наверх">↑</button>
+<button id="scrollTopBtn" type="button" title="Наверх" aria-label="Наверх страницы / Scroll to top">↑</button>
 
 <script>
 // MINIFIED DATA ENGINE
@@ -218,9 +229,16 @@ const rowLabels = {
   en:{'Форматы':'Group size','Кастомные базы':'Custom bases','Цена кастома':'Custom price','Patreon':'Patreon','Публичные базы':'Public bases','Цена базы':'Base price','Топ базы':'Top bases','Ниша':'Niche','Фишки':'Features','Особенности':'Features','Минусы':'Cons','Услуги':'Services','Упор':'Focus','Частота':'Frequency','Discord':'Discord','Сильные стороны':'Strengths','Фокус':'Focus','Статус':'Status','Активность':'Activity','Проблема':'Issue','Качество':'Quality','Особенность':'Note','Patreon доход':'Patreon revenue','Публичный контент':'Public content','Последняя база':'Latest base'}
 };
 
+// Build star string supporting 0.25 step. Always 5 visual slots.
 function getStars(rv){
-  if(rv>=5) return '★★★★★';if(rv>=4.5) return '★★★★½';if(rv>=4) return '★★★★☆';if(rv>=3.5) return '★★★½☆';if(rv>=3) return '★★★☆☆';
-  if(rv>=2.5) return '★★½☆☆';if(rv>=2) return '★★☆☆☆';if(rv>=1) return '★☆☆☆☆';return '⏳';
+  if(rv<=0) return '⏳';
+  const full=Math.floor(rv), frac=rv-full;
+  let s='★'.repeat(full);
+  if(frac>=0.75) s+='¾';
+  else if(frac>=0.5) s+='½';
+  else if(frac>=0.25) s+='¼';
+  while([...s].length<5) s+='☆';
+  return s;
 }
 function hasPaid(tags){return tags.some(t=>['Patreon','Boosty','Shop','fadedbuilds','Кастомные базы','Заказы баз','Custom orders','Custom bases','YouTube Sponsors','Website'].some(p=>t.includes(p)));}
 function matchesFormat(b,f){if(f==='all')return true;if(f==='solo')return b.fms.includes('solo');if(f==='trio')return b.fms.includes('trio');if(f==='medium')return b.fms.includes('medium')||b.fms.includes('clan');if(f==='clan')return b.fms.includes('clan');return false;}
@@ -268,7 +286,7 @@ const raw = [
   ["b00bster","@b00bst4r",3.5,3,0,"Patreon,Boosty,Discord,Кастомные базы","solo,trio",
    [["Форматы","Solo — Small Group","Solo — Small Group",""],["Фишки","Скрытые бункеры, Китайка, Флорстак","Hidden Bunkers, China Wall, Floor Stack","good"]],
    "Делает базы на заказ через тикеты в Discord. Хорошие крыши, скрытые бункеры, china wall, floor stack. Середина между онлайн и оффлайн защитой.","Makes custom bases via Discord tickets. Good roofs, hidden bunkers, china wall, floor stack. Sweet spot between online and offline defense.",
-   [["YouTube","https://youtube.com"],["Patreon","https://patreon.com/b00bst4r"],["Boosty","https://boosty.to/b00bst4r"],["Discord","https://discord.gg/DZt3D26vJY"]]],
+   [["Patreon","https://patreon.com/b00bst4r"],["Boosty","https://boosty.to/b00bst4r"],["Discord","https://discord.gg/DZt3D26vJY"]]],
   ["PANG","@PangSquared",3.5,3,0,"","solo,trio,medium,clan",
    [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Кинематографичность, Китайка, Клановые базы","Cinematic edits, China Wall, Clan bases","good"],["Минусы","Отстойные крыши","Terrible roofs","warn"]],
    "Очень красивая подача видео. Строит дорогие базы для кланов и огромных групп. Хорошие пики, китайские стены, но крыши отстойные.","Very beautiful, cinematic video presentation. Builds expensive bases for clans. Good peeks, China Walls, but roofs are terrible.",
@@ -301,15 +319,15 @@ const raw = [
    [["Форматы","Duo — Large Group","Duo — Large Group",""],["Фишки","Метовые базы, Шилд-воллы, Онлайн деф","Meta bases, Shield wall, Online defense","good"]],
    "Строит метовые дома, хорошие пики, есть shield wall. Бункеров нет, весь упор идёт на защиту в онлайне. Количество стенок до шкафа может разочаровать.","Builds meta bases with good peeks and shield walls. No bunkers, full focus on online raid defense.",
    [["YouTube","https://youtube.com/@XGN_Rust"],["TikTok","https://tiktok.com/@xgn_rust"]]],
-  ["rookyo","@rooperust",3,3,0,"Discord,TikTok,Кастомные базы","solo,trio,medium",
+  ["rookyo","@rooperust",3.25,3,0,"Discord,TikTok,Кастомные базы","solo,trio,medium",
    [["Форматы","Duo — Medium Group","Duo — Medium Group",""],["Фишки","Бункеры, Ретейки, Китайка","Bunkers, Retakes, China Wall","good"],["Цена кастома","€10-40 (Discord)","€10-40 (Discord)","good"]],
    "Продаёт кастомные базы в Discord (от €10 до €40). В постройках есть бункеры, ретейк-пики, китайские стены. Крепкий стандарт.","Sells custom bases via Discord (€10 to €40). Builds feature bunkers, retake peeks, and China Walls. A solid standard.",
    [["YouTube","https://youtube.com/@rooperust"],["TikTok","https://tiktok.com/@rooperustt"],["Discord","https://discord.com/invite/Q3ZRvGve4H"]]],
-  ["anika","@anika_rust",3,2,0,"","trio,medium",
+  ["anika","@anika_rust",3.25,2,0,"","trio,medium",
    [["Форматы","Trio — Small Group","Trio — Small Group",""],["Фишки","Китайка, Анти-рейд, Водопады","China Wall, Anti-Siege, Reverse Waterfall","good"]],
    "Отличные пики, подробные гайды. Бункеров нет. Упор на онлайн рейд. Крыши средние. Уверенный среднячок.","Great peeks, detailed guides. No bunkers. Focus on online raid defense. Roofs are average. Solid mid-tier.",
    [["YouTube","https://youtube.com/@anika_rust"]]],
-  ["Akame","@AkameBuilds",3.2,3,0,"Boosty,Кастомные базы","medium,clan",
+  ["Akame","@AkameBuilds",3.25,3,0,"Boosty,Кастомные базы","medium,clan",
    [["Форматы","Small group — Large group","Small group — Large group",""],["Фишки","Онлайн деф, Клановые планировки","Online Raid Defense, Clan Layouts","good"]],
    "Билдер сильнейшего клана R2. Основной упор на защиту во время онлайн рейда. Работает только под заказ через Boosty.","Builder for the top clan R2. Main focus is online raid defense. Works by custom order only via Boosty.",
    [["Boosty","https://boosty.to/akamexebet"],["YouTube","https://youtube.com/@Akame_Rust"]]],
@@ -317,7 +335,7 @@ const raw = [
    [["Форматы","Solo — Large Group","Solo — Large Group",""],["Фишки","Пещерные базы, Использование рельефа","Cave Bases, Terrain Use","good"]],
    "Билдер показывает как застраивать пещеру. Пики хорошие, но отстрелов мало и мобильность плохая. Кастом через Discord.","Shows how to build cave bases. Peaks are good, but limited shooting positions and poor mobility. Custom via Discord.",
    [["Discord","https://discord.com/invite/aY8StUeJXP"],["YouTube","https://youtube.com/@Luca.Builds"]]],
-  ["Darvel","@darvels",3,2,0,"","solo,trio",
+  ["Darvel","@darvels",3.25,2,0,"","solo,trio",
    [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Компактные бункеры, Мета Соло/Квад","Compact Bunkers, Solo/Quad Meta","good"]],
    "Строит Solo-Quad. Есть бункеры, интересные базы. Минусы: нет Patreon, нет Discord, кодов не оставляет.","Builds Solo–Quad. Has bunkers, interesting designs. Downsides: no Patreon, no Discord, no codes left.",
    [["YouTube","https://youtube.com/@darvels"]]],
@@ -349,7 +367,7 @@ const raw = [
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Измененная классика, Баланс цены","Modified Classics, Balanced Cost","good"]],
    "Изменённая классика с удивляющими решениями. Выпускает редко, но качество стабильное.","Modified classics with surprising solutions. Uploads rarely, but quality is consistent.",
    [["Patreon","https://patreon.com/MrSkeem"],["Discord","https://discord.gg/YnS8zHJvkh"],["YouTube","https://youtube.com/@MrSkeem"]]],
-  ["Mellarrkk","YouTube",3,1,0,"","solo,trio",
+  ["Mellarrkk","YouTube",2.75,1,0,"","solo,trio",
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Базы для новичков, Простые бункеры","Beginner Friendly, Basic Bunkers","warn"]],
    "Простые базы для новичков. Ведёт три канала под разными именами: Mellarrkk, Rust Tricks и Rust Concepts.","Simple beginner bases. Runs three channels under different names.",
    [["Mellarrkk","https://youtube.com/@Mellarrkk"],["Rust Tricks","https://youtube.com/@RustTricks"],["Rust Concepts","https://youtube.com/@RustConcepts"]]],
@@ -439,16 +457,33 @@ const raw = [
    [["YouTube","https://youtube.com/@Walder1x"]]]
 ];
 
+// Best-effort content-language assignment. Bilingual = ['en','ru']. Default = ['en'].
+// Heuristics used: Cyrillic name => RU; explicit YouTube EN+RU => bilingual;
+// Boosty/FunPay/Telegram presence => RU.
+const builderLangs={
+  'HiddenJoint':['en','ru'],
+  'b00bster':['en','ru'],
+  'One2Do':['ru'],
+  'Akame':['ru'],
+  'Биг джони':['ru'],
+  'Ласти Раст':['ru']
+};
+
 const builders = raw.map(b => ({
   name:b[0], handle:b[1], ratingValue:b[2], rating:getStars(b[2]), pending:b[2]===0, upkeep:b[3], favorite:!!b[4], tags:b[5]?b[5].split(','):[], fms:b[6]?b[6].split(','):[],
-  rows:b[7].map(r => ({label:r[0],valRU:r[1],valEN:r[2],c:r[3]||''})), desc:b[8], descEN:b[9], links:b[10].map(l => ({t:l[0],u:l[1]}))
+  rows:b[7].map(r => ({label:r[0],valRU:r[1],valEN:r[2],c:r[3]||''})), desc:b[8], descEN:b[9], links:b[10].map(l => ({t:l[0],u:l[1]})),
+  langs: builderLangs[b[0]] || ['en']
 }));
 
 let currentLang='ru', currentFormat='all', currentLangFilter='all', currentSort='rating', searchQuery='';
 const formatChips=document.querySelectorAll('#formatFilters .chip'), langChips=document.querySelectorAll('#langFilters .chip'), sortChips=document.querySelectorAll('#sortFilters .chip'), searchInput=document.getElementById('searchInput');
 
 function setLang(l){
-  currentLang=l; document.getElementById('btn-ru').classList.toggle('active',l==='ru'); document.getElementById('btn-en').classList.toggle('active',l==='en');
+  currentLang=l;
+  document.documentElement.lang=l;
+  const btnRu=document.getElementById('btn-ru'), btnEn=document.getElementById('btn-en');
+  btnRu.classList.toggle('active',l==='ru'); btnEn.classList.toggle('active',l==='en');
+  btnRu.setAttribute('aria-pressed',l==='ru'); btnEn.setAttribute('aria-pressed',l==='en');
   ['h-title','hm-updated','hm-active','disclaimer','custom-title','lbl-search','lbl-format','lbl-lang','lbl-sort','lbl-upkeep','paid-legend','footer-note','update-note'].forEach(id=>{
     let r=document.getElementById(id+'-ru'), e=document.getElementById(id+'-en');
     if(r) r.style.display=l==='ru'?'':'none'; if(e) e.style.display=l==='en'?'':'none';
@@ -456,6 +491,8 @@ function setLang(l){
   document.querySelectorAll('.chip').forEach(c=>{if(c.dataset[l]) c.textContent=c.dataset[l]});
   document.querySelectorAll('.custom-desc[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   document.title=l==='ru'?'Rust Builders — Полный гид 2026':'Rust Builders — Full Guide 2026';
+  searchInput.placeholder=l==='ru'?'Поиск...':'Search...';
+  searchInput.setAttribute('aria-label',l==='ru'?'Поиск по билдерам':'Search builders');
   applyFilters();
 }
 
@@ -463,8 +500,7 @@ function applyFilters(){
   searchQuery=searchInput.value.toLowerCase().trim();
   let f=builders.filter(b=>{
     if(!matchesFormat(b,currentFormat)) return false;
-    if(currentLangFilter!=='all' && currentLangFilter==='en' && !b.handle.includes('EN')) return false;
-    if(currentLangFilter!=='all' && currentLangFilter==='ru' && !b.handle.includes('RU')) return false;
+    if(currentLangFilter!=='all' && !b.langs.includes(currentLangFilter)) return false;
     if(searchQuery){
       let v = b.name.toLowerCase()+' '+(b.tags.join(' ').toLowerCase())+' '+(currentLang==='en'?b.descEN.toLowerCase():b.desc.toLowerCase());
       b.rows.forEach(r=>v+=' '+(r.valRU||'').toLowerCase()+' '+(r.valEN||'').toLowerCase()+' '+r.label.toLowerCase());
@@ -478,20 +514,34 @@ function applyFilters(){
   render(f);
 }
 
+let searchDebounceTimer;
+function debouncedApplyFilters(){
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer=setTimeout(applyFilters,150);
+}
+
 function tagClass(tag){
   if(tag.includes('Patreon')) return 'tag tag-patreon';if(tag.includes('Boosty')) return 'tag tag-boosty';if(tag.includes('Shop')||tag.includes('fadedbuilds')) return 'tag tag-shop';if(tag.includes('Discord')) return 'tag tag-discord';if(tag.includes('Кастом')||tag.includes('Custom')) return 'tag tag-custom';if(tag.includes('TikTok')) return 'tag tag-tiktok';if(tag.includes('Twitch')) return 'tag tag-twitch';if(tag.includes('Website')) return 'tag tag-website';if(tag.includes('Telegram')) return 'tag tag-telegram';if(tag.includes('Instagram')) return 'tag tag-instagram';return 'tag';
 }
 
+// Group label uses 0.5-step buckets and reuses getStars for visual consistency.
 function groupLabel(v){
-  if(v>=5) return {stars:'★★★★★',label:currentLang==='ru'?'Лучший':'Best'};
-  if(v>=4.5) return {stars:'★★★★½',label:currentLang==='ru'?'Топ-уровень':'Top tier'};
-  if(v>=4) return {stars:'★★★★☆',label:currentLang==='ru'?'Хорошие':'Good'};
-  if(v>=3.5) return {stars:'★★★½',label:currentLang==='ru'?'Выше среднего':'Above average'};
-  if(v>=3) return {stars:'★★★☆☆',label:currentLang==='ru'?'Средне-хорошие':'Decent'};
-  if(v>=2.5) return {stars:'★★½☆☆',label:currentLang==='ru'?'Ниже среднего':'Below average'};
-  if(v>=2) return {stars:'★★☆☆☆',label:currentLang==='ru'?'Слабые':'Weak'};
-  if(v>=1) return {stars:'★☆☆☆☆',label:currentLang==='ru'?'Провал':'Poor'};
-  return {stars:'⌛',label:currentLang==='ru'?'На рассмотрении':'Under review'};
+  if(v<=0) return {stars:'⏳',label:currentLang==='ru'?'На рассмотрении':'Under review'};
+  let bucket;
+  if(v>=5) bucket=5;
+  else if(v>=4.5) bucket=4.5;
+  else if(v>=4) bucket=4;
+  else if(v>=3.5) bucket=3.5;
+  else if(v>=3) bucket=3;
+  else if(v>=2.5) bucket=2.5;
+  else if(v>=2) bucket=2;
+  else bucket=1;
+  const labels={
+    5: ['Лучший','Best'], 4.5:['Топ-уровень','Top tier'], 4:['Хорошие','Good'],
+    3.5:['Выше среднего','Above average'], 3:['Средне-хорошие','Decent'],
+    2.5:['Ниже среднего','Below average'], 2:['Слабые','Weak'], 1:['Провал','Poor']
+  };
+  return {stars:getStars(bucket), label:currentLang==='ru'?labels[bucket][0]:labels[bucket][1]};
 }
 
 function render(list){
@@ -508,13 +558,14 @@ function render(list){
       let lT=currentLang==='en'&&rowLabels.en[r.label]?rowLabels.en[r.label]:r.label, vT=currentLang==='en'?r.valEN:r.valRU;
       return `<div class="row"><span class="row-label">${lT}</span><span class="row-val ${r.c}">${vT}</span></div>`;
     }).join('');
-    let linksH=b.links.length?`<div class="links">${b.links.map(l=>`<a href="${l.u}" target="_blank" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>`:'';
+    let linksH=b.links.length?`<div class="links">${b.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>`:'';
     let avUrl=`https://ui-avatars.com/api/?name=${encodeURIComponent(b.name.split(' ')[0])}&background=2a2a2a&color=e8e4db&bold=true`;
     let fav=b.favorite?`<span class="badge-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'', upI=getUpkeepIcons(b.upkeep);
+    let avAlt=`${b.name}${currentLang==='ru'?' — аватар':' avatar'}`;
     
     html+=`<div class="card ${b.ratingValue>=5?'top':''} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''}">
       ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
-      <div class="card-head"><div class="card-head-left"><img src="${avUrl}" class="card-avatar" alt="av"><div>
+      <div class="card-head"><div class="card-head-left"><img src="${avUrl}" class="card-avatar" alt="${avAlt}" loading="lazy"><div>
       <div class="card-name">${b.name}${fav}</div><div class="card-handle">${b.handle}</div>
       ${upI?`<div class="cost-indicator">${upI}</div>`:''}</div></div>
       <div class="card-rating">${b.rating}<span class="card-rating-num">${rNum}</span></div></div>
@@ -533,8 +584,8 @@ document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
 formatChips.forEach(c=>{c.addEventListener('click',()=>{formatChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentFormat=c.dataset.format; applyFilters();})});
 langChips.forEach(c=>{c.addEventListener('click',()=>{langChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentLangFilter=c.dataset.lang; applyFilters();})});
 sortChips.forEach(c=>{c.addEventListener('click',()=>{sortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentSort=c.dataset.sort; applyFilters();})});
-searchInput.addEventListener('input',applyFilters);
-applyFilters();
+searchInput.addEventListener('input',debouncedApplyFilters);
+setLang('ru');
 </script>
 </body>
 </html>
