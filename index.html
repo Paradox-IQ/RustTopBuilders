@@ -33,12 +33,23 @@
   .header-meta span{display:flex;align-items:center;gap:6px}
   .header-meta span::before{content:'—';color:var(--accent)}
   .disclaimer{margin-top:14px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding:8px 14px;border-left:2px solid var(--border2);letter-spacing:.03em;line-height:1.5}
-  .custom-section{background:linear-gradient(135deg,#1a1200 0%,#0d0d0d 60%);border:1px solid #3a2a00;border-left:3px solid var(--accent);border-radius:12px;padding:28px 32px;margin-bottom:40px}
-  .custom-title{font-size:13px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
-  .custom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-  .custom-card{background:rgba(200,169,110,0.05);border:1px solid rgba(200,169,110,0.15);border-radius:8px;padding:14px 16px}
-  .custom-name{font-weight:700;color:var(--accent2);font-size:14px;margin-bottom:6px}
-  .custom-desc{font-size:12px;color:var(--muted2);line-height:1.5}
+  .custom-section{background:linear-gradient(135deg,#1a1200 0%,#0d0d0d 60%);border:1px solid #3a2a00;border-left:3px solid var(--accent);border-radius:12px;padding:24px 28px;margin-bottom:40px}
+  .custom-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+  .custom-title{font-size:13px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}
+  .custom-sort{display:flex;gap:6px;flex-wrap:wrap}
+  .chip.mini{font-size:10px;padding:4px 10px;letter-spacing:.04em}
+  .custom-table-wrap{overflow-x:auto;margin:0 -4px}
+  .custom-table{width:100%;border-collapse:separate;border-spacing:0;font-family:'Space Mono',monospace;font-size:12px;min-width:580px}
+  .custom-table thead th{text-align:left;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);font-size:10px;padding:8px 12px;border-bottom:1px solid #3a2a00;background:rgba(200,169,110,.04);white-space:nowrap}
+  .custom-table thead th:first-child{border-top-left-radius:6px}
+  .custom-table thead th:last-child{border-top-right-radius:6px}
+  .custom-table tbody td{padding:10px 12px;border-bottom:1px solid rgba(200,169,110,.08);color:var(--muted2);vertical-align:top;line-height:1.5}
+  .custom-table tbody tr:hover td{background:rgba(200,169,110,.04)}
+  .custom-table tbody tr.fav td:first-child{position:relative}
+  .custom-table tbody tr.fav td:first-child::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--accent);border-radius:2px}
+  .custom-table tbody td:first-child{padding-left:18px;font-weight:700;color:var(--accent2);font-family:'Syne',sans-serif;font-size:14px;white-space:nowrap}
+  .custom-table tbody td.muted{color:var(--muted)}
+  .custom-table .ct-fav{font-size:11px;margin-left:6px}
   .controls{margin-bottom:32px;display:flex;flex-direction:column;gap:14px;padding-bottom:24px;border-bottom:1px solid var(--border)}
   .control-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
   .control-label{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;min-width:80px;flex-shrink:0}
@@ -295,20 +306,25 @@
   </details>
 
   <div class="custom-section">
-    <div class="custom-title" id="custom-title-ru">// кто делает кастомные базы</div><div class="custom-title" id="custom-title-en" style="display:none">// who makes custom bases</div>
-    <div class="custom-grid">
-      <div class="custom-card"><div class="custom-name">Limi Lab <span title="Выбор редакции" style="font-size:12px;margin-left:2px">👑</span></div><div class="custom-desc" data-ru="Заказ через Discord — база под твои нужды. Patreon: $7+" data-en="Order via Discord — base tailored to your needs. Patreon: $7+">Заказ через Discord — база под твои нужды. Patreon: $7+</div></div>
-      <div class="custom-card"><div class="custom-name">One2Do <span title="Выбор редакции" style="font-size:12px;margin-left:2px">👑</span></div><div class="custom-desc" data-ru="Кастомные базы. Продаёт через FunPay." data-en="Custom bases. Sells via FunPay.">Кастомные базы. Продаёт через FunPay.</div></div>
-      <div class="custom-card"><div class="custom-name">HQM Core <span title="Выбор редакции" style="font-size:12px;margin-left:2px">👑</span></div><div class="custom-desc" data-ru="Качественные базы без лишнего мусора на Patreon." data-en="High-quality bases without junk on Patreon.">Качественные базы без лишнего мусора на Patreon.</div></div>
-      <div class="custom-card"><div class="custom-name">Akame</div><div class="custom-desc" data-ru="ТОЛЬКО кастомные базы под заказ. Boosty: boosty.to/akamexebet" data-en="CUSTOM ORDERS ONLY. Boosty: boosty.to/akamexebet">ТОЛЬКО кастомные базы под заказ. Boosty: boosty.to/akamexebet</div></div>
-      <div class="custom-card"><div class="custom-name">Erebus</div><div class="custom-desc" data-ru="Кастом через Discord: Budget $50, Standard $100, Ultimate $250" data-en="Custom via Discord: Budget $50, Standard $100, Ultimate $250">Кастом через Discord: Budget $50, Standard $100, Ultimate $250</div></div>
-      <div class="custom-card"><div class="custom-name">2devilzz</div><div class="custom-desc" data-ru="Кастом через Discord: Medium $60+, Large $100+. Оплата: крипта / скины (+10%)" data-en="Custom via Discord: Medium $60+, Large $100+. Payment: crypto / skins (+10%)">Кастом через Discord: Medium $60+, Large $100+. Оплата: крипта / скины (+10%)</div></div>
-      <div class="custom-card"><div class="custom-name">Luca.</div><div class="custom-desc" data-ru="Кастом через Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65" data-en="Custom via Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65">Кастом через Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65</div></div>
-      <div class="custom-card"><div class="custom-name">Kredbic & S4</div><div class="custom-desc" data-ru="Кастом через общий Discord. Kredbic: $50–100, S4: уточнять" data-en="Custom via shared Discord. Kredbic: $50–100, S4: inquire">Кастом через общий Discord. Kredbic: $50–100, S4: уточнять</div></div>
-      <div class="custom-card"><div class="custom-name">Pandabuilds</div><div class="custom-desc" data-ru="Кастом через Discord. PayPal / Rust Skins (+15%)" data-en="Custom via Discord. PayPal / Rust Skins (+15%)">Кастом через Discord. PayPal / Rust Skins (+15%)</div></div>
-      <div class="custom-card"><div class="custom-name">GrinchTheBuilder</div><div class="custom-desc" data-ru="Кастом через Discord: @chort228. Цена $15–20" data-en="Custom via Discord: @chort228. Price $15–20">Кастом через Discord: @chort228. Цена $15–20</div></div>
-      <div class="custom-card"><div class="custom-name">rookyo</div><div class="custom-desc" data-ru="Кастом через Discord. Small: 10-20€, Medium: 15-25€, Large: 20-40€" data-en="Custom via Discord. Small: 10-20€, Medium: 15-25€, Large: 20-40€">Кастом через Discord. Small: 10-20€, Medium: 15-25€, Large: 20-40€</div></div>
-      <div class="custom-card"><div class="custom-name">b00bster</div><div class="custom-desc" data-ru="Кастом через тикеты в Discord. Цена: обсуждается индивидуально." data-en="Custom via Discord tickets. Price: discussed individually.">Кастом через тикеты в Discord. Цена: обсуждается индивидуально.</div></div>
+    <div class="custom-head">
+      <div class="custom-title" id="custom-title-ru">// кто делает кастомные базы</div><div class="custom-title" id="custom-title-en" style="display:none">// who makes custom bases</div>
+      <div class="custom-sort" role="tablist" aria-label="Сортировка / Sort">
+        <span class="chip mini active" data-csort="price" data-ru="по цене" data-en="by price">по цене</span>
+        <span class="chip mini" data-csort="name" data-ru="по имени" data-en="by name">по имени</span>
+        <span class="chip mini" data-csort="fav" data-ru="фавориты" data-en="favs first">фавориты</span>
+      </div>
+    </div>
+    <div class="custom-table-wrap">
+      <table class="custom-table" id="customsTable">
+        <thead><tr>
+          <th data-ru="Билдер" data-en="Builder">Билдер</th>
+          <th data-ru="Где заказать" data-en="Where">Где заказать</th>
+          <th data-ru="Цена" data-en="Price">Цена</th>
+          <th data-ru="Оплата" data-en="Payment">Оплата</th>
+          <th data-ru="Примечание" data-en="Note">Примечание</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
 
@@ -426,7 +442,7 @@ const raw = [
    [["Форматы","Solo — Small Group","Solo — Small Group",""],["Фишки","Бункеры, Мета-пики, Шилд-воллы","Bunkers, Meta Peeks, Shield Walls","good"]],
    "Куча бункеров, хорошие пики, интересные решения. Для оффлайн и онлайн рейдов — золотая середина. Базы качественные, рекомендую.","Tons of bunkers, good shoots, interesting solutions. A solid middle ground for both offline and online raids. Quality bases, recommended.",
    [["Discord","https://discord.com/invite/W3qGzbM3ar"],["YouTube","https://youtube.com/@BuckyBuildz"]]],
-  ["Rat In The Dark","@RatInTheDark",3,3,0,"YouTube","solo,trio,clan",
+  ["Rat In The Dark","@RatInTheDark",3.25,3,0,"YouTube","solo,trio,clan",
    [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Корейская мета, Сложные бункеры","Korean Meta, Complex Bunkers","good"],["Минусы","Редко выпускает, крыши слабые","Rare uploads, weak roofs","warn"]],
    "Корейский билдер. Показал фишки о которых не знал даже я. Есть хорошие бункеры и интересные решения. Баз мало, выпускает редко.","Korean builder. Showed tricks even I didn't know. Has good bunkers and interesting solutions. Few bases, rarely uploads.",
    [["YouTube","https://youtube.com/@RatInTheDark"]]],
@@ -454,7 +470,7 @@ const raw = [
    [["Форматы","Solo — Trio+","Solo — Trio+",""],["Фишки","Вайд гапы, Опен кор, Бункеры","Wide Gaps, Open Core, Bunkers","good"],["Цена базы","€17–20","€17–20","good"]],
    "Свой Shopify-магазин вместо Patreon — разовая покупка базы. Обновления бесплатно. Качество баз бывает неровным.","Own Shopify store instead of Patreon — one-time purchase per base. Free updates. Overall, quality is inconsistent.",
    [["fadedbuilds.com","https://fadedbuilds.com"],["TikTok","https://tiktok.com/@fadedrust"],["YouTube","https://youtube.com/@FadedRust"]]],
-  ["aloneintokyo","@aloneintokyo",3.5,2,0,"Patreon,YouTube Sponsors","solo,trio",
+  ["aloneintokyo","@aloneintokyo",3.75,2,0,"Patreon,YouTube Sponsors","solo,trio",
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Опен кор, Ретейки, Открывашки","Open Core, Retake Angles, Turret Openers","good"]],
    "Уникальный стиль, которого нет ни у кого. Миллион пиков, много простора, открывашки с турелями. Крыши — слабое место.","A unique style. Tons of shoots, open layouts, autoturret openers. Roofs are the weak spot, but otherwise genuinely creative.",
    [["Patreon","https://patreon.com/cw/Aloneintokyo"],["YouTube","https://youtube.com/@aloneintokyo"]]],
@@ -506,7 +522,7 @@ const raw = [
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Доступные стартеры, Низкий апкип","Accessible Starters, Low Upkeep","good"]],
    "Строит доступные лёгкие базы для соло-трио, без p2w фишек. Однако есть и сомнительные, мемные постройки.","Makes accessible lightweight bases for solo-trio, no p2w required. But some bases are questionable.",
    [["Discord","https://discord.com/invite/THfp7TxEHJ"],["YouTube","https://youtube.com/@LeftyyP"]]],
-  ["HiddenJoint","@HiddenJoint / @GoodJoint",3,1,0,"Patreon,Boosty","solo,trio",
+  ["HiddenJoint","@HiddenJoint / @GoodJoint",3.25,1,0,"Patreon,Boosty","solo,trio",
    [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Простые соло базы, Ванилла-френдли","Simple Solo Bases, Vanilla Friendly","good"]],
    "Хорош для соло-игроков — базы простые, без переусложнения. Ведёт два канала: EN и RU.","Good for solo players — bases are clean, not overcomplicated. Runs two channels: EN and RU.",
    [["Patreon","https://www.patreon.com/c/GoodJoint"],["Boosty","https://boosty.to/goodjoint"],["YouTube EN","https://youtube.com/@HiddenJoint"],["YouTube RU","https://youtube.com/@GoodJoint"]]],
@@ -570,7 +586,7 @@ const raw = [
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","UK-стиль, Сомнительное качество","UK Style, Controversial Quality","bad"]],
    "Позиционирует стиль как уникальный UK-дизайн. По факту базы очень плохие.","Markets himself as a unique UK design style. In reality the bases are very poor.",
    [["Patreon","https://www.patreon.com/IndominusRust"],["Discord","https://discord.com/invite/jgMr6YXPqC"],["YouTube","https://youtube.com/@IndominusRust"]]],
-  ["Ласти Раст","@ласти_раст",2,3,0,"Telegram","solo,trio",
+  ["Ласти Раст","@ласти_раст",1.5,3,0,"Telegram","solo,trio",
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Модовая мета, Слитый контент","Modded Meta, Leaked Content","bad"]],
    "Нет понимания ванильного билдинга. Сливает платные базы Good Joint. Пиратский контент.","No understanding of vanilla building. Telegram channel leaks paid bases. Pirated content.",
    [["Telegram","https://t.me/lastycfg"],["YouTube","https://youtube.com/@ласти_раст"]]],
@@ -644,14 +660,46 @@ function setLang(l){
     if(r) r.style.display=l==='ru'?'':'none'; if(e) e.style.display=l==='en'?'':'none';
   });
   document.querySelectorAll('.chip').forEach(c=>{if(c.dataset[l]) c.textContent=c.dataset[l]});
-  document.querySelectorAll('.custom-desc[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   document.querySelectorAll('[data-lang-block]').forEach(el=>{el.style.display=el.dataset.langBlock===l?'':'none'});
   document.querySelectorAll('summary span[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  document.querySelectorAll('.custom-table thead th[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  renderCustoms();
   document.title=l==='ru'?'Rust Builders — Полный гид 2026':'Rust Builders — Full Guide 2026';
   searchInput.placeholder=l==='ru'?'Поиск...':'Search...';
   searchInput.setAttribute('aria-label',l==='ru'?'Поиск по билдерам':'Search builders');
   renderStats();
   applyFilters();
+}
+
+// Custom-base providers: comparison data
+// [name, fav, where, [priceRU,priceEN], [payRU,payEN], [noteRU,noteEN], priceUSDForSort]
+const customs=[
+  ['Limi Lab',     true,  'Patreon \u2192 Discord',['от $7/мес','from $7/mo'],            ['подписка','subscription'],         ['персональный onboarding','personal onboarding'], 7],
+  ['HQM Core',     true,  'Patreon',                ['от $5/мес','from $5/mo'],            ['подписка','subscription'],         ['готовые базы, не bespoke','curated, not bespoke'], 5],
+  ['One2Do',       true,  'FunPay',                 ['индивидуально','inquire'],           ['FunPay','FunPay'],                 ['доступно через FunPay-сделки','via FunPay escrow'], 9999],
+  ['GrinchTheBuilder',false,'Discord (@chort228)', ['$15\u201320','$15\u201320'],         ['—','—'],                            ['самый дешёвый кастом','cheapest custom'], 15],
+  ['rookyo',       false, 'Discord',                ['10\u201340 \u20ac','10\u201340 \u20ac'],['—','—'],                         ['тарифы по размеру','size tiers'], 10],
+  ['Luca.',        false, 'Discord',                ['$30 \u2192 $65','$30 \u2192 $65'],   ['—','—'],                            ['по размеру группы (соло \u2192 12+)','by group size (solo \u2192 12+)'], 30],
+  ['Erebus',       false, 'Discord',                ['$50 / $100 / $250','$50 / $100 / $250'],['—','—'],                          ['Budget / Standard / Ultimate','Budget / Standard / Ultimate'], 50],
+  ['Kredbic & S4', false, 'общий Discord',           ['$50\u2013100','$50\u2013100'],       ['—','—'],                            ['S4: уточнять','S4: inquire'], 50],
+  ['2devilzz',     false, 'Discord',                ['$60+ / $100+','$60+ / $100+'],       ['крипта / скины +10%','crypto / skins +10%'],['medium / large; зерги','medium / large; zerg-tier'], 60],
+  ['Pandabuilds',  false, 'Discord',                ['индивидуально','inquire'],           ['PayPal / Rust Skins +15%','PayPal / Rust Skins +15%'],['—','—'], 9999],
+  ['Akame',        false, 'Boosty (akamexebet)',    ['индивидуально','inquire'],           ['Boosty','Boosty'],                  ['ТОЛЬКО кастом, ничего ещё','custom-only, nothing else'], 9999],
+  ['b00bster',     false, 'Discord (тикеты)',       ['индивидуально','inquire'],           ['—','—'],                            ['обсуждается лично','discussed individually'], 9999]
+];
+let customSort='price';
+
+function renderCustoms(){
+  const tb=document.querySelector('#customsTable tbody'); if(!tb) return;
+  const list=customs.slice();
+  if(customSort==='price') list.sort((a,b)=>a[6]-b[6]||a[0].localeCompare(b[0]));
+  else if(customSort==='name') list.sort((a,b)=>a[0].localeCompare(b[0]));
+  else if(customSort==='fav') list.sort((a,b)=>(b[1]?1:0)-(a[1]?1:0)||a[6]-b[6]);
+  const i=currentLang==='en'?1:0;
+  tb.innerHTML=list.map(r=>{
+    const fav=r[1]?` <span class="ct-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'';
+    return `<tr class="${r[1]?'fav':''}"><td>${esc(r[0])}${fav}</td><td>${esc(r[2])}</td><td>${esc(r[3][i])}</td><td>${esc(r[4][i])}</td><td class="muted">${esc(r[5][i])}</td></tr>`;
+  }).join('');
 }
 
 // Compute & render hero stat-strip
@@ -789,6 +837,8 @@ themeBtn.addEventListener('click',()=>{const cur=document.documentElement.datase
 formatChips.forEach(c=>{c.addEventListener('click',()=>{formatChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentFormat=c.dataset.format; applyFilters();})});
 langChips.forEach(c=>{c.addEventListener('click',()=>{langChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentLangFilter=c.dataset.lang; applyFilters();})});
 sortChips.forEach(c=>{c.addEventListener('click',()=>{sortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentSort=c.dataset.sort; applyFilters();})});
+const customSortChips=document.querySelectorAll('.custom-sort .chip');
+customSortChips.forEach(c=>{c.addEventListener('click',()=>{customSortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); customSort=c.dataset.csort; renderCustoms();})});
 searchInput.addEventListener('input',debouncedApplyFilters);
 setLang('ru');
 </script>
