@@ -791,6 +791,74 @@ const builders = raw.map(b => {
   };
 });
 
+// Schema.org JSON-LD: surface the rating + reviews to Google so the
+// guide can earn rich snippets in search results. Only rated builders
+// (ratingValue > 0) are exposed; pending entries are skipped because
+// reviewRating without a value triggers schema warnings in Google's
+// Rich Results Test.
+(function injectSchemaOrg(){
+  const PAGE_URL='https://paradox-iq.github.io/RustTopBuilders/';
+  const author={'@type':'Person','name':'altyshenskiy'};
+  const items=builders
+    .filter(b=>b.ratingValue>0)
+    .sort((a,b)=>b.ratingValue-a.ratingValue)
+    .map((b,i)=>{
+      const ytLink=b.links.find(l=>/youtube/i.test(l.u||l.t));
+      const person={'@type':'Person','name':b.name};
+      if(ytLink) person.sameAs=[ytLink.u];
+      const review={
+        '@type':'Review',
+        'itemReviewed':person,
+        'reviewRating':{'@type':'Rating','ratingValue':b.ratingValue,'bestRating':5,'worstRating':1},
+        'author':author,
+        'name':`${b.name} — ${b.ratingValue}/5`,
+        'reviewBody':b.descEN || b.desc || ''
+      };
+      return {'@type':'ListItem','position':i+1,'url':`${PAGE_URL}?b=${encodeURIComponent(b.name)}`,'item':review};
+    });
+  const ratedCount=items.length;
+  const avgRating=ratedCount?(builders.filter(b=>b.ratingValue>0).reduce((s,b)=>s+b.ratingValue,0)/ratedCount):0;
+  const ld={
+    '@context':'https://schema.org',
+    '@graph':[
+      {
+        '@type':'WebSite','@id':PAGE_URL+'#website','url':PAGE_URL,
+        'name':'Rust Builders Tier List','inLanguage':['ru','en'],
+        'publisher':{'@type':'Person','name':'altyshenskiy','url':PAGE_URL}
+      },
+      {
+        '@type':'WebPage','@id':PAGE_URL+'#webpage','url':PAGE_URL,
+        'name':'Rust Builders — Полный гид 2026',
+        'inLanguage':document.documentElement.lang||'ru',
+        'isPartOf':{'@id':PAGE_URL+'#website'},
+        'about':{'@type':'Thing','name':'Rust (видеоигра) — билдеры баз'},
+        'datePublished':'2025-12-01',
+        'dateModified':new Date().toISOString().slice(0,10)
+      },
+      {
+        '@type':'ItemList','@id':PAGE_URL+'#tierlist',
+        'name':'Rust Base Builders Tier List',
+        'description':'Curated subjective ranking of 49+ Rust base builders with ¼-star granularity.',
+        'numberOfItems':items.length,
+        'itemListOrder':'https://schema.org/ItemListOrderDescending',
+        'mainEntityOfPage':{'@id':PAGE_URL+'#webpage'},
+        'itemListElement':items
+      }
+    ]
+  };
+  if(ratedCount){
+    ld['@graph'].push({
+      '@type':'AggregateRating','@id':PAGE_URL+'#aggregate',
+      'itemReviewed':{'@type':'ItemList','@id':PAGE_URL+'#tierlist'},
+      'ratingValue':+avgRating.toFixed(2),'reviewCount':ratedCount,'bestRating':5,'worstRating':1
+    });
+  }
+  const tag=document.createElement('script');
+  tag.type='application/ld+json';
+  tag.textContent=JSON.stringify(ld);
+  document.head.appendChild(tag);
+})();
+
 // Build the visual subscores row (5-dot bars + numbers).
 function subscoresHTML(b){
   if(b.pending) return '';
