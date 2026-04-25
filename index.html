@@ -114,16 +114,102 @@
   #scrollTopBtn{display:none;position:fixed;bottom:30px;right:30px;z-index:99;width:44px;height:44px;font-size:20px;font-weight:bold;background:var(--surface2);color:var(--accent);border:1px solid var(--border);border-radius:50%;cursor:pointer;transition:all .3s;box-shadow:0 4px 12px rgba(0,0,0,.5)}
   #scrollTopBtn:hover{background:var(--accent);color:var(--bg);border-color:var(--accent);transform:translateY(-3px);box-shadow:0 6px 16px rgba(200,169,110,.3)}
   @media(max-width:680px){
-    .page{padding:24px 16px 60px} .grid{grid-template-columns:1fr} .custom-grid{grid-template-columns:1fr}
+    .page{padding:24px 16px 60px} .grid{grid-template-columns:1fr} .custom-grid{grid-template-columns:1fr} .glossary-grid{grid-template-columns:1fr}
     .card-name{font-size:16px} .control-row{flex-direction:column;align-items:flex-start} .lang-bar{margin-bottom:20px}
     .links{gap:6px} .link{width:calc(50% - 3px);flex-grow:1} #scrollTopBtn{bottom:20px;right:20px;width:40px;height:40px;font-size:18px}
+    .stat-strip{gap:14px;font-size:10px} .stat-strip strong{font-size:12px}
+    .section-stars{font-size:20px} .section-label{font-size:11px}
   }
+
+  /* --- Light theme override --- */
+  html[data-theme="light"]{
+    --bg:#f5f1e8;--surface:#ffffff;--surface2:#f0e8d8;--border:#d8cfb8;--border2:#c8b896;
+    --text:#2a2418;--muted:#8a7e62;--muted2:#5a4f3a;--accent:#a8895e;--accent2:#7a5a30;
+    --green-bg:#e0f0e8;--green-text:#3a7a55;--red-text:#a04030;--amber-text:#a06820;
+    --blue-bg:#e0e8f0;--blue-text:#305078;--star:#a8895e;
+  }
+  html[data-theme="light"] body{background:linear-gradient(180deg,#f5f1e8 0%,#ece4d0 100%)}
+  html[data-theme="light"] .noise{opacity:0.18}
+  html[data-theme="light"] .custom-section{background:linear-gradient(135deg,#fff8e8 0%,#f5f1e8 60%);border-color:#e0c890}
+  html[data-theme="light"] .tag-patreon{background:#fdf3df;color:#8a5a00;border-color:#e8c890}
+  html[data-theme="light"] .tag-boosty{background:#f3e8ff;color:#6a3a8e;border-color:#d8c0f0}
+  html[data-theme="light"] .tag-discord{background:#e0e8f8;color:#3a5a90;border-color:#b8c8e8}
+  html[data-theme="light"] .tag-shop{background:#e8f5e0;color:#3a7030;border-color:#b8d8a0}
+  html[data-theme="light"] .tag-custom{background:#fdf0d8;color:#7a5a00;border-color:#e8d090}
+  html[data-theme="light"] .tag-tiktok{background:#fde0f0;color:#8a3070;border-color:#e8a8d0}
+  html[data-theme="light"] .tag-twitch{background:#f0e8ff;color:#5a30a0;border-color:#c8b8e8}
+  html[data-theme="light"] .tag-website{background:#e0f0f0;color:#2a5a5a;border-color:#a8d0d0}
+  html[data-theme="light"] .tag-telegram{background:#e0eaf5;color:#305a90;border-color:#a8c8e8}
+  html[data-theme="light"] .tag-instagram{background:#fde0f0;color:#8a3070;border-color:#e8a8d0}
+  html[data-theme="light"] .card-rating-num{color:var(--muted2)}
+
+  /* --- Tag color refinement (dark) --- */
+  .tag-custom{background:#1a1400;color:#d8a050;border:1px solid #4a3a10}
+
+  /* --- Hero stat strip --- */
+  .stat-strip{display:flex;gap:22px;flex-wrap:wrap;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.05em;margin-top:16px;padding:12px 16px;background:rgba(200,169,110,.04);border:1px solid var(--border);border-radius:8px}
+  .stat-strip span{display:flex;align-items:center;gap:6px}
+  .stat-strip strong{color:var(--accent2);font-weight:700;font-size:13px;font-family:'Syne',sans-serif}
+
+  /* --- Details: methodology + glossary --- */
+  .info-block{margin:0 0 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .info-block summary{cursor:pointer;padding:14px 18px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:var(--accent);user-select:none;list-style:none;display:flex;align-items:center;justify-content:space-between;text-transform:uppercase}
+  .info-block summary::-webkit-details-marker{display:none}
+  .info-block summary::after{content:'▾';color:var(--muted);transition:transform .2s;font-size:14px}
+  .info-block[open] summary::after{transform:rotate(180deg)}
+  .info-block summary:hover{color:var(--accent2);background:rgba(200,169,110,.04)}
+  .info-body{padding:4px 18px 18px;font-size:13px;color:var(--muted2);line-height:1.7;border-top:1px solid var(--border)}
+  .info-body h4{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.12em;margin:14px 0 4px;text-transform:uppercase}
+  .info-body h4:first-child{margin-top:10px}
+  .info-body p{font-size:13px;color:var(--muted2);margin-bottom:4px}
+  .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0 22px;margin-top:6px}
+  .glossary-item{font-size:12px;color:var(--muted2);padding:9px 0;border-top:1px dashed var(--border);line-height:1.55}
+  .glossary-item strong{display:block;color:var(--text);font-size:13px;margin-bottom:2px;font-weight:700}
+
+  /* --- Tier accent stripe on cards --- */
+  .card{padding-left:28px}
+  .card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:transparent;pointer-events:none}
+  .card.tier-5::after{background:linear-gradient(180deg,#e8c88e,#c8a96e)}
+  .card.tier-45::after{background:linear-gradient(180deg,#c8a96e,#8a6a3a)}
+  .card.tier-4::after{background:linear-gradient(180deg,#8a6a3a,#5a4a2a)}
+  .card.tier-35::after{background:#5a4a2a}
+  .card.tier-3::after{background:#3a3530}
+  .card.tier-low::after{background:#2a2420}
+  .card.tier-pending::after{background:repeating-linear-gradient(45deg,#3a3530 0 4px,transparent 4px 8px)}
+  .card.tier-5{box-shadow:0 0 0 1px rgba(200,169,110,.25),0 8px 28px rgba(200,169,110,.06)}
+
+  /* --- Section header polish --- */
+  .section-header{margin-top:60px;margin-bottom:24px}
+  .section-stars{font-size:24px;letter-spacing:-1px;filter:drop-shadow(0 0 8px rgba(200,169,110,.35))}
+  .section-label{font-size:13px;font-weight:700;color:var(--accent2)}
+
+  /* --- Hash-hue avatars (CSS-only) --- */
+  .card-avatar{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;font-family:'Syne',sans-serif;letter-spacing:0;text-transform:uppercase;border:none;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+
+  /* --- Sticky filter bar (desktop only) --- */
+  @media(min-width:920px){
+    .controls.sticky-on{position:sticky;top:0;z-index:50;background:var(--bg);padding-top:14px;padding-bottom:14px;margin-bottom:18px;backdrop-filter:blur(6px)}
+    .controls.sticky-on::after{content:'';position:absolute;left:-32px;right:-32px;top:0;bottom:0;background:var(--bg);opacity:.92;z-index:-1}
+  }
+
+  /* --- Search highlight --- */
+  mark.search-hl{background:rgba(200,169,110,.28);color:var(--accent2);padding:0 2px;border-radius:2px;font-weight:600}
+
+  /* --- Theme toggle button --- */
+  .theme-btn{font-family:'Space Mono',monospace;font-size:13px;line-height:1;cursor:pointer;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:6px;transition:all .18s;margin-right:10px;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center}
+  .theme-btn:hover{color:var(--accent2);border-color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .lang-bar{align-items:center;gap:0}
+
+  /* --- Compact hero meta on small heights --- */
+  .header h1{margin-bottom:14px}
 </style>
 </head>
 <body>
 <div class="noise"></div>
 <div class="page">
   <div class="lang-bar">
+    <button class="theme-btn" id="themeToggle" type="button" aria-label="Сменить тему / Toggle theme" title="Сменить тему / Toggle theme">☾</button>
     <div class="lang-switcher">
       <button class="lang-btn active" id="btn-ru" type="button" aria-label="Русский" aria-pressed="true">RU</button><button class="lang-btn" id="btn-en" type="button" aria-label="English" aria-pressed="false">EN</button>
     </div>
@@ -137,7 +223,76 @@
     </div>
     <div class="disclaimer" id="disclaimer-ru">// все оценки — субъективное личное мнение автора гида и не претендуют на абсолютную истину</div>
     <div class="disclaimer" id="disclaimer-en" style="display:none">// all ratings are the subjective personal opinion of the guide author and do not claim to be absolute truth</div>
+    <div class="stat-strip" id="statStrip" aria-live="polite"></div>
   </div>
+
+  <details class="info-block" id="methodology">
+    <summary><span data-ru="// как я оцениваю" data-en="// how i rate">// как я оцениваю</span></summary>
+    <div class="info-body">
+      <div data-lang-block="ru">
+        <h4>Качество построек</h4>
+        <p>Структура и фишки: пики, крыши, защита бункеров, расширяемость, качество хоникомба. Чем умнее ходы для рейдеров — тем выше.</p>
+        <h4>Активность канала</h4>
+        <p>Свежесть последних видео и регулярность. Если канал в инактиве &gt;2 мес — он не в этом гиде.</p>
+        <h4>Уникальность</h4>
+        <p>Свой стиль или переснимает чужое? Адаптация чужих фишек ≠ оригинальность. Свежие концепты — это плюс.</p>
+        <h4>Доступность</h4>
+        <p>Цена контента, есть ли p2w-скины в базах, наличие бесплатных публичных баз, тарифы на кастом.</p>
+        <h4>Коммуникация</h4>
+        <p>Отвечает ли в Discord, поддерживает ли свои базы при апдейтах, общается с комьюнити.</p>
+        <h4>Что НЕ влияет</h4>
+        <p>Подписчики, монтаж, личные конфликты с другими билдерами, наличие/отсутствие меня в их Discord. Только сами базы и их экосистема.</p>
+      </div>
+      <div data-lang-block="en" style="display:none">
+        <h4>Build quality</h4>
+        <p>Structure &amp; features: peeks, roofs, bunker defense, expandability, honeycomb quality. The smarter the plays for raiders — the higher.</p>
+        <h4>Channel activity</h4>
+        <p>Recency and regularity of the latest videos. Inactive &gt;2 months → not in this guide.</p>
+        <h4>Originality</h4>
+        <p>Own style vs copying. Adapting others' features ≠ originality. Fresh concepts are a plus.</p>
+        <h4>Accessibility</h4>
+        <p>Cost of content, p2w-skin requirement in bases, presence of free public bases, custom-build pricing.</p>
+        <h4>Communication</h4>
+        <p>Discord responsiveness, supporting bases through game updates, community engagement.</p>
+        <h4>What does NOT count</h4>
+        <p>Subscribers, video editing, personal beef between builders, whether I'm in their Discord. Only the bases themselves and their ecosystem.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="info-block" id="glossary">
+    <summary><span data-ru="// глоссарий: 12 терминов" data-en="// glossary: 12 terms">// глоссарий: 12 терминов</span></summary>
+    <div class="info-body">
+      <div class="glossary-grid" data-lang-block="ru">
+        <div class="glossary-item"><strong>Floor stack / Флор стак</strong>Многослойное расположение TC и кейсов на разных полах — рейдер тратит больше ресурсов на пробой.</div>
+        <div class="glossary-item"><strong>Pixel gaps / Пиксель-гапы</strong>Тонкие щели между структурами для прострелов с минимальным экспозом.</div>
+        <div class="glossary-item"><strong>Wide gaps / Вайд гапы</strong>Широкие пики со ступенями и углами — больше углов для атаки и контроля.</div>
+        <div class="glossary-item"><strong>China wall / Китайка</strong>Стена-обманка из дешёвых блоков, прикрывающая основу базы и маскирующая структуру.</div>
+        <div class="glossary-item"><strong>Open core / Опен кор</strong>База без сплошных внутренних стен — простор для пиков, но риск для коробок.</div>
+        <div class="glossary-item"><strong>Snowball / Сноуболл</strong>Крошечный стартер 1×1, рассчитанный на быстрое расширение в первые 1-2 часа вайпа.</div>
+        <div class="glossary-item"><strong>Multi-TC / Мульти-ТС</strong>Несколько TC в одной базе для усложнения рейда с одного направления.</div>
+        <div class="glossary-item"><strong>Honeycomb / Соты</strong>Дополнительные стены вокруг ключевых структур — больше рекордов для пробоя.</div>
+        <div class="glossary-item"><strong>Bunker / Бункер</strong>Скрытая лут-комната, доступ к которой требует «открывалки» (turret/SAM/blockable).</div>
+        <div class="glossary-item"><strong>Open base / Открывашка</strong>Турельная конструкция, открывающая стену или потолок при нажатии — для пиков и логистики.</div>
+        <div class="glossary-item"><strong>Online / Offline def</strong>Онлайн-деф — оборона при играющих игроках. Оффлайн-деф — защита от ночных рейдов.</div>
+        <div class="glossary-item"><strong>Retake / Ретейк</strong>Угол или комната, специально спроектированные для отбивания базы у внутренних рейдеров.</div>
+      </div>
+      <div class="glossary-grid" data-lang-block="en" style="display:none">
+        <div class="glossary-item"><strong>Floor stack</strong>Multi-layered TC and box layout across floors — raiders waste resources punching through.</div>
+        <div class="glossary-item"><strong>Pixel gaps</strong>Tiny slits between structures allowing shots with minimum exposure.</div>
+        <div class="glossary-item"><strong>Wide gaps</strong>Wide peeks with stairs and angles — more attack and control angles.</div>
+        <div class="glossary-item"><strong>China wall</strong>Decoy wall of cheap blocks shielding the main base and obfuscating its layout.</div>
+        <div class="glossary-item"><strong>Open core</strong>Base without solid inner walls — room for peeks, exposure for boxes.</div>
+        <div class="glossary-item"><strong>Snowball</strong>Tiny 1×1 starter built to expand rapidly in the first 1-2 hours of wipe.</div>
+        <div class="glossary-item"><strong>Multi-TC</strong>Multiple TCs in one base to complicate raids from a single direction.</div>
+        <div class="glossary-item"><strong>Honeycomb</strong>Extra walls around key structures — more records to punch through.</div>
+        <div class="glossary-item"><strong>Bunker</strong>Hidden loot room requiring an "opener" mechanism (turret/SAM/blockable).</div>
+        <div class="glossary-item"><strong>Open base</strong>Turret-driven mechanism that opens a wall or ceiling on toggle — for peeks and logistics.</div>
+        <div class="glossary-item"><strong>Online / Offline def</strong>Online def — defense while team is online. Offline def — defense against night raids.</div>
+        <div class="glossary-item"><strong>Retake</strong>Angle or room specifically designed for retaking the base from internal raiders.</div>
+      </div>
+    </div>
+  </details>
 
   <div class="custom-section">
     <div class="custom-title" id="custom-title-ru">// кто делает кастомные базы</div><div class="custom-title" id="custom-title-en" style="display:none">// who makes custom bases</div>
@@ -157,7 +312,7 @@
     </div>
   </div>
 
-  <div class="controls">
+  <div class="controls sticky-on">
     <div class="control-row">
       <span class="control-label" id="lbl-search-ru">ПОИСК</span><span class="control-label" id="lbl-search-en" style="display:none">SEARCH</span>
       <div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input class="search-input" id="searchInput" type="search" placeholder="Поиск..." aria-label="Поиск по билдерам" autocomplete="off"></div>
@@ -490,10 +645,33 @@ function setLang(l){
   });
   document.querySelectorAll('.chip').forEach(c=>{if(c.dataset[l]) c.textContent=c.dataset[l]});
   document.querySelectorAll('.custom-desc[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  document.querySelectorAll('[data-lang-block]').forEach(el=>{el.style.display=el.dataset.langBlock===l?'':'none'});
+  document.querySelectorAll('summary span[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   document.title=l==='ru'?'Rust Builders — Полный гид 2026':'Rust Builders — Full Guide 2026';
   searchInput.placeholder=l==='ru'?'Поиск...':'Search...';
   searchInput.setAttribute('aria-label',l==='ru'?'Поиск по билдерам':'Search builders');
+  renderStats();
   applyFilters();
+}
+
+// Compute & render hero stat-strip
+function renderStats(){
+  const el=document.getElementById('statStrip'); if(!el) return;
+  const total=builders.length, rated=builders.filter(b=>!b.pending), pending=total-rated.length;
+  const top=rated.filter(b=>b.ratingValue>=4).length;
+  const patreon=rated.filter(b=>b.tags.some(t=>t.includes('Patreon'))).length;
+  const customs=rated.filter(b=>b.tags.some(t=>t.includes('Кастом')||t.includes('Custom'))).length;
+  const bilingual=rated.filter(b=>b.langs.length>1).length;
+  const u=currentLang==='ru'
+    ?{b:'билдеров',top:'топ ≥4★',pat:'patreon',cust:'кастом',bi:'билингв',pend:'на рассмотрении',upd:'обновлено май 2026'}
+    :{b:'builders',top:'top ≥4★',pat:'patreon',cust:'custom',bi:'bilingual',pend:'pending',upd:'updated may 2026'};
+  el.innerHTML=`<span><strong>${total}</strong> ${u.b}</span>`+
+    `<span><strong>${top}</strong> ${u.top}</span>`+
+    `<span><strong>${patreon}</strong> ${u.pat}</span>`+
+    `<span><strong>${customs}</strong> ${u.cust}</span>`+
+    `<span><strong>${bilingual}</strong> ${u.bi}</span>`+
+    `<span><strong>${pending}</strong> ${u.pend}</span>`+
+    `<span>${u.upd}</span>`;
 }
 
 function applyFilters(){
@@ -519,6 +697,27 @@ function debouncedApplyFilters(){
   clearTimeout(searchDebounceTimer);
   searchDebounceTimer=setTimeout(applyFilters,150);
 }
+
+// Map rating value -> tier-* class for left accent stripe.
+function tierClass(v){
+  if(v<=0) return 'tier-pending';
+  if(v>=5) return 'tier-5';
+  if(v>=4.5) return 'tier-45';
+  if(v>=4) return 'tier-4';
+  if(v>=3.5) return 'tier-35';
+  if(v>=3) return 'tier-3';
+  return 'tier-low';
+}
+
+// Stable hash -> HSL hue for avatar background.
+function hashHue(s){let h=0;for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i); h|=0;} return Math.abs(h)%360;}
+function avatarStyle(name){const hue=hashHue(name); return `background:linear-gradient(135deg,hsl(${hue},38%,32%),hsl(${(hue+30)%360},42%,22%))`;}
+function avatarInitials(name){const cleaned=name.replace(/[^\p{L}\p{N} ]/gu,'').trim(); const parts=cleaned.split(/\s+/); if(parts.length>=2) return (parts[0][0]+parts[1][0]).toUpperCase(); return cleaned.slice(0,2).toUpperCase();}
+
+// Escape HTML special chars so dynamic strings can't break markup.
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+// Wrap matches of the current search query in <mark>; assumes input is already escaped.
+function hl(escaped){if(!searchQuery) return escaped; const re=new RegExp(searchQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'); return escaped.replace(re,m=>`<mark class="search-hl">${m}</mark>`);}
 
 function tagClass(tag){
   if(tag.includes('Patreon')) return 'tag tag-patreon';if(tag.includes('Boosty')) return 'tag tag-boosty';if(tag.includes('Shop')||tag.includes('fadedbuilds')) return 'tag tag-shop';if(tag.includes('Discord')) return 'tag tag-discord';if(tag.includes('Кастом')||tag.includes('Custom')) return 'tag tag-custom';if(tag.includes('TikTok')) return 'tag tag-tiktok';if(tag.includes('Twitch')) return 'tag tag-twitch';if(tag.includes('Website')) return 'tag tag-website';if(tag.includes('Telegram')) return 'tag tag-telegram';if(tag.includes('Instagram')) return 'tag tag-instagram';return 'tag';
@@ -559,18 +758,18 @@ function render(list){
       return `<div class="row"><span class="row-label">${lT}</span><span class="row-val ${r.c}">${vT}</span></div>`;
     }).join('');
     let linksH=b.links.length?`<div class="links">${b.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>`:'';
-    let avUrl=`https://ui-avatars.com/api/?name=${encodeURIComponent(b.name.split(' ')[0])}&background=2a2a2a&color=e8e4db&bold=true`;
     let fav=b.favorite?`<span class="badge-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'', upI=getUpkeepIcons(b.upkeep);
     let avAlt=`${b.name}${currentLang==='ru'?' — аватар':' avatar'}`;
+    let nameH=hl(esc(b.name)), handleH=hl(esc(b.handle)), descH=hl(desc);
     
-    html+=`<div class="card ${b.ratingValue>=5?'top':''} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''}">
+    html+=`<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''}">
       ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
-      <div class="card-head"><div class="card-head-left"><img src="${avUrl}" class="card-avatar" alt="${avAlt}" loading="lazy"><div>
-      <div class="card-name">${b.name}${fav}</div><div class="card-handle">${b.handle}</div>
+      <div class="card-head"><div class="card-head-left"><div class="card-avatar" style="${avatarStyle(b.name)}" aria-label="${esc(avAlt)}" role="img">${esc(avatarInitials(b.name))}</div><div>
+      <div class="card-name">${nameH}${fav}</div><div class="card-handle">${handleH}</div>
       ${upI?`<div class="cost-indicator">${upI}</div>`:''}</div></div>
       <div class="card-rating">${b.rating}<span class="card-rating-num">${rNum}</span></div></div>
       <div class="tags">${b.tags.map(t=>`<span class="${tagClass(t)}">${t}</span>`).join('')}</div>
-      <div class="divider"></div><div>${rowsH}</div><div class="card-desc">${desc}</div>${linksH}</div>`;
+      <div class="divider"></div><div>${rowsH}</div><div class="card-desc">${descH}</div>${linksH}</div>`;
   });
   if(curG!==null) html+='</div>';
   cont.innerHTML=html;
@@ -581,6 +780,12 @@ window.addEventListener('scroll',()=>stBtn.style.display=window.scrollY>400?"blo
 stBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 document.getElementById('btn-ru').addEventListener('click',()=>setLang('ru'));
 document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
+
+// Theme toggle (persists in localStorage).
+const themeBtn=document.getElementById('themeToggle');
+function applyTheme(t){document.documentElement.dataset.theme=t; themeBtn.textContent=t==='light'?'☀':'☾';}
+try{const saved=localStorage.getItem('rtb-theme'); if(saved==='light') applyTheme('light');}catch(e){}
+themeBtn.addEventListener('click',()=>{const cur=document.documentElement.dataset.theme==='light'?'dark':'light'; applyTheme(cur); try{localStorage.setItem('rtb-theme',cur);}catch(e){}});
 formatChips.forEach(c=>{c.addEventListener('click',()=>{formatChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentFormat=c.dataset.format; applyFilters();})});
 langChips.forEach(c=>{c.addEventListener('click',()=>{langChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentLangFilter=c.dataset.lang; applyFilters();})});
 sortChips.forEach(c=>{c.addEventListener('click',()=>{sortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentSort=c.dataset.sort; applyFilters();})});
