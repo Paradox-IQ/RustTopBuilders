@@ -75,6 +75,9 @@
   .card.pending-review{border-style:dashed}
   .card.favorite{border-color:rgba(200,169,110,.6);box-shadow:0 0 20px rgba(200,169,110,.1)}
   .card.favorite:hover{border-color:var(--accent);box-shadow:0 8px 30px rgba(200,169,110,.25)}
+  /* Pulse highlight when a card is targeted via ?b=Name share-link */
+  @keyframes cardFocusPulse{0%{box-shadow:0 0 0 0 rgba(200,169,110,.55), 0 0 28px rgba(200,169,110,.3)}50%{box-shadow:0 0 0 6px rgba(200,169,110,.18), 0 0 36px rgba(200,169,110,.45)}100%{box-shadow:0 0 0 0 rgba(200,169,110,0), 0 0 0 0 rgba(200,169,110,0)}}
+  .card.focus-pulse{animation:cardFocusPulse 2.4s ease-out 1; border-color:var(--accent)!important}
   .paid-dot{position:absolute;top:14px;right:14px;width:8px;height:8px;border-radius:50%;background:#e0a030;box-shadow:0 0 6px rgba(224,160,48,.5)}
   .card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-right:18px}
   .card-head-left{display:flex;align-items:center;gap:14px}
@@ -806,6 +809,45 @@ function subscoresHTML(b){
 }
 
 let currentLang='ru', currentFormat='all', currentLangFilter='all', currentSort='rating', searchQuery='';
+// URL state sync — keeps share-link compatibility for filters, search, lang, compare set, and builder anchor.
+function builderSlug(name){return String(name).toLowerCase().replace(/[^a-zа-яё0-9]+/gi,'-').replace(/^-|-$/g,'');}
+function urlSyncSuspended(){return !!window.__urlSyncSuspended;}
+function syncURL(){
+  if(urlSyncSuspended()) return;
+  const p=new URLSearchParams();
+  if(searchQuery) p.set('q',searchQuery);
+  if(currentFormat!=='all') p.set('fmt',currentFormat);
+  if(currentLangFilter!=='all') p.set('lang',currentLangFilter);
+  if(currentSort!=='rating') p.set('sort',currentSort);
+  if(currentLang!=='ru') p.set('ui','en');
+  if(typeof cmpSet!=='undefined' && cmpSet.size) p.set('cmp',[...cmpSet].join('|'));
+  const qs=p.toString();
+  const url=window.location.pathname+(qs?'?'+qs:'')+window.location.hash;
+  history.replaceState(null,'',url);
+}
+function applyURLStateToControls(){
+  const p=new URLSearchParams(window.location.search);
+  // Search query
+  const q=p.get('q'); if(q){searchInput.value=q; searchQuery=q.toLowerCase();}
+  // Format / language / sort
+  const fmt=p.get('fmt'); if(fmt && document.querySelector(`#formatFilters .chip[data-format="${CSS.escape(fmt)}"]`)){currentFormat=fmt; formatChips.forEach(c=>c.classList.toggle('active',c.dataset.format===fmt));}
+  const lng=p.get('lang'); if(lng && document.querySelector(`#langFilters .chip[data-lang="${CSS.escape(lng)}"]`)){currentLangFilter=lng; langChips.forEach(c=>c.classList.toggle('active',c.dataset.lang===lng));}
+  const srt=p.get('sort'); if(srt && document.querySelector(`#sortFilters .chip[data-sort="${CSS.escape(srt)}"]`)){currentSort=srt; sortChips.forEach(c=>c.classList.toggle('active',c.dataset.sort===srt));}
+  // Compare set (deferred until cmpSet exists; processed at the end of script)
+  const cmp=p.get('cmp'); if(cmp) window.__pendingCmpFromURL=cmp.split('|').filter(Boolean).slice(0,3);
+}
+function focusBuilderFromURL(){
+  const p=new URLSearchParams(window.location.search);
+  const target=p.get('b') || (window.location.hash.startsWith('#b-')?window.location.hash.slice(3):null);
+  if(!target) return;
+  // Find the card by name slug match
+  const slug=builderSlug(target);
+  const card=document.querySelector(`.card[id="b-${CSS.escape(slug)}"]`) || [...document.querySelectorAll('.card')].find(c=>builderSlug(c.dataset.builder||'')===slug);
+  if(!card) return;
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+  card.classList.add('focus-pulse');
+  setTimeout(()=>card.classList.remove('focus-pulse'), 2400);
+}
 const formatChips=document.querySelectorAll('#formatFilters .chip'), langChips=document.querySelectorAll('#langFilters .chip'), sortChips=document.querySelectorAll('#sortFilters .chip'), searchInput=document.getElementById('searchInput');
 
 function setLang(l){
@@ -883,7 +925,9 @@ function renderStats(){
 }
 
 function applyFilters(){
-  searchQuery=searchInput.value.toLowerCase().trim();
+  const newQ=searchInput.value.toLowerCase().trim();
+  if(newQ!==searchQuery){searchQuery=newQ; syncURL();}
+  else searchQuery=newQ;
   let f=builders.filter(b=>{
     if(!matchesFormat(b,currentFormat)) return false;
     if(currentLangFilter!=='all' && !b.langs.includes(currentLangFilter)) return false;
@@ -984,7 +1028,7 @@ function render(list){
     let nameH=hl(esc(b.name)), handleH=hl(esc(b.handle)), descH=hl(desc);
     
     let cmpOn=cmpSet.has(b.name);
-    html+=`<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''} ${cmpOn?'cmp-selected':''}">
+    html+=`<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''} ${cmpOn?'cmp-selected':''}" data-builder="${esc(b.name)}" id="b-${esc(builderSlug(b.name))}">
       <button class="cmp-btn ${cmpOn?'active':''}" data-cmp="${esc(b.name)}" type="button" aria-pressed="${cmpOn}" title="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}" aria-label="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}">${cmpOn?'✓':'+'}</button>
       ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
       <div class="card-head"><div class="card-head-left">${avatarHTML(b.name)}<div>
@@ -1018,17 +1062,17 @@ if(filtBtn && ctrls){
   });
 }
 stBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-document.getElementById('btn-ru').addEventListener('click',()=>setLang('ru'));
-document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
+document.getElementById('btn-ru').addEventListener('click',()=>{setLang('ru'); syncURL();});
+document.getElementById('btn-en').addEventListener('click',()=>{setLang('en'); syncURL();});
 
 // Theme toggle (persists in localStorage).
 const themeBtn=document.getElementById('themeToggle');
 function applyTheme(t){document.documentElement.dataset.theme=t; themeBtn.textContent=t==='light'?'☀':'☾';}
 try{const saved=localStorage.getItem('rtb-theme'); if(saved==='light') applyTheme('light');}catch(e){}
 themeBtn.addEventListener('click',()=>{const cur=document.documentElement.dataset.theme==='light'?'dark':'light'; applyTheme(cur); try{localStorage.setItem('rtb-theme',cur);}catch(e){}});
-formatChips.forEach(c=>{c.addEventListener('click',()=>{formatChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentFormat=c.dataset.format; applyFilters();})});
-langChips.forEach(c=>{c.addEventListener('click',()=>{langChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentLangFilter=c.dataset.lang; applyFilters();})});
-sortChips.forEach(c=>{c.addEventListener('click',()=>{sortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentSort=c.dataset.sort; applyFilters();})});
+formatChips.forEach(c=>{c.addEventListener('click',()=>{formatChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentFormat=c.dataset.format; applyFilters(); syncURL();})});
+langChips.forEach(c=>{c.addEventListener('click',()=>{langChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentLangFilter=c.dataset.lang; applyFilters(); syncURL();})});
+sortChips.forEach(c=>{c.addEventListener('click',()=>{sortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentSort=c.dataset.sort; applyFilters(); syncURL();})});
 const customSortChips=document.querySelectorAll('.custom-sort .chip');
 customSortChips.forEach(c=>{c.addEventListener('click',()=>{customSortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); customSort=c.dataset.csort; renderCustoms();})});
 searchInput.addEventListener('input',debouncedApplyFilters);
@@ -1068,6 +1112,7 @@ function toggleCmp(name){
   else if(cmpSet.size<CMP_MAX){cmpSet.add(name);}
   else {alert(currentLang==='ru'?`Максимум ${CMP_MAX} билдеров за раз. Убери одного и добавь нового.`:`Up to ${CMP_MAX} at a time. Remove one before adding another.`); return;}
   refreshCmpBar();
+  syncURL();
 }
 
 document.getElementById('cardsContainer').addEventListener('click',e=>{
@@ -1075,7 +1120,7 @@ document.getElementById('cardsContainer').addEventListener('click',e=>{
   e.stopPropagation(); toggleCmp(b.dataset.cmp);
 });
 cmpChipsEl.addEventListener('click',e=>{const x=e.target.closest('[data-rm]'); if(x){toggleCmp(x.dataset.rm);}});
-cmpClear.addEventListener('click',()=>{cmpSet.clear(); refreshCmpBar();});
+cmpClear.addEventListener('click',()=>{cmpSet.clear(); refreshCmpBar(); syncURL();});
 
 function openCompare(){
   const arr=[...cmpSet]; if(arr.length<2) return;
@@ -1116,7 +1161,15 @@ cmpClose.addEventListener('click',closeCompare);
 cmpOverlay.addEventListener('click',e=>{if(e.target===cmpOverlay) closeCompare();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cmpOverlay.classList.contains('show')) closeCompare();});
 
-setLang('ru');
+// Apply URL params (set chip states, search, language) before first render.
+applyURLStateToControls();
+// If a UI language was specified in URL, honor it.
+const _uiLang=new URLSearchParams(window.location.search).get('ui')==='en'?'en':'ru';
+setLang(_uiLang);
+// Restore compare set from URL after cmpSet is populated.
+if(window.__pendingCmpFromURL){window.__pendingCmpFromURL.forEach(n=>{if(builders.find(b=>b.name===n)) cmpSet.add(n);}); refreshCmpBar(); applyFilters();}
+// After first render, scroll to and pulse the targeted builder if URL has ?b=Name.
+requestAnimationFrame(()=>requestAnimationFrame(focusBuilderFromURL));
 </script>
 </body>
 </html>
