@@ -197,10 +197,25 @@
   /* --- Hash-hue avatars (CSS-only) --- */
   .card-avatar{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;font-family:'Syne',sans-serif;letter-spacing:0;text-transform:uppercase;border:none;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 
-  /* --- Sticky filter bar (desktop only) --- */
+  /* --- Sticky filter bar (desktop only): collapses to compact rail when scrolling --- */
   @media(min-width:920px){
-    .controls.sticky-on{position:sticky;top:0;z-index:50;background:var(--bg);padding-top:14px;padding-bottom:14px;margin-bottom:18px;backdrop-filter:blur(6px)}
-    .controls.sticky-on::after{content:'';position:absolute;left:-32px;right:-32px;top:0;bottom:0;background:var(--bg);opacity:.92;z-index:-1}
+    .controls.sticky-on{position:sticky;top:0;z-index:50;background:var(--bg);padding-top:14px;padding-bottom:14px;margin-bottom:18px;backdrop-filter:blur(6px);transition:padding .18s,gap .18s}
+    .controls.sticky-on::after{content:'';position:absolute;left:-32px;right:-32px;top:0;bottom:0;background:var(--bg);opacity:.92;z-index:-1;transition:box-shadow .18s}
+    /* Compact mode: triggered by JS adding .compact when user scrolls past hero */
+    .controls.sticky-on.compact{padding-top:8px;padding-bottom:8px;gap:6px;border-bottom-color:transparent}
+    .controls.sticky-on.compact::after{box-shadow:0 4px 16px rgba(0,0,0,.4)}
+    .controls.sticky-on.compact .control-label{display:none}
+    .controls.sticky-on.compact .upkeep-legend{display:none}
+    .controls.sticky-on.compact .control-row{gap:6px}
+    .controls.sticky-on.compact .chip{font-size:10px;padding:5px 11px}
+    .controls.sticky-on.compact .search-wrap input{padding:8px 30px 8px 32px;font-size:12px}
+    .controls.sticky-on.compact .search-wrap{max-width:240px}
+    .controls.sticky-on.compact .control-row{align-items:center}
+    /* Hide the paid-legend hint in compact mode to save horizontal space */
+    .controls.sticky-on.compact .paid-legend{display:none}
+    /* Stack format/lang/sort onto a single row in compact mode */
+    .controls.sticky-on.compact{flex-direction:row;flex-wrap:wrap;align-items:center;padding-bottom:10px}
+    .controls.sticky-on.compact .control-row{flex:0 1 auto}
   }
 
   /* --- Search highlight --- */
@@ -983,7 +998,25 @@ function render(list){
 }
 
 const stBtn=document.getElementById("scrollTopBtn");
-window.addEventListener('scroll',()=>stBtn.style.display=window.scrollY>400?"block":"none");
+// Sentinel-based detector for the sticky controls: when sentinel scrolls
+// out of view, the controls are pinned and we collapse them to compact mode.
+const ctrls=document.querySelector('.controls.sticky-on');
+if(ctrls){
+  const sentinel=document.createElement('div');
+  sentinel.style.cssText='height:1px;margin-top:-1px;pointer-events:none';
+  ctrls.parentNode.insertBefore(sentinel,ctrls);
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      // Only collapse on desktop (matches CSS @media min-width:920px).
+      const isDesktop=window.matchMedia('(min-width:920px)').matches;
+      ctrls.classList.toggle('compact', isDesktop && !e.isIntersecting);
+    });
+  },{threshold:0,rootMargin:'-1px 0px 0px 0px'});
+  io.observe(sentinel);
+}
+window.addEventListener('scroll',()=>{
+  stBtn.style.display=window.scrollY>400?"block":"none";
+});
 stBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 document.getElementById('btn-ru').addEventListener('click',()=>setLang('ru'));
 document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
