@@ -579,14 +579,15 @@
         <div class="suggest-preview" id="sug-preview" aria-live="polite"></div>
 
         <div class="suggest-actions full" id="sug-send-actions" style="display:none">
-          <button type="button" id="sug-copy-btn" class="suggest-btn primary" data-ru="📋 Скопировать в буфер" data-en="📋 Copy to clipboard">📋 Скопировать в буфер</button>
-          <a id="sug-tg-link" class="suggest-btn" target="_blank" rel="noopener noreferrer" data-ru="Открыть Telegram с текстом" data-en="Open Telegram with text">Открыть Telegram с текстом</a>
+          <button type="button" id="sug-send-btn" class="suggest-btn primary" data-ru="📨 Отправить заявку" data-en="📨 Send suggestion">📨 Отправить заявку</button>
+          <button type="button" id="sug-copy-btn" class="suggest-btn" data-ru="📋 Скопировать" data-en="📋 Copy">📋 Скопировать</button>
+          <a id="sug-tg-link" class="suggest-btn" target="_blank" rel="noopener noreferrer" data-ru="Через Telegram" data-en="Via Telegram">Через Telegram</a>
         </div>
 
         <div class="suggest-status" id="sug-status" role="status"></div>
       </form>
 
-      <div class="suggest-meta" data-ru="// Discord для прямой отправки: gamunkul8515. Все поля кроме контакта используются только для формирования текста — сервер не дёргается." data-en="// Discord for direct DM: gamunkul8515. All fields except your contact are only used to format the text — no server is contacted.">// Discord для прямой отправки: gamunkul8515. Все поля кроме контакта используются только для формирования текста — сервер не дёргается.</div>
+      <div class="suggest-meta" data-ru="// Кнопка «Отправить заявку» сразу создаёт сообщение в моём приватном Discord-канале — без email, без ручной пересылки. Альтернативно: «Скопировать» и вставить вручную в DM gamunkul8515." data-en="// 'Send suggestion' posts directly to my private Discord channel — no email, no manual forwarding. Alternatively: copy the text and DM it to gamunkul8515.">// Кнопка «Отправить заявку» сразу создаёт сообщение в моём приватном Discord-канале — без email, без ручной пересылки. Альтернативно: «Скопировать» и вставить вручную в DM gamunkul8515.</div>
     </div>
   </details>
 
@@ -1449,6 +1450,13 @@ const SUGGEST_DISCORD = 'gamunkul8515';
 // directly. When empty, falls back to t.me/share/url which lets the user
 // paste the prefilled text into any chat.
 const SUGGEST_TG = '';
+// Discord webhook for the private #suggest-builder channel. The URL is
+// public-by-design — worst case a spammer floods one channel and the
+// owner rotates the webhook. No secrets ride on this.
+const SUGGEST_DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1497650640325841006/ZeZ8uBPUoLEOwTvnHW1qg0TzZWLicPOzwHGxCfbKAULZwek5wYoaev_PjweieYiZSBII';
+// Per-device cooldown to prevent accidental double-clicks and casual spam.
+const SUGGEST_COOLDOWN_MS = 30000;
+const SUGGEST_LS_KEY = 'rtb_suggest_last_send';
 
 function buildSuggestText(){
   const get = id => (document.getElementById(id).value || '').trim();
@@ -1479,6 +1487,36 @@ function buildSuggestText(){
   return lines.join('\n');
 }
 
+function buildSuggestEmbed(){
+  const get = id => (document.getElementById(id).value || '').trim();
+  const name = get('sug-name');
+  const yt = get('sug-youtube');
+  const fmtSel = document.getElementById('sug-format');
+  const langSel = document.getElementById('sug-lang');
+  const fmtTxt = fmtSel.value ? fmtSel.options[fmtSel.selectedIndex].textContent.trim() : '—';
+  const langTxt = langSel.value ? langSel.options[langSel.selectedIndex].textContent.trim() : '—';
+  const note = get('sug-note');
+  const contact = get('sug-contact') || '—';
+  const fields = [
+    {name:'YouTube', value:yt, inline:false},
+    {name:'Формат / Format', value:fmtTxt, inline:true},
+    {name:'Язык / Language', value:langTxt, inline:true},
+    {name:'Описание / Note', value:note.length>1000 ? note.slice(0,997)+'…' : note, inline:false},
+    {name:'Контакт автора / Submitter contact', value:contact, inline:false}
+  ];
+  return {
+    username: 'Rust Builders — Suggestions',
+    embeds: [{
+      title: `🆕 ${name}`,
+      url: yt,
+      color: 0xc8a96e,
+      fields: fields,
+      footer: {text:'Submitted via paradox-iq.github.io/RustTopBuilders'},
+      timestamp: new Date().toISOString()
+    }]
+  };
+}
+
 function validateSuggest(){
   const fields = [
     {id:'sug-name', test:v=>v.length>=2 && v.length<=80},
@@ -1504,6 +1542,7 @@ function setupSuggestForm(){
   const resetBtn = document.getElementById('sug-reset-btn');
   const copyBtn = document.getElementById('sug-copy-btn');
   const tgLink = document.getElementById('sug-tg-link');
+  const sendBtn = document.getElementById('sug-send-btn');
 
   function setStatus(msg, kind){
     statusEl.className = 'suggest-status' + (kind?' '+kind:'');
@@ -1535,9 +1574,47 @@ function setupSuggestForm(){
       ? `https://t.me/${SUGGEST_TG}?text=${body}`
       : `https://t.me/share/url?url=${encodeURIComponent('https://paradox-iq.github.io/RustTopBuilders/')}&text=${body}`;
     setStatus(currentLang==='ru'
-      ? `Готово. Скопируй текст и отправь в Discord (${SUGGEST_DISCORD}) или используй кнопки.`
-      : `Ready. Copy the text and DM it on Discord (${SUGGEST_DISCORD}) or use the buttons.`,
+      ? 'Готово. Жми «Отправить заявку» — она сразу попадёт ко мне в Discord-канал.'
+      : "Ready. Click 'Send suggestion' — it'll land straight in my Discord channel.",
       'ok');
+  });
+
+  sendBtn.addEventListener('click', async ()=>{
+    const bad = validateSuggest();
+    if(bad){ bad.focus(); return; }
+    const last = parseInt(localStorage.getItem(SUGGEST_LS_KEY) || '0', 10);
+    const wait = SUGGEST_COOLDOWN_MS - (Date.now() - last);
+    if(wait > 0){
+      const sec = Math.ceil(wait/1000);
+      setStatus(currentLang==='ru'
+        ? `Подожди ${sec} сек. перед следующей отправкой.`
+        : `Please wait ${sec}s before sending again.`,
+        'err');
+      return;
+    }
+    sendBtn.disabled = true;
+    setStatus(currentLang==='ru' ? 'Отправляем…' : 'Sending…', '');
+    try{
+      const payload = buildSuggestEmbed();
+      const res = await fetch(SUGGEST_DISCORD_WEBHOOK, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      localStorage.setItem(SUGGEST_LS_KEY, String(Date.now()));
+      setStatus(currentLang==='ru'
+        ? '✓ Заявка отправлена. Спасибо! Если есть что добавить — напиши в Discord (gamunkul8515).'
+        : '✓ Suggestion sent. Thanks! Anything to add — DM me on Discord (gamunkul8515).',
+        'ok');
+      sendBtn.style.display='none';
+    } catch(err){
+      setStatus(currentLang==='ru'
+        ? 'Не получилось отправить автоматически. Скопируй текст кнопкой ниже и отправь в Discord (gamunkul8515) вручную.'
+        : "Couldn't send automatically. Copy the text below and DM it to Discord (gamunkul8515) manually.",
+        'err');
+      sendBtn.disabled = false;
+    }
   });
 
   resetBtn.addEventListener('click', ()=>{
@@ -1546,6 +1623,8 @@ function setupSuggestForm(){
     previewEl.classList.remove('show');
     previewEl.textContent='';
     sendActions.style.display='none';
+    sendBtn.style.display='';
+    sendBtn.disabled = false;
     clearStatus();
   });
 
