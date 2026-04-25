@@ -78,7 +78,9 @@
   .paid-dot{position:absolute;top:14px;right:14px;width:8px;height:8px;border-radius:50%;background:#e0a030;box-shadow:0 0 6px rgba(224,160,48,.5)}
   .card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-right:18px}
   .card-head-left{display:flex;align-items:center;gap:14px}
-  .card-avatar{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);object-fit:cover;flex-shrink:0;background:var(--surface2)}
+  .card-avatar{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);object-fit:cover;flex-shrink:0;background:var(--surface2);overflow:hidden;position:relative}
+  .card-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .card-avatar.fallback{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;font-family:'Syne',sans-serif;letter-spacing:0;text-transform:uppercase;text-shadow:0 1px 2px rgba(0,0,0,.4)}
   .card-name{font-size:18px;font-weight:700;color:var(--text);line-height:1.2;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .card-handle{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:4px}
   .cost-indicator{font-size:11px;margin-top:2px;opacity:.8;letter-spacing:2px}
@@ -194,8 +196,7 @@
   .section-stars{font-size:24px;letter-spacing:-1px;filter:drop-shadow(0 0 8px rgba(200,169,110,.35))}
   .section-label{font-size:13px;font-weight:700;color:var(--accent2)}
 
-  /* --- Hash-hue avatars (CSS-only) --- */
-  .card-avatar{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;font-family:'Syne',sans-serif;letter-spacing:0;text-transform:uppercase;border:none;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+  /* Hash-hue fallback styles handled via .card-avatar.fallback at top. */
 
   /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
      because resizing a pinned bar shifts the content below by ~150px. */
@@ -916,10 +917,24 @@ function tierClass(v){
   return 'tier-low';
 }
 
-// Stable hash -> HSL hue for avatar background.
+// Avatar map: builder name -> file slug under assets/avatars/<slug>.jpg.
+// Real channel avatars scraped from YouTube. Builders missing from the map
+// fall back to a CSS hash-hue tile with initials.
+const avatarSlugs={'2devilzz':'2devilzz','Akame':'akame','Brader Fik':'brader-fik','BuckyBuilds':'buckybuilds','Build Lab':'build-lab','Builder':'builder','Crow':'crow','Darvel':'darvel','Erebus':'erebus','Faded':'faded','GrinchTheBuilder':'grinchthebuilder','HQM Core':'hqm-core','HiddenJoint':'hiddenjoint','IndominusRust':'indominusrust','Kredbic':'kredbic','Krub':'krub','Lacros':'lacros','LeftyyP':'leftyyp','Limi Lab':'limi-lab','Luca.':'luca','Mellarrkk':'mellarrkk','MrSkeem':'mrskeem','Nini Rust':'nini-rust','One2Do':'one2do','Opy4k':'opy4k','PANG':'pang','Pandabuilds':'pandabuilds','Rat In The Dark':'rat-in-the-dark','Relbuild':'relbuild','RustyYT':'rustyyt','S4':'s4','Santess':'santess','Shield':'shield','Spinky':'spinky','Stelic':'stelic','Tarre':'tarre','Void':'void','Walder':'walder','Willjum':'willjum','XGN.':'xgn','Xgamers Vault':'xgamers-vault','Zypic':'zypic','aloneintokyo':'aloneintokyo','anika':'anika','b00bster':'b00bster','pagdawg':'pagdawg','rookyo':'rookyo','slvtv':'slvtv','zYn':'zyn','Биг джони':'d091d0b8d0b320d0b4d0b6d0','Ласти Раст':'d09bd0b0d181d182d0b820d0'};
 function hashHue(s){let h=0;for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i); h|=0;} return Math.abs(h)%360;}
-function avatarStyle(name){const hue=hashHue(name); return `background:linear-gradient(135deg,hsl(${hue},38%,32%),hsl(${(hue+30)%360},42%,22%))`;}
 function avatarInitials(name){const cleaned=name.replace(/[^\p{L}\p{N} ]/gu,'').trim(); const parts=cleaned.split(/\s+/); if(parts.length>=2) return (parts[0][0]+parts[1][0]).toUpperCase(); return cleaned.slice(0,2).toUpperCase();}
+function avatarFallbackStyle(name){const hue=hashHue(name); return `linear-gradient(135deg,hsl(${hue},38%,32%),hsl(${(hue+30)%360},42%,22%))`;}
+function avatarHTML(name){
+  const slug=avatarSlugs[name];
+  const alt=(currentLang==='ru'?'Аватар ':'Avatar of ')+name;
+  if(slug){
+    const fb=`background:${avatarFallbackStyle(name)}`;
+    // Fallback: if image 404s (e.g. channel renamed), turn the wrapper into a CSS hash-hue tile with initials.
+    return `<div class="card-avatar" data-name="${esc(name)}" data-initials="${esc(avatarInitials(name))}" data-bg="${esc(fb)}"><img src="assets/avatars/${slug}.jpg" alt="${esc(alt)}" loading="lazy" decoding="async" onerror="avatarFallback(this)"></div>`;
+  }
+  return `<div class="card-avatar fallback" role="img" aria-label="${esc(alt)}" style="background:${avatarFallbackStyle(name)}">${esc(avatarInitials(name))}</div>`;
+}
+window.avatarFallback=function(img){const w=img.parentNode; w.classList.add('fallback'); w.setAttribute('style',w.dataset.bg); w.textContent=w.dataset.initials;};
 
 // Escape HTML special chars so dynamic strings can't break markup.
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -966,14 +981,13 @@ function render(list){
     }).join('');
     let linksH=b.links.length?`<div class="links">${b.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>`:'';
     let fav=b.favorite?`<span class="badge-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'', upI=getUpkeepIcons(b.upkeep);
-    let avAlt=`${b.name}${currentLang==='ru'?' — аватар':' avatar'}`;
     let nameH=hl(esc(b.name)), handleH=hl(esc(b.handle)), descH=hl(desc);
     
     let cmpOn=cmpSet.has(b.name);
     html+=`<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''} ${cmpOn?'cmp-selected':''}">
       <button class="cmp-btn ${cmpOn?'active':''}" data-cmp="${esc(b.name)}" type="button" aria-pressed="${cmpOn}" title="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}" aria-label="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}">${cmpOn?'✓':'+'}</button>
       ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
-      <div class="card-head"><div class="card-head-left"><div class="card-avatar" style="${avatarStyle(b.name)}" aria-label="${esc(avAlt)}" role="img">${esc(avatarInitials(b.name))}</div><div>
+      <div class="card-head"><div class="card-head-left">${avatarHTML(b.name)}<div>
       <div class="card-name">${nameH}${fav}</div><div class="card-handle">${handleH}</div>
       ${upI?`<div class="cost-indicator">${upI}</div>`:''}</div></div>
       <div class="card-rating">${b.rating}<span class="card-rating-num">${rNum}</span></div></div>
