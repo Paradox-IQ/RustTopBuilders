@@ -201,6 +201,16 @@
 
   /* Hash-hue fallback styles handled via .card-avatar.fallback at top. */
 
+  /* --- Archive section: dimmed cards for inactive/dead channels --- */
+  .archive-section .info-body{padding:14px 18px 22px}
+  .archive-empty{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);padding:8px 0}
+  #archiveContainer .grid{margin-top:14px}
+  #archiveContainer .card{opacity:.55;filter:saturate(.5)}
+  #archiveContainer .card:hover{opacity:.85;filter:saturate(.85)}
+  #archiveContainer .card::before{content:attr(data-archive-reason);position:absolute;top:8px;right:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--muted);background:rgba(0,0,0,.35);padding:3px 7px;border-radius:3px;border:1px solid var(--border);text-transform:uppercase;pointer-events:none}
+  #archiveContainer .card.tier-low::after,#archiveContainer .card.tier-3::after{background:repeating-linear-gradient(45deg,#3a3025 0 4px,transparent 4px 8px)}
+  .archive-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:6px}
+
   /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
      because resizing a pinned bar shifts the content below by ~150px. */
   .controls.sticky-on{}
@@ -438,6 +448,17 @@
   </div>
 
   <div id="cardsContainer"></div>
+
+  <details class="info-block archive-section" id="archive-section">
+    <summary>
+      <span data-ru="// архив — каналы заброшены или удалены" data-en="// archive — abandoned or deleted channels">// архив — каналы заброшены или удалены</span>
+      <span class="archive-count" id="archiveCount"></span>
+    </summary>
+    <div class="info-body">
+      <p data-ru="Билдеры, чьи каналы инактивны больше года, переименованы или удалены. Карточки тут просто для исторической справки — оценки замёрзли на момент архивации." data-en="Builders whose channels have been inactive for over a year, renamed, or deleted. Kept here for historical reference; ratings frozen at archive time.">Билдеры, чьи каналы инактивны больше года, переименованы или удалены. Карточки тут просто для исторической справки — оценки замёрзли на момент архивации.</p>
+      <div id="archiveContainer"></div>
+    </div>
+  </details>
 
   <div class="update-note" id="update-note-ru">
     <span>// глобальное обновление от мая 2026</span><br>
@@ -781,13 +802,23 @@ const subscores = {
   'Stelic':           [1,1,3]
 };
 
+// Archive: builders whose YouTube channels are abandoned (>1 year), renamed, or
+// deleted (404). Detected automatically via channel-page scraping in 04/2026.
+// To restore a builder to the active list, just remove their entry here.
+const archived = {
+  'Pandabuilds':  {lastActive:'2022', reason:'inactive 4y+', reasonRU:'неактивен 4+ года', reasonEN:'inactive 4y+'},
+  'RustLogic':    {lastActive:'2025', reason:'channel 404',  reasonRU:'канал удалён',       reasonEN:'channel 404'}
+};
+
 const builders = raw.map(b => {
   const ss = subscores[b[0]];
+  const arc = archived[b[0]];
   return {
     name:b[0], handle:b[1], ratingValue:b[2], rating:getStars(b[2]), pending:b[2]===0, upkeep:b[3], favorite:!!b[4], tags:b[5]?b[5].split(','):[], fms:b[6]?b[6].split(','):[],
     rows:b[7].map(r => ({label:r[0],valRU:r[1],valEN:r[2],c:r[3]||''})), desc:b[8], descEN:b[9], links:b[10].map(l => ({t:l[0],u:l[1]})),
     langs: builderLangs[b[0]] || ['en'],
-    subscores: ss ? {build:ss[0], active:ss[1], value:ss[2]} : null
+    subscores: ss ? {build:ss[0], active:ss[1], value:ss[2]} : null,
+    archived: arc || null
   };
 });
 
@@ -800,7 +831,7 @@ const builders = raw.map(b => {
   const PAGE_URL='https://paradox-iq.github.io/RustTopBuilders/';
   const author={'@type':'Person','name':'altyshenskiy'};
   const items=builders
-    .filter(b=>b.ratingValue>0)
+    .filter(b=>b.ratingValue>0 && !b.archived)
     .sort((a,b)=>b.ratingValue-a.ratingValue)
     .map((b,i)=>{
       const ytLink=b.links.find(l=>/youtube/i.test(l.u||l.t));
@@ -817,7 +848,7 @@ const builders = raw.map(b => {
       return {'@type':'ListItem','position':i+1,'url':`${PAGE_URL}?b=${encodeURIComponent(b.name)}`,'item':review};
     });
   const ratedCount=items.length;
-  const avgRating=ratedCount?(builders.filter(b=>b.ratingValue>0).reduce((s,b)=>s+b.ratingValue,0)/ratedCount):0;
+  const avgRating=ratedCount?(builders.filter(b=>b.ratingValue>0 && !b.archived).reduce((s,b)=>s+b.ratingValue,0)/ratedCount):0;
   const ld={
     '@context':'https://schema.org',
     '@graph':[
@@ -908,9 +939,14 @@ function focusBuilderFromURL(){
   const p=new URLSearchParams(window.location.search);
   const target=p.get('b') || (window.location.hash.startsWith('#b-')?window.location.hash.slice(3):null);
   if(!target) return;
-  // Find the card by name slug match
+  // Find the card by name slug match (active list first, then archive)
   const slug=builderSlug(target);
-  const card=document.querySelector(`.card[id="b-${CSS.escape(slug)}"]`) || [...document.querySelectorAll('.card')].find(c=>builderSlug(c.dataset.builder||'')===slug);
+  let card=document.querySelector(`.card[id="b-${CSS.escape(slug)}"]`) || [...document.querySelectorAll('.card')].find(c=>builderSlug(c.dataset.builder||'')===slug);
+  if(!card){
+    // Maybe in the archive — open the <details> so the card is in the layout.
+    const arc=document.getElementById('archive-section'); if(arc){arc.open=true;}
+    card=document.querySelector(`.card[id="b-arc-${CSS.escape(slug)}"]`);
+  }
   if(!card) return;
   card.scrollIntoView({behavior:'smooth', block:'center'});
   card.classList.add('focus-pulse');
@@ -931,6 +967,7 @@ function setLang(l){
   document.querySelectorAll('.chip').forEach(c=>{if(c.dataset[l]) c.textContent=c.dataset[l]});
   document.querySelectorAll('[data-lang-block]').forEach(el=>{el.style.display=el.dataset.langBlock===l?'':'none'});
   document.querySelectorAll('summary span[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  document.querySelectorAll('p[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   document.querySelectorAll('.custom-table thead th[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   renderCustoms();
   if(typeof refreshCmpBar==='function') refreshCmpBar();
@@ -939,6 +976,7 @@ function setLang(l){
   searchInput.setAttribute('aria-label',l==='ru'?'Поиск по билдерам':'Search builders');
   renderStats();
   applyFilters();
+  if(typeof renderArchive==='function') renderArchive();
 }
 
 // Custom-base providers: comparison data
@@ -961,7 +999,8 @@ let customSort='price';
 
 function renderCustoms(){
   const tb=document.querySelector('#customsTable tbody'); if(!tb) return;
-  const list=customs.slice();
+  // Hide archived builders from the customs comparison too — they live in the archive section.
+  const list=customs.filter(r=>!archived[r[0]]);
   if(customSort==='price') list.sort((a,b)=>a[6]-b[6]||a[0].localeCompare(b[0]));
   else if(customSort==='name') list.sort((a,b)=>a[0].localeCompare(b[0]));
   else if(customSort==='fav') list.sort((a,b)=>(b[1]?1:0)-(a[1]?1:0)||a[6]-b[6]);
@@ -975,20 +1014,23 @@ function renderCustoms(){
 // Compute & render hero stat-strip
 function renderStats(){
   const el=document.getElementById('statStrip'); if(!el) return;
-  const total=builders.length, rated=builders.filter(b=>!b.pending), pending=total-rated.length;
+  const live=builders.filter(b=>!b.archived);
+  const total=live.length, rated=live.filter(b=>!b.pending), pending=total-rated.length;
   const top=rated.filter(b=>b.ratingValue>=4).length;
   const patreon=rated.filter(b=>b.tags.some(t=>t.includes('Patreon'))).length;
   const customs=rated.filter(b=>b.tags.some(t=>t.includes('Кастом')||t.includes('Custom'))).length;
   const bilingual=rated.filter(b=>b.langs.length>1).length;
+  const arc=builders.filter(b=>b.archived).length;
   const u=currentLang==='ru'
-    ?{b:'билдеров',top:'топ ≥4★',pat:'patreon',cust:'кастом',bi:'билингв',pend:'на рассмотрении',upd:'обновлено май 2026'}
-    :{b:'builders',top:'top ≥4★',pat:'patreon',cust:'custom',bi:'bilingual',pend:'pending',upd:'updated may 2026'};
+    ?{b:'билдеров',top:'топ ≥4★',pat:'patreon',cust:'кастом',bi:'билингв',pend:'на рассмотрении',arc:'в архиве',upd:'обновлено май 2026'}
+    :{b:'builders',top:'top ≥4★',pat:'patreon',cust:'custom',bi:'bilingual',pend:'pending',arc:'archived',upd:'updated may 2026'};
   el.innerHTML=`<span><strong>${total}</strong> ${u.b}</span>`+
     `<span><strong>${top}</strong> ${u.top}</span>`+
     `<span><strong>${patreon}</strong> ${u.pat}</span>`+
     `<span><strong>${customs}</strong> ${u.cust}</span>`+
     `<span><strong>${bilingual}</strong> ${u.bi}</span>`+
     `<span><strong>${pending}</strong> ${u.pend}</span>`+
+    (arc?`<span><strong>${arc}</strong> ${u.arc}</span>`:'')+
     `<span>${u.upd}</span>`;
 }
 
@@ -997,6 +1039,7 @@ function applyFilters(){
   if(newQ!==searchQuery){searchQuery=newQ; syncURL();}
   else searchQuery=newQ;
   let f=builders.filter(b=>{
+    if(b.archived) return false; // archived live in their own section
     if(!matchesFormat(b,currentFormat)) return false;
     if(currentLangFilter!=='all' && !b.langs.includes(currentLangFilter)) return false;
     if(searchQuery){
@@ -1077,6 +1120,32 @@ function groupLabel(v){
   return {stars:getStars(bucket), label:currentLang==='ru'?labels[bucket][0]:labels[bucket][1]};
 }
 
+function cardHTML(b, opts){
+  const isArc = !!(opts && opts.archived);
+  const paid=hasPaid(b.tags), desc=currentLang==='en'?b.descEN:b.desc, rNum=b.ratingValue>=1?`${b.ratingValue%1===0?b.ratingValue+'.0':b.ratingValue} / 5`:'';
+  const rowsH=b.rows.map(r=>{
+    const lT=currentLang==='en'&&rowLabels.en[r.label]?rowLabels.en[r.label]:r.label, vT=currentLang==='en'?r.valEN:r.valRU;
+    return `<div class="row"><span class="row-label">${lT}</span><span class="row-val ${r.c}">${vT}</span></div>`;
+  }).join('');
+  const linksH=b.links.length?`<div class="links">${b.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>`:'';
+  const fav=b.favorite?`<span class="badge-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'', upI=getUpkeepIcons(b.upkeep);
+  const nameH=hl(esc(b.name)), handleH=hl(esc(b.handle)), descH=hl(desc);
+  const cmpOn=cmpSet.has(b.name);
+  const cmpBtn = isArc ? '' : `<button class="cmp-btn ${cmpOn?'active':''}" data-cmp="${esc(b.name)}" type="button" aria-pressed="${cmpOn}" title="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}" aria-label="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}">${cmpOn?'✓':'+'}</button>`;
+  const arcAttr = isArc && b.archived ? `data-archive-reason="${esc(currentLang==='en'?b.archived.reasonEN:b.archived.reasonRU)} · ${esc(b.archived.lastActive)}"` : '';
+  const idAttr = isArc ? `id="b-arc-${esc(builderSlug(b.name))}"` : `id="b-${esc(builderSlug(b.name))}"`;
+  return `<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''} ${cmpOn?'cmp-selected':''}" data-builder="${esc(b.name)}" ${idAttr} ${arcAttr}>
+    ${cmpBtn}
+    ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
+    <div class="card-head"><div class="card-head-left">${avatarHTML(b.name)}<div>
+    <div class="card-name">${nameH}${fav}</div><div class="card-handle">${handleH}</div>
+    ${upI?`<div class="cost-indicator">${upI}</div>`:''}</div></div>
+    <div class="card-rating">${b.rating}<span class="card-rating-num">${rNum}</span></div></div>
+    ${subscoresHTML(b)}
+    <div class="tags">${b.tags.map(t=>`<span class="${tagClass(t)}">${t}</span>`).join('')}</div>
+    <div class="divider"></div><div>${rowsH}</div><div class="card-desc">${descH}</div>${linksH}</div>`;
+}
+
 function render(list){
   const cont=document.getElementById('cardsContainer');
   if(!list.length){cont.innerHTML=`<div class="empty">${currentLang==='ru'?'Никого не найдено':'No results found'}</div>`;return;}
@@ -1085,30 +1154,20 @@ function render(list){
     const gl=groupLabel(b.ratingValue), gKey=gl.label;
     if(useG&&gKey!==curG){if(curG!==null)html+='</div>'; curG=gKey; html+=`<div class="section-header"><div class="section-stars">${gl.stars}</div><div class="section-label">${gl.label}</div><div class="section-line"></div></div><div class="grid">`;}
     else if(!useG&&curG===null){curG='open'; html+='<div class="grid">';}
-    
-    let paid=hasPaid(b.tags), desc=currentLang==='en'?b.descEN:b.desc, rNum=b.ratingValue>=1?`${b.ratingValue%1===0?b.ratingValue+'.0':b.ratingValue} / 5`:'';
-    let rowsH=b.rows.map(r=>{
-      let lT=currentLang==='en'&&rowLabels.en[r.label]?rowLabels.en[r.label]:r.label, vT=currentLang==='en'?r.valEN:r.valRU;
-      return `<div class="row"><span class="row-label">${lT}</span><span class="row-val ${r.c}">${vT}</span></div>`;
-    }).join('');
-    let linksH=b.links.length?`<div class="links">${b.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>`:'';
-    let fav=b.favorite?`<span class="badge-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'', upI=getUpkeepIcons(b.upkeep);
-    let nameH=hl(esc(b.name)), handleH=hl(esc(b.handle)), descH=hl(desc);
-    
-    let cmpOn=cmpSet.has(b.name);
-    html+=`<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''} ${cmpOn?'cmp-selected':''}" data-builder="${esc(b.name)}" id="b-${esc(builderSlug(b.name))}">
-      <button class="cmp-btn ${cmpOn?'active':''}" data-cmp="${esc(b.name)}" type="button" aria-pressed="${cmpOn}" title="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}" aria-label="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}">${cmpOn?'✓':'+'}</button>
-      ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
-      <div class="card-head"><div class="card-head-left">${avatarHTML(b.name)}<div>
-      <div class="card-name">${nameH}${fav}</div><div class="card-handle">${handleH}</div>
-      ${upI?`<div class="cost-indicator">${upI}</div>`:''}</div></div>
-      <div class="card-rating">${b.rating}<span class="card-rating-num">${rNum}</span></div></div>
-      ${subscoresHTML(b)}
-      <div class="tags">${b.tags.map(t=>`<span class="${tagClass(t)}">${t}</span>`).join('')}</div>
-      <div class="divider"></div><div>${rowsH}</div><div class="card-desc">${descH}</div>${linksH}</div>`;
+    html += cardHTML(b);
   });
   if(curG!==null) html+='</div>';
   cont.innerHTML=html;
+}
+
+// Render archive section: reduced, dimmed cards with last-active badge.
+function renderArchive(){
+  const cont=document.getElementById('archiveContainer'); if(!cont) return;
+  const list=builders.filter(b=>b.archived).sort((a,b)=>b.ratingValue-a.ratingValue);
+  const countEl=document.getElementById('archiveCount');
+  if(countEl) countEl.textContent=list.length?`(${list.length})`:'';
+  if(!list.length){cont.innerHTML=`<div class="archive-empty">${currentLang==='ru'?'архив пуст':'archive is empty'}</div>`;return;}
+  cont.innerHTML='<div class="grid">'+list.map(b=>cardHTML(b,{archived:true})).join('')+'</div>';
 }
 
 const stBtn=document.getElementById("scrollTopBtn");
