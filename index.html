@@ -197,26 +197,13 @@
   /* --- Hash-hue avatars (CSS-only) --- */
   .card-avatar{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;font-family:'Syne',sans-serif;letter-spacing:0;text-transform:uppercase;border:none;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 
-  /* --- Sticky filter bar (desktop only): collapses to compact rail when scrolling --- */
-  @media(min-width:920px){
-    .controls.sticky-on{position:sticky;top:0;z-index:50;background:var(--bg);padding-top:14px;padding-bottom:14px;margin-bottom:18px;backdrop-filter:blur(6px);transition:padding .18s,gap .18s}
-    .controls.sticky-on::after{content:'';position:absolute;left:-32px;right:-32px;top:0;bottom:0;background:var(--bg);opacity:.92;z-index:-1;transition:box-shadow .18s}
-    /* Compact mode: triggered by JS adding .compact when user scrolls past hero */
-    .controls.sticky-on.compact{padding-top:8px;padding-bottom:8px;gap:6px;border-bottom-color:transparent}
-    .controls.sticky-on.compact::after{box-shadow:0 4px 16px rgba(0,0,0,.4)}
-    .controls.sticky-on.compact .control-label{display:none}
-    .controls.sticky-on.compact .upkeep-legend{display:none}
-    .controls.sticky-on.compact .control-row{gap:6px}
-    .controls.sticky-on.compact .chip{font-size:10px;padding:5px 11px}
-    .controls.sticky-on.compact .search-wrap input{padding:8px 30px 8px 32px;font-size:12px}
-    .controls.sticky-on.compact .search-wrap{max-width:240px}
-    .controls.sticky-on.compact .control-row{align-items:center}
-    /* Hide the paid-legend hint in compact mode to save horizontal space */
-    .controls.sticky-on.compact .paid-legend{display:none}
-    /* Stack format/lang/sort onto a single row in compact mode */
-    .controls.sticky-on.compact{flex-direction:row;flex-wrap:wrap;align-items:center;padding-bottom:10px}
-    .controls.sticky-on.compact .control-row{flex:0 1 auto}
-  }
+  /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
+     because resizing a pinned bar shifts the content below by ~150px. */
+  .controls.sticky-on{}
+  /* Floating "back to filters" button — appears alongside scroll-to-top. */
+  #scrollToFiltersBtn{position:fixed;right:30px;bottom:84px;width:48px;height:48px;background:var(--surface);color:var(--accent);border:1px solid var(--border);border-radius:50%;cursor:pointer;font-size:18px;display:none;align-items:center;justify-content:center;transition:all .15s;font-family:'Space Mono',monospace;z-index:40;line-height:1}
+  #scrollToFiltersBtn:hover{background:var(--accent);color:#0d0d0d;border-color:var(--accent);transform:scale(1.05)}
+  #scrollToFiltersBtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
   /* --- Search highlight --- */
   mark.search-hl{background:rgba(200,169,110,.28);color:var(--accent2);padding:0 2px;border-radius:2px;font-weight:600}
@@ -468,6 +455,7 @@
   </div>
 </div>
 <button id="scrollTopBtn" type="button" title="Наверх" aria-label="Наверх страницы / Scroll to top">↑</button>
+<button id="scrollToFiltersBtn" type="button" title="К фильтрам / Filters" aria-label="К фильтрам / Filters" data-ru-title="К фильтрам" data-en-title="Filters">⌕</button>
 
 <div class="cmp-bar" id="cmpBar" role="region" aria-label="Сравнение билдеров">
   <span class="cmp-bar-label" id="cmpLabel">сравнить</span>
@@ -998,46 +986,23 @@ function render(list){
 }
 
 const stBtn=document.getElementById("scrollTopBtn");
-// Compact-collapse for the sticky controls bar.
-//   - Captures the controls' natural top once (anchor stays above the bar so
-//     compact-resize never moves it).
-//   - Uses hysteresis: enable at anchor+60, disable at anchor-10 — prevents
-//     toggle thrash from scroll-anchor reflow when the bar shrinks.
-//   - Throttled with requestAnimationFrame.
-const ctrls=document.querySelector('.controls.sticky-on');
-let ctrlsAnchor=0, ctrlsRaf=0;
-function captureCtrlsAnchor(){
-  if(!ctrls) return;
-  const wasCompact=ctrls.classList.contains('compact');
-  if(wasCompact) ctrls.classList.remove('compact');
-  // Place an anchor element ABOVE the controls and measure its absolute Y.
-  // This Y is independent of compact toggling because nothing above us changes.
-  let anc=document.getElementById('ctrlsAnchor');
-  if(!anc){
-    anc=document.createElement('div');
-    anc.id='ctrlsAnchor';
-    anc.style.cssText='height:0;margin:0;padding:0';
-    ctrls.parentNode.insertBefore(anc,ctrls);
-  }
-  ctrlsAnchor=anc.getBoundingClientRect().top+window.scrollY;
-  if(wasCompact) ctrls.classList.add('compact');
-}
-function syncCompact(){
-  ctrlsRaf=0;
-  if(!ctrls) return;
-  if(!window.matchMedia('(min-width:920px)').matches){ctrls.classList.remove('compact'); return;}
-  const y=window.scrollY, on=ctrls.classList.contains('compact');
-  if(!on && y>ctrlsAnchor+60) ctrls.classList.add('compact');
-  else if(on && y<ctrlsAnchor-10) ctrls.classList.remove('compact');
-}
-window.addEventListener('load',()=>{captureCtrlsAnchor(); syncCompact();});
-window.addEventListener('resize',()=>{captureCtrlsAnchor(); syncCompact();});
+const filtBtn=document.getElementById("scrollToFiltersBtn");
+const ctrls=document.querySelector('.controls');
 window.addEventListener('scroll',()=>{
-  stBtn.style.display=window.scrollY>400?"block":"none";
-  if(!ctrlsRaf) ctrlsRaf=requestAnimationFrame(syncCompact);
+  const y=window.scrollY;
+  stBtn.style.display=y>400?"flex":"none";
+  // Show "to filters" button only after scrolling well past the filter block.
+  if(filtBtn && ctrls){
+    const ctrlsBottom=ctrls.getBoundingClientRect().bottom+y;
+    filtBtn.style.display=y>ctrlsBottom+100?"flex":"none";
+  }
 },{passive:true});
-// Initial capture in case load already fired.
-captureCtrlsAnchor();
+if(filtBtn && ctrls){
+  filtBtn.addEventListener('click',()=>{
+    const top=ctrls.getBoundingClientRect().top+window.scrollY-12;
+    window.scrollTo({top,behavior:'smooth'});
+  });
+}
 stBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 document.getElementById('btn-ru').addEventListener('click',()=>setLang('ru'));
 document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
