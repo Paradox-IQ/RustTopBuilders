@@ -17,7 +17,7 @@
 <style>
   :root{--bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border2:#333;--text:#e8e4db;--muted:#666;--muted2:#888;--accent:#c8a96e;--accent2:#e8c88e;--green-bg:#0f2018;--green-text:#6ec990;--red-text:#e07060;--amber-text:#e0a84a;--blue-bg:#0d1520;--blue-text:#6a9ee8;--star:#c8a96e}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;position:relative}
+  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;position:relative;overflow-anchor:none}
   .noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4}
   .page{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:60px 32px 100px}
   .lang-bar{display:flex;justify-content:flex-end;margin-bottom:32px}
@@ -998,25 +998,46 @@ function render(list){
 }
 
 const stBtn=document.getElementById("scrollTopBtn");
-// Sentinel-based detector for the sticky controls: when sentinel scrolls
-// out of view, the controls are pinned and we collapse them to compact mode.
+// Compact-collapse for the sticky controls bar.
+//   - Captures the controls' natural top once (anchor stays above the bar so
+//     compact-resize never moves it).
+//   - Uses hysteresis: enable at anchor+60, disable at anchor-10 — prevents
+//     toggle thrash from scroll-anchor reflow when the bar shrinks.
+//   - Throttled with requestAnimationFrame.
 const ctrls=document.querySelector('.controls.sticky-on');
-if(ctrls){
-  const sentinel=document.createElement('div');
-  sentinel.style.cssText='height:1px;margin-top:-1px;pointer-events:none';
-  ctrls.parentNode.insertBefore(sentinel,ctrls);
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      // Only collapse on desktop (matches CSS @media min-width:920px).
-      const isDesktop=window.matchMedia('(min-width:920px)').matches;
-      ctrls.classList.toggle('compact', isDesktop && !e.isIntersecting);
-    });
-  },{threshold:0,rootMargin:'-1px 0px 0px 0px'});
-  io.observe(sentinel);
+let ctrlsAnchor=0, ctrlsRaf=0;
+function captureCtrlsAnchor(){
+  if(!ctrls) return;
+  const wasCompact=ctrls.classList.contains('compact');
+  if(wasCompact) ctrls.classList.remove('compact');
+  // Place an anchor element ABOVE the controls and measure its absolute Y.
+  // This Y is independent of compact toggling because nothing above us changes.
+  let anc=document.getElementById('ctrlsAnchor');
+  if(!anc){
+    anc=document.createElement('div');
+    anc.id='ctrlsAnchor';
+    anc.style.cssText='height:0;margin:0;padding:0';
+    ctrls.parentNode.insertBefore(anc,ctrls);
+  }
+  ctrlsAnchor=anc.getBoundingClientRect().top+window.scrollY;
+  if(wasCompact) ctrls.classList.add('compact');
 }
+function syncCompact(){
+  ctrlsRaf=0;
+  if(!ctrls) return;
+  if(!window.matchMedia('(min-width:920px)').matches){ctrls.classList.remove('compact'); return;}
+  const y=window.scrollY, on=ctrls.classList.contains('compact');
+  if(!on && y>ctrlsAnchor+60) ctrls.classList.add('compact');
+  else if(on && y<ctrlsAnchor-10) ctrls.classList.remove('compact');
+}
+window.addEventListener('load',()=>{captureCtrlsAnchor(); syncCompact();});
+window.addEventListener('resize',()=>{captureCtrlsAnchor(); syncCompact();});
 window.addEventListener('scroll',()=>{
   stBtn.style.display=window.scrollY>400?"block":"none";
-});
+  if(!ctrlsRaf) ctrlsRaf=requestAnimationFrame(syncCompact);
+},{passive:true});
+// Initial capture in case load already fired.
+captureCtrlsAnchor();
 stBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 document.getElementById('btn-ru').addEventListener('click',()=>setLang('ru'));
 document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
