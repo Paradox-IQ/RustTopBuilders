@@ -215,6 +215,17 @@
   /* --- Compact hero meta on small heights --- */
   .header h1{margin-bottom:14px}
 
+  /* --- Multi-axis subscores --- */
+  .subscores{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+  .ss-item{display:flex;align-items:center;gap:6px}
+  .ss-label{min-width:30px}
+  .ss-bar{display:inline-flex;gap:2px}
+  .ss-dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
+  .ss-dot.on{background:var(--accent)}
+  .ss-num{color:var(--muted2);margin-left:2px;font-size:9px}
+  .subscores-empty{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);font-style:italic;margin:6px 0 10px;letter-spacing:.04em;opacity:.6}
+  .cmp-subscores{margin:8px 0 12px}
+
   /* --- Compare feature --- */
   .cmp-btn{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:rgba(200,169,110,.06);color:var(--muted);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:'Space Mono',monospace;z-index:2}
   .cmp-btn:hover{color:var(--accent2);border-color:var(--accent);background:rgba(200,169,110,.12)}
@@ -710,11 +721,85 @@ const builderLangs={
   'Ласти Раст':['ru']
 };
 
-const builders = raw.map(b => ({
-  name:b[0], handle:b[1], ratingValue:b[2], rating:getStars(b[2]), pending:b[2]===0, upkeep:b[3], favorite:!!b[4], tags:b[5]?b[5].split(','):[], fms:b[6]?b[6].split(','):[],
-  rows:b[7].map(r => ({label:r[0],valRU:r[1],valEN:r[2],c:r[3]||''})), desc:b[8], descEN:b[9], links:b[10].map(l => ({t:l[0],u:l[1]})),
-  langs: builderLangs[b[0]] || ['en']
-}));
+// Multi-axis subscores: [Build, Active, Value] each on 1-5.
+//   B = качество построек (пики, бункеры, сложность фишек)
+//   A = активность канала (частота баз, размер аудитории)
+//   V = доступность (цена, p2w, бесплатный контент)
+// Заполнены по описаниям. Можно дополнять / переопределять — это карта по имени.
+// Билдеры без записи — рендерятся как «// рейтинг по осям ещё не выставлен».
+const subscores = {
+  'Limi Lab':         [5,5,3], // топ, кастом, большой канал; Patreon $7+ + p2w скины
+  'HQM Core':         [5,4,4], // "почти идеал", дешёвый Patreon $5/мес
+  'One2Do':           [4,3,3], // знает дело, FunPay-формат, доступно
+  'Brader Fik':       [5,3,5], // "автор заморачивается"; нет Patreon, бесплатно
+  'Erebus':           [5,4,2], // реальные футажи; кастом $50–250
+  'BuckyBuilds':      [4,4,4], // оффлайн+онлайн универсал, Discord-only
+  'Rat In The Dark':  [4,2,5], // "фишки даже мне неизвестные"; редко выпускает; YouTube-only
+  'Crow':             [4,4,3], // Patreon-серьёзный, активный
+  'Биг джони':        [3,4,5], // адаптирует чужое; бесплатно
+  'b00bster':         [4,3,3], // билингв, кастом
+  'PANG':             [3,4,4], // "крыши отстойные"; активный
+  '2devilzz':         [4,3,2], // зерги-специалист; $60–100+
+  'Faded':            [3,3,3], // "качество неровное"; €17–20
+  'aloneintokyo':     [5,3,3], // "уникальный стиль, миллион пиков"
+  'Spinky':           [4,5,2], // "самый крупный активный"; премиум Patreon
+  'Nini Rust':        [4,4,3], // multi-platform, Patreon
+  'Tarre':            [3,3,3], // YouTube Sponsors
+  'XGN.':             [3,3,5], // только TikTok, бесплатно
+  'rookyo':           [3,3,4], // 10–40€ доступно
+  'anika':            [3,3,4], // нет монетизации
+  'Akame':            [4,3,2], // кастом-специалист, Boosty премиум
+  'Luca.':            [3,3,3], // $30–65 средне
+  'Darvel':           [3,3,5], // нет монетизации
+  'GrinchTheBuilder': [3,3,5], // самый дешёвый кастом $15–20
+  'S4':               [3,3,3], // Patreon среднего уровня
+  'LeftyyP':          [3,2,3], // Patreon, реже
+  'HiddenJoint':      [3,3,4], // билингв EN+RU — большой плюс
+  'Krub':             [3,3,4], // Discord-only
+  'Pandabuilds':      [3,3,3], // PayPal/скины
+  'MrSkeem':          [3,3,3], // Patreon среднего уровня
+  'Kredbic':          [3,3,3], // общий кастом
+  'slvtv':            [3,2,3], // YouTube Sponsors
+  'Zypic':            [3,2,5], // нет монетизации
+  'Relbuild':         [3,3,5], // нет монетизации
+  'Lacros':           [3,2,5], // бесплатно
+  'Build Lab':        [3,3,4], // Patreon + Sponsors
+  'Void':             [3,2,5], // бесплатно
+  'Willjum':          [2,2,3], // слабый Patreon
+  'pagdawg':          [2,2,5], // бесплатно
+  'IndominusRust':    [2,2,3], // Patreon
+  'Ласти Раст':       [1,3,1], // сливает платное, пиратство — value 1 за этику
+  'Shield':           [1,1,3],
+  'zYn':              [1,1,3],
+  'Stelic':           [1,1,3]
+};
+
+const builders = raw.map(b => {
+  const ss = subscores[b[0]];
+  return {
+    name:b[0], handle:b[1], ratingValue:b[2], rating:getStars(b[2]), pending:b[2]===0, upkeep:b[3], favorite:!!b[4], tags:b[5]?b[5].split(','):[], fms:b[6]?b[6].split(','):[],
+    rows:b[7].map(r => ({label:r[0],valRU:r[1],valEN:r[2],c:r[3]||''})), desc:b[8], descEN:b[9], links:b[10].map(l => ({t:l[0],u:l[1]})),
+    langs: builderLangs[b[0]] || ['en'],
+    subscores: ss ? {build:ss[0], active:ss[1], value:ss[2]} : null
+  };
+});
+
+// Build the visual subscores row (5-dot bars + numbers).
+function subscoresHTML(b){
+  if(b.pending) return '';
+  if(!b.subscores) return `<div class="subscores-empty">${currentLang==='ru'?'// оси не выставлены':'// axes not set'}</div>`;
+  const labels = currentLang==='ru'
+    ? {build:'Базы',active:'Канал',value:'Цена'}
+    : {build:'Build',active:'Active',value:'Value'};
+  const titles = currentLang==='ru'
+    ? {build:'Качество построек: пики, бункеры, фишки',active:'Активность канала: частота баз, аудитория',value:'Доступность: цена, p2w, бесплатный контент'}
+    : {build:'Build quality: peeks, bunkers, tricks',active:'Channel activity: upload rate, audience',value:'Accessibility: price, p2w, free content'};
+  return ['build','active','value'].map(k=>{
+    const v=b.subscores[k]||0;
+    const dots=[1,2,3,4,5].map(i=>`<span class="ss-dot ${i<=v?'on':''}"></span>`).join('');
+    return `<span class="ss-item" title="${titles[k]}: ${v}/5"><span class="ss-label">${labels[k]}</span><span class="ss-bar">${dots}</span><span class="ss-num">${v}</span></span>`;
+  }).reduce((a,c)=>a+c,'<div class="subscores" aria-label="'+(currentLang==='ru'?'Оценки по осям':'Axis ratings')+'">') + '</div>';
+}
 
 let currentLang='ru', currentFormat='all', currentLangFilter='all', currentSort='rating', searchQuery='';
 const formatChips=document.querySelectorAll('#formatFilters .chip'), langChips=document.querySelectorAll('#langFilters .chip'), sortChips=document.querySelectorAll('#sortFilters .chip'), searchInput=document.getElementById('searchInput');
@@ -889,6 +974,7 @@ function render(list){
       <div class="card-name">${nameH}${fav}</div><div class="card-handle">${handleH}</div>
       ${upI?`<div class="cost-indicator">${upI}</div>`:''}</div></div>
       <div class="card-rating">${b.rating}<span class="card-rating-num">${rNum}</span></div></div>
+      ${subscoresHTML(b)}
       <div class="tags">${b.tags.map(t=>`<span class="${tagClass(t)}">${t}</span>`).join('')}</div>
       <div class="divider"></div><div>${rowsH}</div><div class="card-desc">${descH}</div>${linksH}</div>`;
   });
@@ -982,6 +1068,7 @@ function openCompare(){
       <div class="cmp-col-name">${esc(b.name)}${fav}</div>
       <div class="cmp-col-handle">${esc(b.handle)}</div>
       <div class="cmp-col-rating">${b.rating}<span class="num">${rNum}</span></div>
+      <div class="cmp-subscores">${subscoresHTML(b)}</div>
       <div class="cmp-tags">${tagsH}</div>
       ${fmtRow}${upkRow}${rowsH}
       <div class="cmp-desc">${esc(desc)}</div>
