@@ -236,6 +236,33 @@
   .base-card .base-link.muted{color:var(--muted);border-bottom-color:var(--muted);pointer-events:none}
   .bases-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
 
+  /* --- Suggest-builder form: collapsible, no backend ----------------- */
+  /* Submission paths: Discord-DM (gamunkul8515), Telegram link, mailto.
+     Form data is formatted into a clean text block + copied to clipboard. */
+  .suggest-section .info-body{padding:14px 18px 22px}
+  .suggest-form{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-top:14px}
+  .suggest-form .full{grid-column:1/-1}
+  .suggest-form label{display:flex;flex-direction:column;gap:4px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+  .suggest-form label .req{color:var(--accent)}
+  .suggest-form input,.suggest-form textarea,.suggest-form select{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:9px 11px;color:var(--text);font-family:'Space Mono',monospace;font-size:13px;outline:none;transition:border-color .15s}
+  .suggest-form input:focus,.suggest-form textarea:focus,.suggest-form select:focus{border-color:var(--accent)}
+  .suggest-form textarea{min-height:90px;resize:vertical;line-height:1.5}
+  .suggest-form input.invalid,.suggest-form textarea.invalid{border-color:var(--red-text)}
+  .suggest-form .hint{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:.04em;margin-top:2px}
+  .suggest-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .suggest-btn{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.05em;text-decoration:none;cursor:pointer;transition:all .15s;text-transform:uppercase}
+  .suggest-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .suggest-btn.primary{background:rgba(200,169,110,.12);border-color:var(--accent);color:var(--accent)}
+  .suggest-btn.primary:hover{background:var(--accent);color:#0d0d0d}
+  .suggest-btn[disabled]{opacity:.4;pointer-events:none}
+  .suggest-status{margin-top:14px;padding:12px 14px;border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;line-height:1.55;display:none}
+  .suggest-status.ok{display:block;background:var(--green-bg);color:var(--green-text);border:1px solid rgba(110,201,144,.25)}
+  .suggest-status.err{display:block;background:rgba(224,112,96,.08);color:var(--red-text);border:1px solid rgba(224,112,96,.25)}
+  .suggest-preview{display:none;margin-top:14px;background:var(--bg);border:1px dashed var(--border);border-radius:4px;padding:12px 14px;font-family:'Space Mono',monospace;font-size:12px;color:var(--muted2);white-space:pre-wrap;line-height:1.5;max-height:280px;overflow:auto}
+  .suggest-preview.show{display:block}
+  .suggest-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+  @media (max-width:560px){.suggest-form{grid-template-columns:1fr}}
+
   /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
      because resizing a pinned bar shifts the content below by ~150px. */
   .controls.sticky-on{}
@@ -494,6 +521,72 @@
     <div class="info-body">
       <p data-ru="Билдеры, чьи каналы инактивны больше года, переименованы или удалены. Карточки тут просто для исторической справки — оценки замёрзли на момент архивации." data-en="Builders whose channels have been inactive for over a year, renamed, or deleted. Kept here for historical reference; ratings frozen at archive time.">Билдеры, чьи каналы инактивны больше года, переименованы или удалены. Карточки тут просто для исторической справки — оценки замёрзли на момент архивации.</p>
       <div id="archiveContainer"></div>
+    </div>
+  </details>
+
+  <details class="info-block suggest-section" id="suggest-section">
+    <summary>
+      <span data-ru="// предложить билдера в гайд" data-en="// suggest a builder for the guide">// предложить билдера в гайд</span>
+    </summary>
+    <div class="info-body">
+      <p data-ru="Знаешь крутого билдера, которого тут нет? Заполни форму, нажми «Сформировать» — получишь готовый текст, который можно отправить мне в Discord (gamunkul8515) или Telegram. Без бэкенда: данные не уходят на сторонние серверы, всё происходит в твоём браузере." data-en="Know a great builder who's missing? Fill in the form and click 'Generate' — you'll get a ready-to-send text block to drop into Discord (gamunkul8515) or Telegram. No backend: nothing leaves your browser until you choose to send it.">Знаешь крутого билдера, которого тут нет? Заполни форму, нажми «Сформировать» — получишь готовый текст, который можно отправить мне в Discord (gamunkul8515) или Telegram. Без бэкенда: данные не уходят на сторонние серверы, всё происходит в твоём браузере.</p>
+
+      <form class="suggest-form" id="suggestForm" novalidate>
+        <label class="full">
+          <span data-ru="Имя канала / билдера" data-en="Channel / builder name">Имя канала / билдера</span> <span class="req">*</span>
+          <input type="text" name="name" id="sug-name" required maxlength="80" placeholder="напр. SomeNewBuilder">
+        </label>
+        <label class="full">
+          <span data-ru="Ссылка на YouTube" data-en="YouTube link">Ссылка на YouTube</span> <span class="req">*</span>
+          <input type="url" name="youtube" id="sug-youtube" required maxlength="200" placeholder="https://youtube.com/@...">
+          <span class="hint" data-ru="Любая публичная ссылка на канал — главная или на конкретное видео" data-en="Any public link to the channel — main page or a specific video">Любая публичная ссылка на канал — главная или на конкретное видео</span>
+        </label>
+        <label>
+          <span data-ru="Формат" data-en="Format">Формат</span>
+          <select name="format" id="sug-format">
+            <option value="">— не уверен —</option>
+            <option value="solo-duo" data-ru="Solo / Duo" data-en="Solo / Duo">Solo / Duo</option>
+            <option value="trio-small" data-ru="Trio / Small Group" data-en="Trio / Small Group">Trio / Small Group</option>
+            <option value="medium-large" data-ru="Medium / Large Group" data-en="Medium / Large Group">Medium / Large Group</option>
+            <option value="clan-zerg" data-ru="Clan / Zerg" data-en="Clan / Zerg">Clan / Zerg</option>
+            <option value="any" data-ru="Любой / разные" data-en="Any / mixed">Любой / разные</option>
+          </select>
+        </label>
+        <label>
+          <span data-ru="Язык канала" data-en="Channel language">Язык канала</span>
+          <select name="lang" id="sug-lang">
+            <option value="">— не уверен —</option>
+            <option value="ru">RU</option>
+            <option value="en">EN</option>
+            <option value="bilingual" data-ru="RU + EN (билингв)" data-en="RU + EN (bilingual)">RU + EN (билингв)</option>
+            <option value="other" data-ru="другой" data-en="other">другой</option>
+          </select>
+        </label>
+        <label class="full">
+          <span data-ru="Краткое описание (что в нём интересного)" data-en="Brief note (what's interesting about them)">Краткое описание (что в нём интересного)</span> <span class="req">*</span>
+          <textarea name="note" id="sug-note" required maxlength="600" placeholder="2-3 предложения: какой стиль, есть ли Patreon/Discord, на что обратить внимание, чем выделяется"></textarea>
+        </label>
+        <label class="full">
+          <span data-ru="Твой контакт (если хочешь, чтоб я ответил)" data-en="Your contact (if you want a reply)">Твой контакт (если хочешь, чтоб я ответил)</span>
+          <input type="text" name="contact" id="sug-contact" maxlength="100" placeholder="Discord, Telegram, email — что угодно">
+        </label>
+
+        <div class="suggest-actions full">
+          <button type="button" id="sug-generate-btn" class="suggest-btn primary" data-ru="Сформировать сообщение" data-en="Generate message">Сформировать сообщение</button>
+          <button type="button" id="sug-reset-btn" class="suggest-btn" data-ru="Очистить" data-en="Reset">Очистить</button>
+        </div>
+
+        <div class="suggest-preview" id="sug-preview" aria-live="polite"></div>
+
+        <div class="suggest-actions full" id="sug-send-actions" style="display:none">
+          <button type="button" id="sug-copy-btn" class="suggest-btn primary" data-ru="📋 Скопировать в буфер" data-en="📋 Copy to clipboard">📋 Скопировать в буфер</button>
+          <a id="sug-tg-link" class="suggest-btn" target="_blank" rel="noopener noreferrer" data-ru="Открыть Telegram с текстом" data-en="Open Telegram with text">Открыть Telegram с текстом</a>
+        </div>
+
+        <div class="suggest-status" id="sug-status" role="status"></div>
+      </form>
+
+      <div class="suggest-meta" data-ru="// Discord для прямой отправки: gamunkul8515. Все поля кроме контакта используются только для формирования текста — сервер не дёргается." data-en="// Discord for direct DM: gamunkul8515. All fields except your contact are only used to format the text — no server is contacted.">// Discord для прямой отправки: gamunkul8515. Все поля кроме контакта используются только для формирования текста — сервер не дёргается.</div>
     </div>
   </details>
 
@@ -1014,6 +1107,23 @@ function setLang(l){
   document.querySelectorAll('summary span[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   document.querySelectorAll('p[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   document.querySelectorAll('.custom-table thead th[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  // Suggest-form: labels, options, hints, buttons, action links, meta line
+  document.querySelectorAll('.suggest-form label > span[data-ru], .suggest-form .hint[data-ru], .suggest-form option[data-ru], .suggest-form button[data-ru], .suggest-form a[data-ru], .suggest-meta[data-ru]')
+    .forEach(el=>{el.textContent=el.dataset[l]});
+  // Suggest-form placeholders (no data-attr — switched here directly)
+  const phRu = {
+    'sug-name':'напр. SomeNewBuilder',
+    'sug-youtube':'https://youtube.com/@...',
+    'sug-note':'2-3 предложения: какой стиль, есть ли Patreon/Discord, на что обратить внимание, чем выделяется',
+    'sug-contact':'Discord, Telegram, email — что угодно'
+  };
+  const phEn = {
+    'sug-name':'e.g. SomeNewBuilder',
+    'sug-youtube':'https://youtube.com/@...',
+    'sug-note':'2-3 sentences: their style, Patreon/Discord, what to look for, what makes them stand out',
+    'sug-contact':'Discord, Telegram, email — anything'
+  };
+  Object.entries(l==='ru'?phRu:phEn).forEach(([id,ph])=>{const el=document.getElementById(id); if(el) el.placeholder=ph;});
   renderCustoms();
   if(typeof refreshCmpBar==='function') refreshCmpBar();
   document.title=l==='ru'?'Rust Builders — Полный гид 2026':'Rust Builders — Full Guide 2026';
@@ -1328,6 +1438,148 @@ function renderBases(){
     });
   });
 }
+
+// --- Suggest-builder form ------------------------------------------------
+// No backend: fields are formatted into a clean text block. The user can
+// copy to clipboard or open Telegram/email pre-filled with the same text.
+// Discord doesn't have a real DM-by-username deep-link, so we suggest the
+// clipboard path + show the Discord handle in the status message.
+const SUGGEST_DISCORD = 'gamunkul8515';
+// Optional Telegram username; if set, the share button opens t.me/<user>
+// directly. When empty, falls back to t.me/share/url which lets the user
+// paste the prefilled text into any chat.
+const SUGGEST_TG = '';
+
+function buildSuggestText(){
+  const get = id => (document.getElementById(id).value || '').trim();
+  const name = get('sug-name');
+  const yt = get('sug-youtube');
+  const fmtVal = get('sug-format');
+  const langVal = get('sug-lang');
+  const note = get('sug-note');
+  const contact = get('sug-contact');
+  const fmtSel = document.getElementById('sug-format');
+  const langSel = document.getElementById('sug-lang');
+  const fmtTxt = fmtVal ? fmtSel.options[fmtSel.selectedIndex].textContent.trim() : '';
+  const langTxt = langVal ? langSel.options[langSel.selectedIndex].textContent.trim() : '';
+  const ru = currentLang==='ru';
+  const lines = [];
+  lines.push(ru ? '— Предложение нового билдера —' : '— Builder suggestion —');
+  lines.push((ru?'Имя:        ':'Name:       ')+name);
+  lines.push((ru?'YouTube:    ':'YouTube:    ')+yt);
+  if(fmtTxt) lines.push((ru?'Формат:     ':'Format:     ')+fmtTxt);
+  if(langTxt) lines.push((ru?'Язык:       ':'Language:   ')+langTxt);
+  lines.push('');
+  lines.push((ru?'Описание:':'Note:'));
+  lines.push(note);
+  if(contact){
+    lines.push('');
+    lines.push((ru?'Связь со мной: ':'My contact: ')+contact);
+  }
+  return lines.join('\n');
+}
+
+function validateSuggest(){
+  const fields = [
+    {id:'sug-name', test:v=>v.length>=2 && v.length<=80},
+    {id:'sug-youtube', test:v=>/^https?:\/\/.+/i.test(v) && /(youtube\.com|youtu\.be)/i.test(v)},
+    {id:'sug-note', test:v=>v.length>=20 && v.length<=600}
+  ];
+  let firstBad = null;
+  fields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    const ok=f.test((el.value||'').trim());
+    el.classList.toggle('invalid', !ok);
+    if(!ok && !firstBad) firstBad=el;
+  });
+  return firstBad;
+}
+
+function setupSuggestForm(){
+  const form = document.getElementById('suggestForm'); if(!form) return;
+  const previewEl = document.getElementById('sug-preview');
+  const sendActions = document.getElementById('sug-send-actions');
+  const statusEl = document.getElementById('sug-status');
+  const genBtn = document.getElementById('sug-generate-btn');
+  const resetBtn = document.getElementById('sug-reset-btn');
+  const copyBtn = document.getElementById('sug-copy-btn');
+  const tgLink = document.getElementById('sug-tg-link');
+
+  function setStatus(msg, kind){
+    statusEl.className = 'suggest-status' + (kind?' '+kind:'');
+    statusEl.textContent = msg;
+  }
+  function clearStatus(){ statusEl.className='suggest-status'; statusEl.textContent=''; }
+
+  genBtn.addEventListener('click', ()=>{
+    const bad = validateSuggest();
+    if(bad){
+      setStatus(currentLang==='ru'
+        ? 'Заполни обязательные поля (имя, YouTube, описание ≥ 20 символов).'
+        : 'Please fill the required fields (name, YouTube, note ≥ 20 chars).',
+        'err');
+      bad.focus();
+      previewEl.classList.remove('show');
+      sendActions.style.display='none';
+      return;
+    }
+    const text = buildSuggestText();
+    previewEl.textContent = text;
+    previewEl.classList.add('show');
+    sendActions.style.display='flex';
+    // Pre-fill the Telegram share link. With SUGGEST_TG configured we open
+    // t.me/<user> directly; otherwise t.me/share/url so the user can paste
+    // the prefilled text into any chat.
+    const body = encodeURIComponent(text);
+    tgLink.href = SUGGEST_TG
+      ? `https://t.me/${SUGGEST_TG}?text=${body}`
+      : `https://t.me/share/url?url=${encodeURIComponent('https://paradox-iq.github.io/RustTopBuilders/')}&text=${body}`;
+    setStatus(currentLang==='ru'
+      ? `Готово. Скопируй текст и отправь в Discord (${SUGGEST_DISCORD}) или используй кнопки.`
+      : `Ready. Copy the text and DM it on Discord (${SUGGEST_DISCORD}) or use the buttons.`,
+      'ok');
+  });
+
+  resetBtn.addEventListener('click', ()=>{
+    form.reset();
+    form.querySelectorAll('.invalid').forEach(el=>el.classList.remove('invalid'));
+    previewEl.classList.remove('show');
+    previewEl.textContent='';
+    sendActions.style.display='none';
+    clearStatus();
+  });
+
+  copyBtn.addEventListener('click', async ()=>{
+    const text = previewEl.textContent;
+    if(!text) return;
+    try{
+      await navigator.clipboard.writeText(text);
+      setStatus(currentLang==='ru'
+        ? `Скопировано. Открой Discord и вставь сообщение в DM пользователю ${SUGGEST_DISCORD}.`
+        : `Copied. Open Discord and paste the message into a DM to ${SUGGEST_DISCORD}.`,
+        'ok');
+    } catch(e){
+      // Fallback for browsers without clipboard API
+      previewEl.scrollIntoView({behavior:'smooth', block:'center'});
+      const sel = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(previewEl);
+      sel.removeAllRanges(); sel.addRange(range);
+      setStatus(currentLang==='ru'
+        ? 'Не удалось скопировать автоматически — выдели текст и нажми Ctrl+C.'
+        : 'Auto-copy failed — select the text and press Ctrl+C.',
+        'err');
+    }
+  });
+
+  // Live invalid-class clearing on input
+  ['sug-name','sug-youtube','sug-note'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input', ()=>el.classList.remove('invalid'));
+  });
+}
+
+setupSuggestForm();
 
 const stBtn=document.getElementById("scrollTopBtn");
 const filtBtn=document.getElementById("scrollToFiltersBtn");
