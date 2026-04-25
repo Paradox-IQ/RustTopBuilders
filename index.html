@@ -17,7 +17,7 @@
 <style>
   :root{--bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border2:#333;--text:#e8e4db;--muted:#666;--muted2:#888;--accent:#c8a96e;--accent2:#e8c88e;--green-bg:#0f2018;--green-text:#6ec990;--red-text:#e07060;--amber-text:#e0a84a;--blue-bg:#0d1520;--blue-text:#6a9ee8;--star:#c8a96e}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;position:relative}
+  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;position:relative;overflow-anchor:none}
   .noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4}
   .page{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:60px 32px 100px}
   .lang-bar{display:flex;justify-content:flex-end;margin-bottom:32px}
@@ -197,11 +197,13 @@
   /* --- Hash-hue avatars (CSS-only) --- */
   .card-avatar{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;font-family:'Syne',sans-serif;letter-spacing:0;text-transform:uppercase;border:none;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 
-  /* --- Sticky filter bar (desktop only) --- */
-  @media(min-width:920px){
-    .controls.sticky-on{position:sticky;top:0;z-index:50;background:var(--bg);padding-top:14px;padding-bottom:14px;margin-bottom:18px;backdrop-filter:blur(6px)}
-    .controls.sticky-on::after{content:'';position:absolute;left:-32px;right:-32px;top:0;bottom:0;background:var(--bg);opacity:.92;z-index:-1}
-  }
+  /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
+     because resizing a pinned bar shifts the content below by ~150px. */
+  .controls.sticky-on{}
+  /* Floating "back to filters" button — appears alongside scroll-to-top. */
+  #scrollToFiltersBtn{position:fixed;right:30px;bottom:84px;width:48px;height:48px;background:var(--surface);color:var(--accent);border:1px solid var(--border);border-radius:50%;cursor:pointer;font-size:18px;display:none;align-items:center;justify-content:center;transition:all .15s;font-family:'Space Mono',monospace;z-index:40;line-height:1}
+  #scrollToFiltersBtn:hover{background:var(--accent);color:#0d0d0d;border-color:var(--accent);transform:scale(1.05)}
+  #scrollToFiltersBtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
   /* --- Search highlight --- */
   mark.search-hl{background:rgba(200,169,110,.28);color:var(--accent2);padding:0 2px;border-radius:2px;font-weight:600}
@@ -453,6 +455,7 @@
   </div>
 </div>
 <button id="scrollTopBtn" type="button" title="Наверх" aria-label="Наверх страницы / Scroll to top">↑</button>
+<button id="scrollToFiltersBtn" type="button" title="К фильтрам / Filters" aria-label="К фильтрам / Filters" data-ru-title="К фильтрам" data-en-title="Filters">⌕</button>
 
 <div class="cmp-bar" id="cmpBar" role="region" aria-label="Сравнение билдеров">
   <span class="cmp-bar-label" id="cmpLabel">сравнить</span>
@@ -983,7 +986,23 @@ function render(list){
 }
 
 const stBtn=document.getElementById("scrollTopBtn");
-window.addEventListener('scroll',()=>stBtn.style.display=window.scrollY>400?"block":"none");
+const filtBtn=document.getElementById("scrollToFiltersBtn");
+const ctrls=document.querySelector('.controls');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  stBtn.style.display=y>400?"flex":"none";
+  // Show "to filters" button only after scrolling well past the filter block.
+  if(filtBtn && ctrls){
+    const ctrlsBottom=ctrls.getBoundingClientRect().bottom+y;
+    filtBtn.style.display=y>ctrlsBottom+100?"flex":"none";
+  }
+},{passive:true});
+if(filtBtn && ctrls){
+  filtBtn.addEventListener('click',()=>{
+    const top=ctrls.getBoundingClientRect().top+window.scrollY-12;
+    window.scrollTo({top,behavior:'smooth'});
+  });
+}
 stBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 document.getElementById('btn-ru').addEventListener('click',()=>setLang('ru'));
 document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
