@@ -1461,8 +1461,8 @@ const SUGGEST_TG = '';
 // per-IP rate limit. Source lives in /worker. Replace these two values
 // after deploying the Worker (see worker/README.md). When SUGGEST_WORKER_URL
 // is empty, the form falls back to the manual Copy/Telegram path.
-const SUGGEST_WORKER_URL = '';
-const SUGGEST_TURNSTILE_SITE_KEY = '';
+const SUGGEST_WORKER_URL = 'https://rusttop-suggest-proxy.altyshenskiy.workers.dev';
+const SUGGEST_TURNSTILE_SITE_KEY = '0x4AAAAAADDOTml9zu5mxjwD';
 // Per-device cooldown — secondary defense in addition to the server-side
 // IP rate limit. Catches accidental double-clicks instantly.
 const SUGGEST_COOLDOWN_MS = 30000;
