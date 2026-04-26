@@ -21,7 +21,7 @@
 <meta name="twitter:image:alt" content="Rust Builders — Полный гид 2026: 52 билдера, 14 patreon, 11 кастом, шкала 0.25★">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d0d0d'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' dominant-baseline='middle' font-size='22' fill='%23c8a96e' font-family='serif'%3E%E2%98%85%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <style>
   :root{--bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border2:#333;--text:#e8e4db;--muted:#666;--muted2:#888;--accent:#c8a96e;--accent2:#e8c88e;--green-bg:#0f2018;--green-text:#6ec990;--red-text:#e07060;--amber-text:#e0a84a;--blue-bg:#0d1520;--blue-text:#6a9ee8;--star:#c8a96e}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -263,7 +263,7 @@
   .suggest-preview.show{display:block}
   .suggest-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
   .suggest-turnstile{margin-top:12px}
-  .suggest-turnstile .cf-turnstile{display:flex;justify-content:flex-start}
+  .suggest-turnstile #sug-turnstile{display:flex;justify-content:flex-start}
   @media (max-width:560px){.suggest-form{grid-template-columns:1fr}}
 
   /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
@@ -404,7 +404,7 @@
   </details>
 
   <details class="info-block" id="glossary">
-    <summary><span data-ru="// глоссарий: 12 терминов" data-en="// glossary: 12 terms">// глоссарий: 12 терминов</span></summary>
+    <summary><span data-ru="// глоссарий: 31 термин" data-en="// glossary: 31 terms">// глоссарий: 31 термин</span></summary>
     <div class="info-body">
       <div class="glossary-grid" data-lang-block="ru">
         <div class="glossary-item"><strong>Floor stack / Флор стак</strong>Многослойное расположение TC и кейсов на разных полах — рейдер тратит больше ресурсов на пробой.</div>
@@ -414,11 +414,30 @@
         <div class="glossary-item"><strong>Open core / Опен кор</strong>База без сплошных внутренних стен — простор для пиков, но риск для коробок.</div>
         <div class="glossary-item"><strong>Snowball / Сноуболл</strong>Крошечный стартер 1×1, рассчитанный на быстрое расширение в первые 1-2 часа вайпа.</div>
         <div class="glossary-item"><strong>Multi-TC / Мульти-ТС</strong>Несколько TC в одной базе для усложнения рейда с одного направления.</div>
-        <div class="glossary-item"><strong>Honeycomb / Соты</strong>Дополнительные стены вокруг ключевых структур — больше рекордов для пробоя.</div>
+        <div class="glossary-item"><strong>Honeycomb / Буферки / Соты</strong>Дополнительные стены вокруг ключевых структур — больше рекордов для пробоя. Аналог: «буферки».</div>
         <div class="glossary-item"><strong>Bunker / Бункер</strong>Скрытая лут-комната, доступ к которой требует «открывалки» (turret/SAM/blockable).</div>
         <div class="glossary-item"><strong>Open base / Открывашка</strong>Турельная конструкция, открывающая стену или потолок при нажатии — для пиков и логистики.</div>
-        <div class="glossary-item"><strong>Online / Offline def</strong>Онлайн-деф — оборона при играющих игроках. Оффлайн-деф — защита от ночных рейдов.</div>
+        <div class="glossary-item"><strong>Online / Offline def / Онлайн / Оффлайн-деф</strong>Онлайн-деф — оборона при играющих игроках. Оффлайн-деф — защита от ночных рейдов.</div>
         <div class="glossary-item"><strong>Retake / Ретейк</strong>Угол или комната, специально спроектированные для отбивания базы у внутренних рейдеров.</div>
+        <div class="glossary-item"><strong>Shield wall / Шилд-вол</strong>Внешняя оборонная стена из квадратных блоков, прижатая к фундаменту — поглощает первые ракеты и закрывает софт-сайд.</div>
+        <div class="glossary-item"><strong>Soft side / Софт-сайд</strong>«Слабая» сторона стены с пониженным HP — стороной, в которую ставился блок, рейдеры бьют чаще всего. Скрывается шилд-волом или китайкой.</div>
+        <div class="glossary-item"><strong>Hard side / Хард-сайд</strong>«Твёрдая» сторона стены — её всегда ставят наружу базы.</div>
+        <div class="glossary-item"><strong>Triangle / Треуголка / Тапок</strong>Треугольный пол или стена — половина квадрата по площади, дешевле в апкипе и удобна для нестандартной геометрии.</div>
+        <div class="glossary-item"><strong>Square / Сквер</strong>Квадратный пол / стена — базовая единица постройки. На «сквер» равняют сетки.</div>
+        <div class="glossary-item"><strong>Funnel / Фаннел / Воронка</strong>Узкий коридор-ловушка между внешним периметром и лут-румом, ведущий через несколько углов и пиков защитника.</div>
+        <div class="glossary-item"><strong>Catwalk / Кетволк</strong>Наружный балкон или дорожка вокруг периметра — для патрулей, ремонта и угловых пиков.</div>
+        <div class="glossary-item"><strong>Decoy TC / Декой-шкаф</strong>Ложный TC в видимой комнате — рейдер тратит ресурсы, думая что разрушил основу базы, но реальный TC спрятан глубже.</div>
+        <div class="glossary-item"><strong>Disconnect TC / Отключаемый шкаф</strong>TC, который выключается из upkeep по необходимости (через дверь/вендинг) — экономит ресурсы и сбивает счётчик рейдеров.</div>
+        <div class="glossary-item"><strong>Embrasure / Амбразура / Бойница</strong>Узкая прорезь в стене (обычно через рамку окна или дверной проём с low wall) — позволяет стрелять, не открывая профиль.</div>
+        <div class="glossary-item"><strong>Cookoff / Кук-офф</strong>Цепная детонация горючего (low grade fuel, патроны) при пожаре — обычно метод защиты лута: рейдер подрывает базу, лут сгорает.</div>
+        <div class="glossary-item"><strong>Loot room / Лут-рум</strong>Центральная комната с большими ящиками и шкафами — главная цель любого рейда.</div>
+        <div class="glossary-item"><strong>Stash / Стеш / Захоронка</strong>Маленький наружный тайник в земле или соседней постройке — для разделения лута на случай взлома основы.</div>
+        <div class="glossary-item"><strong>Roof access / Руф-аксесс</strong>Выход на крышу через люк или лестницу — нужен для турелей, ракетных слотов и руф-кампа.</div>
+        <div class="glossary-item"><strong>Patch / Запатчить</strong>Заделать пиксель-гап или щель — обычно поворотом блока, заменой на треуголку или установкой honeycomb.</div>
+        <div class="glossary-item"><strong>Vending TC / Вендинг-шкаф</strong>TC, спрятанный за вендинг-машиной — её нельзя сломать киркой, нужно тратить взрывчатку. Очень дорогой downcost для рейдеров.</div>
+        <div class="glossary-item"><strong>Compound / Компаунд</strong>Огороженная территория вокруг основной базы — обычно фундаменты + low walls для зон фарма, печей и кур.</div>
+        <div class="glossary-item"><strong>Ladder hatch / Лестница-люк</strong>Связка hatch + ladder для вертикальной мобильности — доступ на этажи и крышу без лестничных пролётов.</div>
+        <div class="glossary-item"><strong>Sleeping bag / Спальник</strong>Точка респа: ставится в безопасном углу базы или в захоронке. Кулдаун 5 мин — ставить минимум по два с разных мест.</div>
       </div>
       <div class="glossary-grid" data-lang-block="en" style="display:none">
         <div class="glossary-item"><strong>Floor stack</strong>Multi-layered TC and box layout across floors — raiders waste resources punching through.</div>
@@ -428,11 +447,30 @@
         <div class="glossary-item"><strong>Open core</strong>Base without solid inner walls — room for peeks, exposure for boxes.</div>
         <div class="glossary-item"><strong>Snowball</strong>Tiny 1×1 starter built to expand rapidly in the first 1-2 hours of wipe.</div>
         <div class="glossary-item"><strong>Multi-TC</strong>Multiple TCs in one base to complicate raids from a single direction.</div>
-        <div class="glossary-item"><strong>Honeycomb</strong>Extra walls around key structures — more records to punch through.</div>
+        <div class="glossary-item"><strong>Honeycomb / Buffers</strong>Extra walls around key structures — more walls to punch through. Same thing as "buffers".</div>
         <div class="glossary-item"><strong>Bunker</strong>Hidden loot room requiring an "opener" mechanism (turret/SAM/blockable).</div>
         <div class="glossary-item"><strong>Open base</strong>Turret-driven mechanism that opens a wall or ceiling on toggle — for peeks and logistics.</div>
         <div class="glossary-item"><strong>Online / Offline def</strong>Online def — defense while team is online. Offline def — defense against night raids.</div>
         <div class="glossary-item"><strong>Retake</strong>Angle or room specifically designed for retaking the base from internal raiders.</div>
+        <div class="glossary-item"><strong>Shield wall</strong>External defensive wall of square blocks hugging the foundation — soaks first rockets and hides the soft side.</div>
+        <div class="glossary-item"><strong>Soft side</strong>The "weak" face of a wall (lower HP). Raiders attack the soft side first, so it must face inwards or be hidden behind a shield wall / china wall.</div>
+        <div class="glossary-item"><strong>Hard side</strong>The "hard" face of a wall — always faces outwards from the base.</div>
+        <div class="glossary-item"><strong>Triangle</strong>Triangular floor or wall — half the area of a square, cheaper upkeep, useful for non-standard geometry.</div>
+        <div class="glossary-item"><strong>Square</strong>Square floor / wall — the base building unit. Grids snap to "square".</div>
+        <div class="glossary-item"><strong>Funnel</strong>Narrow trap corridor between the outer perimeter and the loot room — leads through several angles and defender peeks.</div>
+        <div class="glossary-item"><strong>Catwalk</strong>External balcony or path around the perimeter — for patrols, repairs and corner peeks.</div>
+        <div class="glossary-item"><strong>Decoy TC</strong>Fake TC in a visible room — raiders waste resources thinking they cracked the base while the real TC sits deeper.</div>
+        <div class="glossary-item"><strong>Disconnect TC</strong>A TC switched out of upkeep on demand (via door/vending) — saves resources and breaks raider counters.</div>
+        <div class="glossary-item"><strong>Embrasure</strong>A narrow slit in the wall (typically via window frame or low-wall doorway) — lets you shoot without exposing your profile.</div>
+        <div class="glossary-item"><strong>Cookoff</strong>Chain detonation of fuel and ammo during a fire — typical loot defense: raiders crack the base, loot burns up.</div>
+        <div class="glossary-item"><strong>Loot room</strong>Central room with large boxes and TCs — the main raid target.</div>
+        <div class="glossary-item"><strong>Stash</strong>Small external cache buried or hidden nearby — splits loot in case the main base falls.</div>
+        <div class="glossary-item"><strong>Roof access</strong>Way up to the roof via hatch or ladder — needed for turrets, rocket slots and roof camping.</div>
+        <div class="glossary-item"><strong>Patch</strong>Closing a pixel gap or slit — usually by rotating the block, swapping in a triangle or adding a honeycomb.</div>
+        <div class="glossary-item"><strong>Vending TC</strong>TC hidden behind a vending machine — can\u2019t be picked up, raiders must spend explosives. Very expensive downcost.</div>
+        <div class="glossary-item"><strong>Compound</strong>Fenced area around the main base — typically foundations + low walls for farm zones, furnaces and chickens.</div>
+        <div class="glossary-item"><strong>Ladder hatch</strong>Hatch + ladder combo for vertical mobility — floor and roof access without stairwells.</div>
+        <div class="glossary-item"><strong>Sleeping bag</strong>Spawn point: placed in a safe corner or stash. 5-min cooldown — always place at least two from different spots.</div>
       </div>
     </div>
   </details>
@@ -582,7 +620,7 @@
         <div class="suggest-preview" id="sug-preview" aria-live="polite"></div>
 
         <div class="suggest-turnstile full" id="sug-turnstile-wrap" style="display:none">
-          <div id="sug-turnstile" class="cf-turnstile"></div>
+          <div id="sug-turnstile"></div>
         </div>
 
         <div class="suggest-actions full" id="sug-send-actions" style="display:none">
