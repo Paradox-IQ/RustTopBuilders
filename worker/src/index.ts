@@ -132,12 +132,15 @@ async function bumpRateLimit(kv: KVNamespace, ip: string): Promise<void> {
   const hourCount = parseInt(hourRaw ?? '0', 10);
   const dayCount = parseInt(dayRaw ?? '0', 10);
 
+  // KV requires expirationTtl >= 60s. In the last ~55s of a bucket the raw
+  // remaining-time + slack value would dip below that and kv.put would throw,
+  // causing the Worker to 500 *after* the Discord webhook already succeeded.
   await Promise.all([
     kv.put(hourKey, String(hourCount + 1), {
-      expirationTtl: (hourBucket + 1) * HOUR_SECONDS - now + 5,
+      expirationTtl: Math.max(60, (hourBucket + 1) * HOUR_SECONDS - now + 5),
     }),
     kv.put(dayKey, String(dayCount + 1), {
-      expirationTtl: (dayBucket + 1) * DAY_SECONDS - now + 5,
+      expirationTtl: Math.max(60, (dayBucket + 1) * DAY_SECONDS - now + 5),
     }),
   ]);
 }
