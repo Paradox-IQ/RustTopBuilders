@@ -24,6 +24,7 @@ export interface Env {
 }
 
 interface SuggestPayload {
+  type: 'suggest';
   name: string;
   youtube: string;
   format?: string;
@@ -34,6 +35,18 @@ interface SuggestPayload {
   langLabel?: string;
   turnstileToken: string;
 }
+
+interface ReviewPayload {
+  type: 'review';
+  rating: number;
+  comment: string;
+  contact?: string;
+  agree?: string;
+  agreeLabel?: string;
+  turnstileToken: string;
+}
+
+type Payload = SuggestPayload | ReviewPayload;
 
 const HOUR_LIMIT = 3;
 const DAY_LIMIT = 10;
@@ -148,9 +161,7 @@ function clampStr(value: unknown, max: number): string {
   return trimmed.length > max ? trimmed.slice(0, max - 1) + '…' : trimmed;
 }
 
-function validatePayload(raw: unknown): SuggestPayload | null {
-  if (!raw || typeof raw !== 'object') return null;
-  const r = raw as Record<string, unknown>;
+function validateSuggest(r: Record<string, unknown>): SuggestPayload | null {
   const name = clampStr(r.name, 80);
   const youtube = clampStr(r.youtube, 200);
   const note = clampStr(r.note, 600);
@@ -165,6 +176,7 @@ function validatePayload(raw: unknown): SuggestPayload | null {
   if (note.length < 20) return null;
   if (!turnstileToken) return null;
   return {
+    type: 'suggest',
     name,
     youtube,
     format,
@@ -177,7 +189,33 @@ function validatePayload(raw: unknown): SuggestPayload | null {
   };
 }
 
-function buildEmbed(p: SuggestPayload, ip: string): unknown {
+function validateReview(r: Record<string, unknown>): ReviewPayload | null {
+  const ratingNum = typeof r.rating === 'number' ? r.rating
+    : typeof r.rating === 'string' ? parseFloat(r.rating)
+    : NaN;
+  if (!Number.isFinite(ratingNum)) return null;
+  const rating = Math.max(0, Math.min(10, Math.round(ratingNum)));
+  // Discord embed field values are capped at 1024 chars; clamp here so we
+  // never produce a webhook the API will reject with HTTP 400.
+  const comment = clampStr(r.comment, 1000);
+  const contact = clampStr(r.contact, 120);
+  const agree = clampStr(r.agree, 32);
+  const agreeLabel = clampStr(r.agreeLabel, 64);
+  const turnstileToken = clampStr(r.turnstileToken, 4096);
+  if (comment.length < 10) return null;
+  if (!turnstileToken) return null;
+  return { type: 'review', rating, comment, contact, agree, agreeLabel, turnstileToken };
+}
+
+function validatePayload(raw: unknown): Payload | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const r = raw as Record<string, unknown>;
+  const type = typeof r.type === 'string' ? r.type : 'suggest';
+  if (type === 'review') return validateReview(r);
+  return validateSuggest(r);
+}
+
+function buildSuggestEmbed(p: SuggestPayload, ip: string): unknown {
   const fields = [
     { name: 'YouTube', value: p.youtube, inline: false },
     {
@@ -213,6 +251,49 @@ function buildEmbed(p: SuggestPayload, ip: string): unknown {
       },
     ],
   };
+}
+
+function buildReviewEmbed(p: ReviewPayload, ip: string): unknown {
+  const stars = '★'.repeat(Math.round(p.rating / 2)).padEnd(5, '☆');
+  const fields = [
+    {
+      name: 'Оценка / Rating',
+      value: `**${p.rating}/10**  ${stars}`,
+      inline: true,
+    },
+    {
+      name: 'Согласие / Verdict',
+      value: p.agreeLabel || p.agree || '—',
+      inline: true,
+    },
+    { name: 'Отзыв / Comment', value: p.comment, inline: false },
+    {
+      name: 'Контакт автора / Submitter contact',
+      value: p.contact || '—',
+      inline: false,
+    },
+    { name: 'IP', value: `\`${ip}\``, inline: true },
+  ];
+  // Color shifts from red (low) to gold (high) based on rating.
+  const color = p.rating >= 7 ? ACCENT_COLOR : p.rating >= 4 ? 0xa39061 : 0xb35a4d;
+  return {
+    username: 'Rust Builders — Reviews',
+    embeds: [
+      {
+        title: `📝 Отзыв о таблице — ${p.rating}/10`,
+        color,
+        fields,
+        footer: {
+          text: 'Review via paradox-iq.github.io/RustTopBuilders',
+        },
+        timestamp: new Date().toISOString(),
+      },
+    ],
+  };
+}
+
+function buildEmbed(p: Payload, ip: string): unknown {
+  return p.type === 'review' ? buildReviewEmbed(p, ip) : buildSuggestEmbed(p, ip);
 }
 
 export default {

@@ -6,7 +6,6 @@
 <title>Rust Builders — Полный гид 2026</title>
 <meta name="description" content="Гид 2026 по билдерам Rust: рейтинги, обзоры, цены кастомных баз, ссылки на YouTube, Discord, Patreon. Только активные авторы.">
 <link rel="canonical" href="https://paradox-iq.github.io/RustTopBuilders/">
-<meta name="yandex-verification" content="1ef694cbbeffd82b">
 <meta name="msvalidate.01" content="25433B06298822AB6C965AC547CB61D2">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Rust Builders — Полный гид 2026">
@@ -271,8 +270,32 @@
   .suggest-preview.show{display:block}
   .suggest-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
   .suggest-turnstile{margin-top:12px}
-  .suggest-turnstile #sug-turnstile{display:flex;justify-content:flex-start}
+  .suggest-turnstile #sug-turnstile,.suggest-turnstile #rev-turnstile,.suggest-turnstile .cf-turnstile-host{display:flex;justify-content:flex-start}
   @media (max-width:560px){.suggest-form{grid-template-columns:1fr}}
+
+  /* --- Review form: rating slider + verdict pills --------------------- */
+  .review-rating{display:flex;align-items:center;gap:14px;margin-top:6px}
+  .review-rating input[type=range]{flex:1;accent-color:var(--accent);cursor:pointer;height:24px}
+  .review-rating .rating-value{font-family:'Space Mono',monospace;font-size:18px;color:var(--accent);font-weight:700;min-width:46px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:6px 8px}
+  .verdict-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .verdict-pill{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;padding:8px 14px;border-radius:30px;background:var(--surface);border:1px solid var(--border);color:var(--muted2);cursor:pointer;transition:all .15s;text-transform:uppercase;min-height:34px;display:inline-flex;align-items:center}
+  .verdict-pill:hover{border-color:var(--accent);color:var(--accent)}
+  .verdict-pill.active{background:rgba(200,169,110,.14);border-color:var(--accent);color:var(--accent)}
+
+  /* --- Donate block --------------------------------------------------- */
+  .donate-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;margin-bottom:14px}
+  .donate-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .donate-card h4{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--accent);margin:0;text-transform:uppercase;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .donate-card .donate-net{font-size:10px;color:var(--muted2);font-weight:400;letter-spacing:.04em;text-transform:none}
+  .donate-card p{font-size:12px;color:var(--muted2);margin:0;line-height:1.5}
+  .donate-card .donate-link{display:inline-flex;align-items:center;gap:8px;background:rgba(200,169,110,.12);border:1px solid var(--accent);color:var(--accent);padding:8px 14px;border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.05em;text-decoration:none;transition:all .15s;text-transform:uppercase;align-self:flex-start;min-height:34px}
+  .donate-card .donate-link:hover{background:var(--accent);color:#0d0d0d}
+  .donate-addr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted2);background:var(--bg);border:1px dashed var(--border);border-radius:4px;padding:8px 10px;word-break:break-all}
+  .donate-addr code{flex:1;min-width:140px;color:var(--text)}
+  .donate-addr .copy-btn{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;padding:5px 10px;border-radius:3px;border:1px solid var(--border);background:var(--surface);color:var(--muted2);cursor:pointer;transition:all .15s;text-transform:uppercase;min-height:26px}
+  .donate-addr .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .donate-addr .copy-btn.copied{background:var(--green-bg,rgba(110,201,144,.14));color:var(--green-text,#6ec990);border-color:rgba(110,201,144,.4)}
+  @media (max-width:560px){.donate-grid{grid-template-columns:1fr}}
 
   /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
      because resizing a pinned bar shifts the content below by ~150px. */
@@ -640,6 +663,100 @@
       </form>
 
       <div class="suggest-meta" data-ru="// Заявка идёт через Cloudflare-прокси с капчей и лимитом 3/час · 10/сутки на IP — webhook-URL не светится. Альтернативно: «Скопировать» и вставить вручную в Discord (gamunkul8515)." data-en="// Submissions go through a Cloudflare proxy with captcha and a 3/hour · 10/day per-IP limit — the webhook URL is never exposed. Alternatively: copy the text and DM it to Discord (gamunkul8515).">// Заявка идёт через Cloudflare-прокси с капчей и лимитом 3/час · 10/сутки на IP — webhook-URL не светится. Альтернативно: «Скопировать» и вставить вручную в Discord (gamunkul8515).</div>
+    </div>
+  </details>
+
+  <details class="info-block suggest-section" id="review-section">
+    <summary>
+      <span data-ru="// оценить таблицу и оставить отзыв" data-en="// rate this guide and leave a review">// оценить таблицу и оставить отзыв</span>
+    </summary>
+    <div class="info-body">
+      <p data-ru="Что думаешь о таблице? Считаешь, что кого-то занизил/завысил? Не согласен с глоссарием? Просто хочешь похвалить или обоссать? Поставь оценку 0-10, оставь комментарий — отзыв улетит мне в Discord. Я читаю всё." data-en="What do you think of this guide? Believe someone is over/underrated? Disagree with the glossary? Or just want to compliment or roast it? Drop a 0-10 rating and a comment — the review goes straight to my Discord. I read everything.">Что думаешь о таблице? Считаешь, что кого-то занизил/завысил? Не согласен с глоссарием? Просто хочешь похвалить или обоссать? Поставь оценку 0-10, оставь комментарий — отзыв улетит мне в Discord. Я читаю всё.</p>
+
+      <form class="suggest-form" id="reviewForm" novalidate>
+        <label class="full">
+          <span data-ru="Оценка таблицы (0-10)" data-en="Rate the guide (0-10)">Оценка таблицы (0-10)</span> <span class="req">*</span>
+          <div class="review-rating">
+            <input type="range" id="rev-rating" name="rating" min="0" max="10" step="1" value="7" aria-label="Rating 0-10">
+            <div class="rating-value" id="rev-rating-value">7</div>
+          </div>
+        </label>
+        <label class="full">
+          <span data-ru="С чем-то не согласен?" data-en="Anything to disagree with?">С чем-то не согласен?</span>
+          <div class="verdict-pills" id="rev-verdict-pills" role="radiogroup">
+            <button type="button" class="verdict-pill active" data-value="agree" data-ru="Полностью согласен" data-en="Fully agree">Полностью согласен</button>
+            <button type="button" class="verdict-pill" data-value="mostly" data-ru="В основном да" data-en="Mostly yes">В основном да</button>
+            <button type="button" class="verdict-pill" data-value="partial" data-ru="Частично" data-en="Partially">Частично</button>
+            <button type="button" class="verdict-pill" data-value="disagree" data-ru="Не согласен" data-en="Disagree">Не согласен</button>
+          </div>
+          <input type="hidden" id="rev-agree" name="agree" value="agree">
+        </label>
+        <label class="full">
+          <span data-ru="Отзыв / критика / предложения" data-en="Review / criticism / suggestions">Отзыв / критика / предложения</span> <span class="req">*</span>
+          <textarea name="comment" id="rev-comment" required maxlength="1000" placeholder="Что нравится, что бесит, кого недооценил, кого переоценил, что улучшить, чего не хватает в глоссарии и т.д. Минимум 10 символов."></textarea>
+          <span class="hint" data-ru="Можно ругаться, можно хвалить — пишу, как есть. Главное чтоб по делу." data-en="Praise or roast, both fine — keep it on-topic.">Можно ругаться, можно хвалить — пишу, как есть. Главное чтоб по делу.</span>
+        </label>
+        <label class="full">
+          <span data-ru="Твой контакт (если хочешь, чтоб я ответил)" data-en="Your contact (if you want a reply)">Твой контакт (если хочешь, чтоб я ответил)</span>
+          <input type="text" name="contact" id="rev-contact" maxlength="100" placeholder="Discord, email — что угодно">
+        </label>
+
+        <div class="suggest-actions full">
+          <button type="button" id="rev-generate-btn" class="suggest-btn primary" data-ru="Подготовить отзыв" data-en="Prepare review">Подготовить отзыв</button>
+          <button type="button" id="rev-reset-btn" class="suggest-btn" data-ru="Очистить" data-en="Reset">Очистить</button>
+        </div>
+
+        <div class="suggest-preview" id="rev-preview" aria-live="polite"></div>
+
+        <div class="suggest-turnstile full" id="rev-turnstile-wrap" style="display:none">
+          <div id="rev-turnstile"></div>
+        </div>
+
+        <div class="suggest-actions full" id="rev-send-actions" style="display:none">
+          <button type="button" id="rev-send-btn" class="suggest-btn primary" data-ru="📨 Отправить отзыв" data-en="📨 Send review">📨 Отправить отзыв</button>
+        </div>
+
+        <div class="suggest-status" id="rev-status" role="status"></div>
+      </form>
+
+      <div class="suggest-meta" data-ru="// Отзыв летит мне в Discord через тот же Cloudflare-прокси с капчей и лимитом 3/час · 10/сутки на IP. Личные данные не запрашиваются — только то, что напишешь сам." data-en="// Reviews are delivered to my Discord via the same Cloudflare proxy with captcha and a 3/hour · 10/day per-IP limit. No personal data is requested — only what you choose to share.">// Отзыв летит мне в Discord через тот же Cloudflare-прокси с капчей и лимитом 3/час · 10/сутки на IP. Личные данные не запрашиваются — только то, что напишешь сам.</div>
+    </div>
+  </details>
+
+  <details class="info-block suggest-section" id="donate-section">
+    <summary>
+      <span data-ru="// поддержать проект" data-en="// support the project">// поддержать проект</span>
+    </summary>
+    <div class="info-body">
+      <p data-ru="Если таблица помогла — можешь закинуть копейку. Полностью добровольно, никакого пейволла на гайде нет и не будет. Все донаты идут напрямую автору, никаких комиссий через сайт." data-en="If this guide helped — you can throw a coin. Strictly voluntary, there's no paywall and never will be. All donations go directly to the author, no fees pass through this site.">Если таблица помогла — можешь закинуть копейку. Полностью добровольно, никакого пейволла на гайде нет и не будет. Все донаты идут напрямую автору, никаких комиссий через сайт.</p>
+      <div class="donate-grid">
+        <div class="donate-card">
+          <h4 data-ru="DonationAlerts" data-en="DonationAlerts">DonationAlerts</h4>
+          <p data-ru="Карты, СБП, ЮMoney, QIWI, PayPal — любым удобным способом. Можно оставить сообщение." data-en="Cards, PayPal, ЮMoney, QIWI — pick any method. You can leave a message.">Карты, СБП, ЮMoney, QIWI, PayPal — любым удобным способом. Можно оставить сообщение.</p>
+          <a class="donate-link" href="https://www.donationalerts.com/r/ArseniBorodachi" target="_blank" rel="noopener noreferrer" data-ru="Открыть DonationAlerts ↗" data-en="Open DonationAlerts ↗">Открыть DonationAlerts ↗</a>
+        </div>
+        <div class="donate-card">
+          <h4>BTC <span class="donate-net">Bitcoin</span></h4>
+          <p data-ru="Только сеть Bitcoin (BTC). Не отправляй BCH/BSV — пропадут." data-en="Bitcoin network (BTC) only. Do NOT send BCH/BSV — funds will be lost.">Только сеть Bitcoin (BTC). Не отправляй BCH/BSV — пропадут.</p>
+          <div class="donate-addr"><code>bc1qdus6qglfpr7r6jqry7aza346vtlnkl3he9puww</code><button type="button" class="copy-btn" data-ru="Копировать" data-en="Copy">Копировать</button></div>
+        </div>
+        <div class="donate-card">
+          <h4>ETH <span class="donate-net">ERC-20 (Ethereum)</span></h4>
+          <p data-ru="Сеть Ethereum (ERC-20). Подходят ETH и любые ERC-20 токены (USDT/USDC/DAI и т.д.)." data-en="Ethereum network (ERC-20). Accepts ETH and any ERC-20 tokens (USDT/USDC/DAI etc).">Сеть Ethereum (ERC-20). Подходят ETH и любые ERC-20 токены (USDT/USDC/DAI и т.д.).</p>
+          <div class="donate-addr"><code>0x90d24bbfab864b5abe5c913933e2b59f3d967291</code><button type="button" class="copy-btn" data-ru="Копировать" data-en="Copy">Копировать</button></div>
+        </div>
+        <div class="donate-card">
+          <h4>BNB <span class="donate-net">BEP-20 (BNB Smart Chain)</span></h4>
+          <p data-ru="Сеть BNB Smart Chain (BEP-20). Не путай с Beacon Chain — кошелёк EVM-совместимый." data-en="BNB Smart Chain (BEP-20) network. Don't confuse with Beacon Chain — this is an EVM-compatible wallet.">Сеть BNB Smart Chain (BEP-20). Не путай с Beacon Chain — кошелёк EVM-совместимый.</p>
+          <div class="donate-addr"><code>0x90d24bbfab864b5abe5c913933e2b59f3d967291</code><button type="button" class="copy-btn" data-ru="Копировать" data-en="Copy">Копировать</button></div>
+        </div>
+        <div class="donate-card">
+          <h4>USDT <span class="donate-net">TRC-20 (Tron)</span></h4>
+          <p data-ru="Сеть Tron (TRC-20). Самая дешёвая комиссия для USDT. Только USDT — другие токены не отправляй." data-en="Tron network (TRC-20). Lowest fees for USDT. USDT only — don't send other tokens.">Сеть Tron (TRC-20). Самая дешёвая комиссия для USDT. Только USDT — другие токены не отправляй.</p>
+          <div class="donate-addr"><code>TBp7j25iHGGut3rYegSRfaArfndbozTLbf</code><button type="button" class="copy-btn" data-ru="Копировать" data-en="Copy">Копировать</button></div>
+        </div>
+      </div>
+      <div class="suggest-meta" data-ru="// Никакие комиссии не идут мне через сайт — всё на прямые ссылки/кошельки. Перед отправкой большой суммы сверь адрес символ-в-символ или спроси меня в Discord (gamunkul8515)." data-en="// No fees pass through this site — everything goes via direct links/wallets. For larger amounts, double-check the address character-by-character or ping me on Discord (gamunkul8515).">// Никакие комиссии не идут мне через сайт — всё на прямые ссылки/кошельки. Перед отправкой большой суммы сверь адрес символ-в-символ или спроси меня в Discord (gamunkul8515).</div>
     </div>
   </details>
 
@@ -1163,18 +1280,25 @@ function setLang(l){
   // Suggest-form: labels, options, hints, buttons, action links, meta line
   document.querySelectorAll('.suggest-form label > span[data-ru], .suggest-form .hint[data-ru], .suggest-form option[data-ru], .suggest-form button[data-ru], .suggest-form a[data-ru], .suggest-meta[data-ru]')
     .forEach(el=>{el.textContent=el.dataset[l]});
+  // Donate-section: card titles, donate-link anchor, copy buttons
+  document.querySelectorAll('#donate-section h4[data-ru], #donate-section .donate-link[data-ru], #donate-section .copy-btn[data-ru]')
+    .forEach(el=>{el.textContent=el.dataset[l]});
   // Suggest-form placeholders (no data-attr — switched here directly)
   const phRu = {
     'sug-name':'напр. SomeNewBuilder',
     'sug-youtube':'https://youtube.com/@...',
     'sug-note':'2-3 предложения: какой стиль, есть ли Patreon/Discord, на что обратить внимание, чем выделяется',
-    'sug-contact':'Discord, email — что угодно'
+    'sug-contact':'Discord, email — что угодно',
+    'rev-comment':'Что нравится, что бесит, кого недооценил, кого переоценил, что улучшить, чего не хватает в глоссарии и т.д. Минимум 10 символов.',
+    'rev-contact':'Discord, email — что угодно'
   };
   const phEn = {
     'sug-name':'e.g. SomeNewBuilder',
     'sug-youtube':'https://youtube.com/@...',
     'sug-note':'2-3 sentences: their style, Patreon/Discord, what to look for, what makes them stand out',
-    'sug-contact':'Discord, email — anything'
+    'sug-contact':'Discord, email — anything',
+    'rev-comment':'Likes, dislikes, who you think is over/underrated, what to improve, missing glossary entries, etc. Minimum 10 characters.',
+    'rev-contact':'Discord, email — anything'
   };
   Object.entries(l==='ru'?phRu:phEn).forEach(([id,ph])=>{const el=document.getElementById(id); if(el) el.placeholder=ph;});
   renderCustoms();
@@ -1768,6 +1892,258 @@ function setupSuggestForm(){
 }
 
 setupSuggestForm();
+
+const REVIEW_LS_KEY = 'rtb_review_last_send';
+
+function buildReviewText(){
+  const rating = document.getElementById('rev-rating').value;
+  const agreeEl = document.querySelector('#rev-verdict-pills .verdict-pill.active');
+  const agree = agreeEl ? (agreeEl.dataset[currentLang] || agreeEl.textContent.trim()) : '';
+  const comment = (document.getElementById('rev-comment').value || '').trim();
+  const contact = (document.getElementById('rev-contact').value || '').trim();
+  const ru = currentLang==='ru';
+  const lines = [];
+  lines.push(ru ? '— Отзыв о таблице —' : '— Review of the guide —');
+  lines.push((ru?'Оценка:     ':'Rating:     ')+rating+'/10');
+  if(agree) lines.push((ru?'Согласие:   ':'Verdict:    ')+agree);
+  lines.push('');
+  lines.push((ru?'Отзыв:':'Comment:'));
+  lines.push(comment);
+  if(contact){
+    lines.push('');
+    lines.push((ru?'Связь со мной: ':'My contact: ')+contact);
+  }
+  return lines.join('\n');
+}
+
+function buildReviewPayload(turnstileToken){
+  const agreeEl = document.querySelector('#rev-verdict-pills .verdict-pill.active');
+  return {
+    type: 'review',
+    rating: parseInt(document.getElementById('rev-rating').value, 10),
+    agree: agreeEl ? agreeEl.dataset.value : '',
+    agreeLabel: agreeEl ? (agreeEl.dataset.ru || agreeEl.textContent.trim()) : '',
+    comment: (document.getElementById('rev-comment').value || '').trim(),
+    contact: (document.getElementById('rev-contact').value || '').trim(),
+    turnstileToken
+  };
+}
+
+function validateReview(){
+  const el = document.getElementById('rev-comment');
+  const ok = ((el.value||'').trim().length >= 10);
+  el.classList.toggle('invalid', !ok);
+  return ok ? null : el;
+}
+
+function setupReviewForm(){
+  const form = document.getElementById('reviewForm'); if(!form) return;
+  const ratingEl = document.getElementById('rev-rating');
+  const ratingValueEl = document.getElementById('rev-rating-value');
+  const verdictBox = document.getElementById('rev-verdict-pills');
+  const agreeInput = document.getElementById('rev-agree');
+  const previewEl = document.getElementById('rev-preview');
+  const sendActions = document.getElementById('rev-send-actions');
+  const statusEl = document.getElementById('rev-status');
+  const genBtn = document.getElementById('rev-generate-btn');
+  const resetBtn = document.getElementById('rev-reset-btn');
+  const sendBtn = document.getElementById('rev-send-btn');
+  const turnstileWrap = document.getElementById('rev-turnstile-wrap');
+  const turnstileEl = document.getElementById('rev-turnstile');
+  const workerConfigured = !!(SUGGEST_WORKER_URL && SUGGEST_TURNSTILE_SITE_KEY);
+  let turnstileToken = '';
+  let turnstileWidgetId = null;
+
+  function setStatus(msg, kind){
+    statusEl.className = 'suggest-status' + (kind?' '+kind:'');
+    statusEl.textContent = msg;
+  }
+  function clearStatus(){ statusEl.className='suggest-status'; statusEl.textContent=''; }
+
+  ratingEl.addEventListener('input', ()=>{ ratingValueEl.textContent = ratingEl.value; });
+
+  verdictBox.addEventListener('click', e=>{
+    const btn = e.target.closest('.verdict-pill'); if(!btn) return;
+    verdictBox.querySelectorAll('.verdict-pill').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    agreeInput.value = btn.dataset.value || '';
+  });
+
+  function ensureTurnstile(){
+    if(!workerConfigured) return;
+    if(turnstileWidgetId !== null) return;
+    if(typeof window.turnstile === 'undefined'){
+      setTimeout(ensureTurnstile, 400);
+      return;
+    }
+    turnstileWidgetId = window.turnstile.render(turnstileEl, {
+      sitekey: SUGGEST_TURNSTILE_SITE_KEY,
+      theme: 'dark',
+      callback: tok => { turnstileToken = tok; sendBtn.disabled = false; },
+      'expired-callback': () => { turnstileToken = ''; sendBtn.disabled = true; },
+      'error-callback': () => { turnstileToken = ''; sendBtn.disabled = true; }
+    });
+  }
+  function resetTurnstile(){
+    turnstileToken = '';
+    if(workerConfigured && turnstileWidgetId !== null && window.turnstile){
+      try{ window.turnstile.reset(turnstileWidgetId); } catch(_){}
+    }
+  }
+
+  if(!workerConfigured){
+    sendBtn.style.display = 'none';
+  }
+
+  genBtn.addEventListener('click', ()=>{
+    const bad = validateReview();
+    if(bad){
+      setStatus(currentLang==='ru'
+        ? 'Напиши отзыв минимум 10 символов.'
+        : 'Comment must be at least 10 characters.',
+        'err');
+      bad.focus();
+      previewEl.classList.remove('show');
+      sendActions.style.display='none';
+      turnstileWrap.style.display='none';
+      return;
+    }
+    previewEl.textContent = buildReviewText();
+    previewEl.classList.add('show');
+    sendActions.style.display='flex';
+    if(workerConfigured){
+      turnstileWrap.style.display='block';
+      sendBtn.disabled = !turnstileToken;
+      ensureTurnstile();
+    }
+    setStatus(currentLang==='ru'
+      ? (workerConfigured
+          ? 'Готово. Пройди капчу и жми «Отправить отзыв».'
+          : 'Готово. Скопируй текст и отправь в Discord (gamunkul8515).')
+      : (workerConfigured
+          ? "Ready. Solve the captcha and click 'Send review'."
+          : 'Ready. Copy the text and DM Discord (gamunkul8515).'),
+      'ok');
+  });
+
+  sendBtn.addEventListener('click', async ()=>{
+    if(!workerConfigured) return;
+    const bad = validateReview();
+    if(bad){ bad.focus(); return; }
+    if(!turnstileToken){
+      setStatus(currentLang==='ru'
+        ? 'Сначала пройди капчу выше.'
+        : 'Please complete the captcha above first.',
+        'err');
+      return;
+    }
+    const last = parseInt(localStorage.getItem(REVIEW_LS_KEY) || '0', 10);
+    const wait = SUGGEST_COOLDOWN_MS - (Date.now() - last);
+    if(wait > 0){
+      const sec = Math.ceil(wait/1000);
+      setStatus(currentLang==='ru'
+        ? `Подожди ${sec} сек. перед следующей отправкой.`
+        : `Please wait ${sec}s before sending again.`,
+        'err');
+      return;
+    }
+    sendBtn.disabled = true;
+    setStatus(currentLang==='ru' ? 'Отправляем…' : 'Sending…', '');
+    try{
+      const payload = buildReviewPayload(turnstileToken);
+      const res = await fetch(SUGGEST_WORKER_URL, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(()=>({}));
+      if(res.status === 429){
+        const sec = data.retryAfterSeconds ? Math.ceil(data.retryAfterSeconds/60) : null;
+        setStatus(currentLang==='ru'
+          ? `Слишком много заявок с твоего IP. Попробуй${sec?` через ~${sec} мин`:' позже'}.`
+          : `Too many submissions from your IP. Try${sec?` again in ~${sec} min`:' again later'}.`,
+          'err');
+        resetTurnstile();
+        return;
+      }
+      if(res.status === 403){
+        setStatus(currentLang==='ru'
+          ? 'Капча не прошла. Обнови страницу и попробуй снова.'
+          : 'Captcha rejected. Refresh the page and try again.',
+          'err');
+        resetTurnstile();
+        return;
+      }
+      if(!res.ok || !data.ok){
+        throw new Error('worker_error');
+      }
+      localStorage.setItem(REVIEW_LS_KEY, String(Date.now()));
+      setStatus(currentLang==='ru'
+        ? '✓ Отзыв отправлен. Спасибо! Прочитаю.'
+        : '✓ Review sent. Thanks! I will read it.',
+        'ok');
+      sendBtn.style.display='none';
+      turnstileWrap.style.display='none';
+    } catch(err){
+      setStatus(currentLang==='ru'
+        ? 'Не получилось отправить автоматически. Скопируй текст из превью и отправь в Discord (gamunkul8515) вручную.'
+        : "Couldn't send automatically. Copy the preview text and DM it to Discord (gamunkul8515) manually.",
+        'err');
+      sendBtn.disabled = false;
+      resetTurnstile();
+    }
+  });
+
+  resetBtn.addEventListener('click', ()=>{
+    form.reset();
+    ratingEl.value = '7';
+    ratingValueEl.textContent = '7';
+    verdictBox.querySelectorAll('.verdict-pill').forEach((p,i)=>p.classList.toggle('active', i===0));
+    agreeInput.value = 'agree';
+    document.getElementById('rev-comment').classList.remove('invalid');
+    previewEl.classList.remove('show');
+    previewEl.textContent='';
+    sendActions.style.display='none';
+    turnstileWrap.style.display='none';
+    if(workerConfigured){
+      sendBtn.style.display='';
+      sendBtn.disabled = true;
+    }
+    resetTurnstile();
+    clearStatus();
+  });
+
+  document.getElementById('rev-comment').addEventListener('input', e=>e.target.classList.remove('invalid'));
+}
+
+setupReviewForm();
+
+function setupDonateCopy(){
+  const grid = document.querySelector('#donate-section .donate-grid');
+  if(!grid) return;
+  grid.addEventListener('click', async e=>{
+    const btn = e.target.closest('.copy-btn');
+    if(!btn) return;
+    const code = btn.parentElement.querySelector('code');
+    if(!code) return;
+    const text = code.textContent.trim();
+    try{
+      await navigator.clipboard.writeText(text);
+    } catch(_){
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); } catch(__){}
+      document.body.removeChild(ta);
+    }
+    const orig = btn.textContent;
+    btn.textContent = currentLang==='en' ? 'Copied' : 'Скопировано';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent = orig; btn.classList.remove('copied'); }, 1600);
+  });
+}
+
+setupDonateCopy();
 
 const stBtn=document.getElementById("scrollTopBtn");
 const filtBtn=document.getElementById("scrollToFiltersBtn");
