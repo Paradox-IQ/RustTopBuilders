@@ -570,7 +570,7 @@
       <span data-ru="// предложить билдера в гайд" data-en="// suggest a builder for the guide">// предложить билдера в гайд</span>
     </summary>
     <div class="info-body">
-      <p data-ru="Знаешь крутого билдера, которого тут нет? Заполни форму, нажми «Сформировать» — получишь готовый текст, который можно отправить мне в Discord (gamunkul8515) или Telegram. Без бэкенда: данные не уходят на сторонние серверы, всё происходит в твоём браузере." data-en="Know a great builder who's missing? Fill in the form and click 'Generate' — you'll get a ready-to-send text block to drop into Discord (gamunkul8515) or Telegram. No backend: nothing leaves your browser until you choose to send it.">Знаешь крутого билдера, которого тут нет? Заполни форму, нажми «Сформировать» — получишь готовый текст, который можно отправить мне в Discord (gamunkul8515) или Telegram. Без бэкенда: данные не уходят на сторонние серверы, всё происходит в твоём браузере.</p>
+      <p data-ru="Знаешь крутого билдера, которого тут нет? Заполни форму и нажми «Отправить заявку» — она автоматически придёт мне в Discord через Cloudflare-прокси с капчей. Без бэкенда: webhook-URL не светится в браузере." data-en="Know a great builder who's missing? Fill in the form and click 'Send suggestion' — it will be delivered to my Discord automatically via a captcha-protected Cloudflare proxy. The webhook URL is never exposed to the browser.">Знаешь крутого билдера, которого тут нет? Заполни форму и нажми «Отправить заявку» — она автоматически придёт мне в Discord через Cloudflare-прокси с капчей. Без бэкенда: webhook-URL не светится в браузере.</p>
 
       <form class="suggest-form" id="suggestForm" novalidate>
         <label class="full">
@@ -609,7 +609,7 @@
         </label>
         <label class="full">
           <span data-ru="Твой контакт (если хочешь, чтоб я ответил)" data-en="Your contact (if you want a reply)">Твой контакт (если хочешь, чтоб я ответил)</span>
-          <input type="text" name="contact" id="sug-contact" maxlength="100" placeholder="Discord, Telegram, email — что угодно">
+          <input type="text" name="contact" id="sug-contact" maxlength="100" placeholder="Discord, email — что угодно">
         </label>
 
         <div class="suggest-actions full">
@@ -626,7 +626,6 @@
         <div class="suggest-actions full" id="sug-send-actions" style="display:none">
           <button type="button" id="sug-send-btn" class="suggest-btn primary" data-ru="📨 Отправить заявку" data-en="📨 Send suggestion">📨 Отправить заявку</button>
           <button type="button" id="sug-copy-btn" class="suggest-btn" data-ru="📋 Скопировать" data-en="📋 Copy">📋 Скопировать</button>
-          <a id="sug-tg-link" class="suggest-btn" target="_blank" rel="noopener noreferrer" data-ru="Через Telegram" data-en="Via Telegram">Через Telegram</a>
         </div>
 
         <div class="suggest-status" id="sug-status" role="status"></div>
@@ -1161,13 +1160,13 @@ function setLang(l){
     'sug-name':'напр. SomeNewBuilder',
     'sug-youtube':'https://youtube.com/@...',
     'sug-note':'2-3 предложения: какой стиль, есть ли Patreon/Discord, на что обратить внимание, чем выделяется',
-    'sug-contact':'Discord, Telegram, email — что угодно'
+    'sug-contact':'Discord, email — что угодно'
   };
   const phEn = {
     'sug-name':'e.g. SomeNewBuilder',
     'sug-youtube':'https://youtube.com/@...',
     'sug-note':'2-3 sentences: their style, Patreon/Discord, what to look for, what makes them stand out',
-    'sug-contact':'Discord, Telegram, email — anything'
+    'sug-contact':'Discord, email — anything'
   };
   Object.entries(l==='ru'?phRu:phEn).forEach(([id,ph])=>{const el=document.getElementById(id); if(el) el.placeholder=ph;});
   renderCustoms();
@@ -1487,18 +1486,14 @@ function renderBases(){
 
 // --- Suggest-builder form ------------------------------------------------
 // No backend: fields are formatted into a clean text block. The user can
-// copy to clipboard or open Telegram/email pre-filled with the same text.
+// copy to clipboard pre-filled with the same text.
 // Discord doesn't have a real DM-by-username deep-link, so we suggest the
 // clipboard path + show the Discord handle in the status message.
 const SUGGEST_DISCORD = 'gamunkul8515';
-// Optional Telegram username; if set, the share button opens t.me/<user>
-// directly. When empty, falls back to t.me/share/url which lets the user
-// paste the prefilled text into any chat.
-const SUGGEST_TG = '';
 // Cloudflare Worker that proxies suggestions to Discord with Turnstile +
 // per-IP rate limit. Source lives in /worker. Replace these two values
 // after deploying the Worker (see worker/README.md). When SUGGEST_WORKER_URL
-// is empty, the form falls back to the manual Copy/Telegram path.
+// is empty, the form falls back to the manual Copy path.
 const SUGGEST_WORKER_URL = 'https://rusttop-suggest-proxy.altyshenskiy.workers.dev';
 const SUGGEST_TURNSTILE_SITE_KEY = '0x4AAAAAADDOTml9zu5mxjwD';
 // Per-device cooldown — secondary defense in addition to the server-side
@@ -1576,7 +1571,6 @@ function setupSuggestForm(){
   const genBtn = document.getElementById('sug-generate-btn');
   const resetBtn = document.getElementById('sug-reset-btn');
   const copyBtn = document.getElementById('sug-copy-btn');
-  const tgLink = document.getElementById('sug-tg-link');
   const sendBtn = document.getElementById('sug-send-btn');
   const turnstileWrap = document.getElementById('sug-turnstile-wrap');
   const turnstileEl = document.getElementById('sug-turnstile');
@@ -1615,7 +1609,7 @@ function setupSuggestForm(){
   }
 
   // If the Worker isn't configured yet, hide the auto-send button and
-  // fall back to the manual Copy / Telegram path.
+  // fall back to the manual Copy path.
   if(!workerConfigured){
     sendBtn.style.display = 'none';
   }
@@ -1642,17 +1636,13 @@ function setupSuggestForm(){
       sendBtn.disabled = !turnstileToken;
       ensureTurnstile();
     }
-    const body = encodeURIComponent(text);
-    tgLink.href = SUGGEST_TG
-      ? `https://t.me/${SUGGEST_TG}?text=${body}`
-      : `https://t.me/share/url?url=${encodeURIComponent('https://paradox-iq.github.io/RustTopBuilders/')}&text=${body}`;
     setStatus(currentLang==='ru'
       ? (workerConfigured
           ? 'Готово. Пройди капчу и жми «Отправить заявку».'
-          : 'Готово. Скопируй текст и отправь в Discord (gamunkul8515) или открой Telegram.')
+          : 'Готово. Скопируй текст и отправь в Discord (gamunkul8515).')
       : (workerConfigured
           ? "Ready. Solve the captcha and click 'Send suggestion'."
-          : 'Ready. Copy the text and DM Discord (gamunkul8515) or open Telegram.'),
+          : 'Ready. Copy the text and DM Discord (gamunkul8515).'),
       'ok');
   });
 
