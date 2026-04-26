@@ -693,7 +693,7 @@
         </label>
         <label class="full">
           <span data-ru="Отзыв / критика / предложения" data-en="Review / criticism / suggestions">Отзыв / критика / предложения</span> <span class="req">*</span>
-          <textarea name="comment" id="rev-comment" required maxlength="1500" placeholder="Что нравится, что бесит, кого недооценил, кого переоценил, что улучшить, чего не хватает в глоссарии и т.д. Минимум 10 символов."></textarea>
+          <textarea name="comment" id="rev-comment" required maxlength="1000" placeholder="Что нравится, что бесит, кого недооценил, кого переоценил, что улучшить, чего не хватает в глоссарии и т.д. Минимум 10 символов."></textarea>
           <span class="hint" data-ru="Можно ругаться, можно хвалить — пишу, как есть. Главное чтоб по делу." data-en="Praise or roast, both fine — keep it on-topic.">Можно ругаться, можно хвалить — пишу, как есть. Главное чтоб по делу.</span>
         </label>
         <label class="full">
@@ -733,7 +733,7 @@
         <div class="donate-card">
           <h4 data-ru="DonationAlerts" data-en="DonationAlerts">DonationAlerts</h4>
           <p data-ru="Карты, СБП, ЮMoney, QIWI, PayPal — любым удобным способом. Можно оставить сообщение." data-en="Cards, PayPal, ЮMoney, QIWI — pick any method. You can leave a message.">Карты, СБП, ЮMoney, QIWI, PayPal — любым удобным способом. Можно оставить сообщение.</p>
-          <a class="donate-link" href="https://www.donationalerts.com/r/ArseniBorodachi" target="_blank" rel="noopener noreferrer" data-ru="Открыть DonationAlerts" data-en="Open DonationAlerts">Открыть DonationAlerts ↗</a>
+          <a class="donate-link" href="https://www.donationalerts.com/r/ArseniBorodachi" target="_blank" rel="noopener noreferrer" data-ru="Открыть DonationAlerts ↗" data-en="Open DonationAlerts ↗">Открыть DonationAlerts ↗</a>
         </div>
         <div class="donate-card">
           <h4>BTC <span class="donate-net">Bitcoin</span></h4>
@@ -1279,6 +1279,9 @@ function setLang(l){
   document.querySelectorAll('.custom-table thead th[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   // Suggest-form: labels, options, hints, buttons, action links, meta line
   document.querySelectorAll('.suggest-form label > span[data-ru], .suggest-form .hint[data-ru], .suggest-form option[data-ru], .suggest-form button[data-ru], .suggest-form a[data-ru], .suggest-meta[data-ru]')
+    .forEach(el=>{el.textContent=el.dataset[l]});
+  // Donate-section: card titles, donate-link anchor, copy buttons
+  document.querySelectorAll('#donate-section h4[data-ru], #donate-section .donate-link[data-ru], #donate-section .copy-btn[data-ru]')
     .forEach(el=>{el.textContent=el.dataset[l]});
   // Suggest-form placeholders (no data-attr — switched here directly)
   const phRu = {

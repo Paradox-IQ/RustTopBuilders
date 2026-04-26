@@ -195,7 +195,9 @@ function validateReview(r: Record<string, unknown>): ReviewPayload | null {
     : NaN;
   if (!Number.isFinite(ratingNum)) return null;
   const rating = Math.max(0, Math.min(10, Math.round(ratingNum)));
-  const comment = clampStr(r.comment, 1500);
+  // Discord embed field values are capped at 1024 chars; clamp here so we
+  // never produce a webhook the API will reject with HTTP 400.
+  const comment = clampStr(r.comment, 1000);
   const contact = clampStr(r.contact, 120);
   const agree = clampStr(r.agree, 32);
   const agreeLabel = clampStr(r.agreeLabel, 64);
