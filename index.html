@@ -4,11 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Rust Builders — Полный гид 2026</title>
+<meta name="description" content="Гид 2026 по билдерам Rust: рейтинги, обзоры, цены кастомных баз, ссылки на YouTube, Discord, Patreon. Только активные авторы.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rust Builders — Полный гид 2026">
+<meta property="og:description" content="Рейтинг билдеров Rust 2026: пики, крыши, бункеры, кастомные базы, апкип. Только активные каналы.">
+<meta property="og:url" content="https://paradox-iq.github.io/RustTopBuilders/">
+<meta property="og:image" content="https://paradox-iq.github.io/RustTopBuilders/assets/og-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rust Builders — Полный гид 2026: 52 билдера, 14 patreon, 11 кастом, шкала 0.25★">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rust Builders — Полный гид 2026">
+<meta name="twitter:description" content="Рейтинг билдеров Rust 2026: пики, крыши, бункеры, кастомные базы, апкип.">
+<meta name="twitter:image" content="https://paradox-iq.github.io/RustTopBuilders/assets/og-preview.png">
+<meta name="twitter:image:alt" content="Rust Builders — Полный гид 2026: 52 билдера, 14 patreon, 11 кастом, шкала 0.25★">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d0d0d'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' dominant-baseline='middle' font-size='22' fill='%23c8a96e' font-family='serif'%3E%E2%98%85%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
   :root{--bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;--border:#2a2a2a;--border2:#333;--text:#e8e4db;--muted:#666;--muted2:#888;--accent:#c8a96e;--accent2:#e8c88e;--green-bg:#0f2018;--green-text:#6ec990;--red-text:#e07060;--amber-text:#e0a84a;--blue-bg:#0d1520;--blue-text:#6a9ee8;--star:#c8a96e}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;position:relative}
+  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;position:relative;overflow-anchor:none}
   .noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4}
   .page{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:60px 32px 100px}
   .lang-bar{display:flex;justify-content:flex-end;margin-bottom:32px}
@@ -24,12 +41,23 @@
   .header-meta span{display:flex;align-items:center;gap:6px}
   .header-meta span::before{content:'—';color:var(--accent)}
   .disclaimer{margin-top:14px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding:8px 14px;border-left:2px solid var(--border2);letter-spacing:.03em;line-height:1.5}
-  .custom-section{background:linear-gradient(135deg,#1a1200 0%,#0d0d0d 60%);border:1px solid #3a2a00;border-left:3px solid var(--accent);border-radius:12px;padding:28px 32px;margin-bottom:40px}
-  .custom-title{font-size:13px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
-  .custom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-  .custom-card{background:rgba(200,169,110,0.05);border:1px solid rgba(200,169,110,0.15);border-radius:8px;padding:14px 16px}
-  .custom-name{font-weight:700;color:var(--accent2);font-size:14px;margin-bottom:6px}
-  .custom-desc{font-size:12px;color:var(--muted2);line-height:1.5}
+  .custom-section{background:linear-gradient(135deg,#1a1200 0%,#0d0d0d 60%);border:1px solid #3a2a00;border-left:3px solid var(--accent);border-radius:12px;padding:24px 28px;margin-bottom:40px}
+  .custom-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+  .custom-title{font-size:13px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}
+  .custom-sort{display:flex;gap:6px;flex-wrap:wrap}
+  .chip.mini{font-size:10px;padding:4px 10px;letter-spacing:.04em}
+  .custom-table-wrap{overflow-x:auto;margin:0 -4px}
+  .custom-table{width:100%;border-collapse:separate;border-spacing:0;font-family:'Space Mono',monospace;font-size:12px;min-width:580px}
+  .custom-table thead th{text-align:left;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);font-size:10px;padding:8px 12px;border-bottom:1px solid #3a2a00;background:rgba(200,169,110,.04);white-space:nowrap}
+  .custom-table thead th:first-child{border-top-left-radius:6px}
+  .custom-table thead th:last-child{border-top-right-radius:6px}
+  .custom-table tbody td{padding:10px 12px;border-bottom:1px solid rgba(200,169,110,.08);color:var(--muted2);vertical-align:top;line-height:1.5}
+  .custom-table tbody tr:hover td{background:rgba(200,169,110,.04)}
+  .custom-table tbody tr.fav td:first-child{position:relative}
+  .custom-table tbody tr.fav td:first-child::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--accent);border-radius:2px}
+  .custom-table tbody td:first-child{padding-left:18px;font-weight:700;color:var(--accent2);font-family:'Syne',sans-serif;font-size:14px;white-space:nowrap}
+  .custom-table tbody td.muted{color:var(--muted)}
+  .custom-table .ct-fav{font-size:11px;margin-left:6px}
   .controls{margin-bottom:32px;display:flex;flex-direction:column;gap:14px;padding-bottom:24px;border-bottom:1px solid var(--border)}
   .control-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
   .control-label{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;min-width:80px;flex-shrink:0}
@@ -42,6 +70,8 @@
   .chip{font-family:'Space Mono',monospace;font-size:11px;padding:6px 13px;background:var(--surface);border:1px solid var(--border);border-radius:30px;color:var(--muted2);cursor:pointer;transition:all .18s;user-select:none}
   .chip:hover{border-color:var(--accent);color:var(--accent2)}
   .chip.active{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:700}
+  .chip:focus-visible,.lang-btn:focus-visible,.link:focus-visible,#scrollTopBtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .search-input:focus-visible{outline:none}
   .section-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;margin-top:48px}
   .section-stars{font-size:20px;color:var(--star);letter-spacing:-2px;flex-shrink:0}
   .section-label{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted2)}
@@ -53,10 +83,15 @@
   .card.pending-review{border-style:dashed}
   .card.favorite{border-color:rgba(200,169,110,.6);box-shadow:0 0 20px rgba(200,169,110,.1)}
   .card.favorite:hover{border-color:var(--accent);box-shadow:0 8px 30px rgba(200,169,110,.25)}
+  /* Pulse highlight when a card is targeted via ?b=Name share-link */
+  @keyframes cardFocusPulse{0%{box-shadow:0 0 0 0 rgba(200,169,110,.55), 0 0 28px rgba(200,169,110,.3)}50%{box-shadow:0 0 0 6px rgba(200,169,110,.18), 0 0 36px rgba(200,169,110,.45)}100%{box-shadow:0 0 0 0 rgba(200,169,110,0), 0 0 0 0 rgba(200,169,110,0)}}
+  .card.focus-pulse{animation:cardFocusPulse 2.4s ease-out 1; border-color:var(--accent)!important}
   .paid-dot{position:absolute;top:14px;right:14px;width:8px;height:8px;border-radius:50%;background:#e0a030;box-shadow:0 0 6px rgba(224,160,48,.5)}
   .card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-right:18px}
   .card-head-left{display:flex;align-items:center;gap:14px}
-  .card-avatar{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);object-fit:cover;flex-shrink:0;background:var(--surface2)}
+  .card-avatar{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);object-fit:cover;flex-shrink:0;background:var(--surface2);overflow:hidden;position:relative}
+  .card-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .card-avatar.fallback{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;font-family:'Syne',sans-serif;letter-spacing:0;text-transform:uppercase;text-shadow:0 1px 2px rgba(0,0,0,.4)}
   .card-name{font-size:18px;font-weight:700;color:var(--text);line-height:1.2;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .card-handle{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:4px}
   .cost-indicator{font-size:11px;margin-top:2px;opacity:.8;letter-spacing:2px}
@@ -103,18 +138,223 @@
   #scrollTopBtn{display:none;position:fixed;bottom:30px;right:30px;z-index:99;width:44px;height:44px;font-size:20px;font-weight:bold;background:var(--surface2);color:var(--accent);border:1px solid var(--border);border-radius:50%;cursor:pointer;transition:all .3s;box-shadow:0 4px 12px rgba(0,0,0,.5)}
   #scrollTopBtn:hover{background:var(--accent);color:var(--bg);border-color:var(--accent);transform:translateY(-3px);box-shadow:0 6px 16px rgba(200,169,110,.3)}
   @media(max-width:680px){
-    .page{padding:24px 16px 60px} .grid{grid-template-columns:1fr} .custom-grid{grid-template-columns:1fr}
+    .page{padding:24px 16px 60px} .grid{grid-template-columns:1fr} .custom-grid{grid-template-columns:1fr} .glossary-grid{grid-template-columns:1fr}
     .card-name{font-size:16px} .control-row{flex-direction:column;align-items:flex-start} .lang-bar{margin-bottom:20px}
     .links{gap:6px} .link{width:calc(50% - 3px);flex-grow:1} #scrollTopBtn{bottom:20px;right:20px;width:40px;height:40px;font-size:18px}
+    .stat-strip{gap:14px;font-size:10px} .stat-strip strong{font-size:12px}
+    .section-stars{font-size:20px} .section-label{font-size:11px}
   }
+
+  /* --- Light theme override --- */
+  html[data-theme="light"]{
+    --bg:#f5f1e8;--surface:#ffffff;--surface2:#f0e8d8;--border:#d8cfb8;--border2:#c8b896;
+    --text:#2a2418;--muted:#8a7e62;--muted2:#5a4f3a;--accent:#a8895e;--accent2:#7a5a30;
+    --green-bg:#e0f0e8;--green-text:#3a7a55;--red-text:#a04030;--amber-text:#a06820;
+    --blue-bg:#e0e8f0;--blue-text:#305078;--star:#a8895e;
+  }
+  html[data-theme="light"] body{background:linear-gradient(180deg,#f5f1e8 0%,#ece4d0 100%)}
+  html[data-theme="light"] .noise{opacity:0.18}
+  html[data-theme="light"] .custom-section{background:linear-gradient(135deg,#fff8e8 0%,#f5f1e8 60%);border-color:#e0c890}
+  html[data-theme="light"] .tag-patreon{background:#fdf3df;color:#8a5a00;border-color:#e8c890}
+  html[data-theme="light"] .tag-boosty{background:#f3e8ff;color:#6a3a8e;border-color:#d8c0f0}
+  html[data-theme="light"] .tag-discord{background:#e0e8f8;color:#3a5a90;border-color:#b8c8e8}
+  html[data-theme="light"] .tag-shop{background:#e8f5e0;color:#3a7030;border-color:#b8d8a0}
+  html[data-theme="light"] .tag-custom{background:#fdf0d8;color:#7a5a00;border-color:#e8d090}
+  html[data-theme="light"] .tag-tiktok{background:#fde0f0;color:#8a3070;border-color:#e8a8d0}
+  html[data-theme="light"] .tag-twitch{background:#f0e8ff;color:#5a30a0;border-color:#c8b8e8}
+  html[data-theme="light"] .tag-website{background:#e0f0f0;color:#2a5a5a;border-color:#a8d0d0}
+  html[data-theme="light"] .tag-telegram{background:#e0eaf5;color:#305a90;border-color:#a8c8e8}
+  html[data-theme="light"] .tag-instagram{background:#fde0f0;color:#8a3070;border-color:#e8a8d0}
+  html[data-theme="light"] .card-rating-num{color:var(--muted2)}
+
+  /* --- Tag color refinement (dark) --- */
+  .tag-custom{background:#1a1400;color:#d8a050;border:1px solid #4a3a10}
+
+  /* --- Hero stat strip --- */
+  .stat-strip{display:flex;gap:22px;flex-wrap:wrap;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.05em;margin-top:16px;padding:12px 16px;background:rgba(200,169,110,.04);border:1px solid var(--border);border-radius:8px}
+  .stat-strip span{display:flex;align-items:center;gap:6px}
+  .stat-strip strong{color:var(--accent2);font-weight:700;font-size:13px;font-family:'Syne',sans-serif}
+
+  /* --- Details: methodology + glossary --- */
+  .info-block{margin:0 0 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .info-block summary{cursor:pointer;padding:14px 18px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:var(--accent);user-select:none;list-style:none;display:flex;align-items:center;justify-content:space-between;text-transform:uppercase}
+  .info-block summary::-webkit-details-marker{display:none}
+  .info-block summary::after{content:'▾';color:var(--muted);transition:transform .2s;font-size:14px}
+  .info-block[open] summary::after{transform:rotate(180deg)}
+  .info-block summary:hover{color:var(--accent2);background:rgba(200,169,110,.04)}
+  .info-body{padding:4px 18px 18px;font-size:13px;color:var(--muted2);line-height:1.7;border-top:1px solid var(--border)}
+  .info-body h4{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.12em;margin:14px 0 4px;text-transform:uppercase}
+  .info-body h4:first-child{margin-top:10px}
+  .info-body p{font-size:13px;color:var(--muted2);margin-bottom:4px}
+  .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0 22px;margin-top:6px}
+  .glossary-item{font-size:12px;color:var(--muted2);padding:9px 0;border-top:1px dashed var(--border);line-height:1.55}
+  .glossary-item strong{display:block;color:var(--text);font-size:13px;margin-bottom:2px;font-weight:700}
+
+  /* --- Tier accent stripe on cards --- */
+  .card{padding-left:28px}
+  .card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:transparent;pointer-events:none}
+  .card.tier-5::after{background:linear-gradient(180deg,#e8c88e,#c8a96e)}
+  .card.tier-45::after{background:linear-gradient(180deg,#c8a96e,#8a6a3a)}
+  .card.tier-4::after{background:linear-gradient(180deg,#8a6a3a,#5a4a2a)}
+  .card.tier-35::after{background:#5a4a2a}
+  .card.tier-3::after{background:#3a3530}
+  .card.tier-low::after{background:#2a2420}
+  .card.tier-pending::after{background:repeating-linear-gradient(45deg,#3a3530 0 4px,transparent 4px 8px)}
+  .card.tier-5{box-shadow:0 0 0 1px rgba(200,169,110,.25),0 8px 28px rgba(200,169,110,.06)}
+
+  /* --- Section header polish --- */
+  .section-header{margin-top:60px;margin-bottom:24px}
+  .section-stars{font-size:24px;letter-spacing:-1px;filter:drop-shadow(0 0 8px rgba(200,169,110,.35))}
+  .section-label{font-size:13px;font-weight:700;color:var(--accent2)}
+
+  /* Hash-hue fallback styles handled via .card-avatar.fallback at top. */
+
+  /* --- Archive section: dimmed cards for inactive/dead channels --- */
+  .archive-section .info-body{padding:14px 18px 22px}
+  .archive-empty{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);padding:8px 0}
+  #archiveContainer .grid{margin-top:14px}
+  #archiveContainer .card{opacity:.55;filter:saturate(.5)}
+  #archiveContainer .card:hover{opacity:.85;filter:saturate(.85)}
+  #archiveContainer .card::before{content:attr(data-archive-reason);position:absolute;top:8px;right:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--muted);background:rgba(0,0,0,.35);padding:3px 7px;border-radius:3px;border:1px solid var(--border);text-transform:uppercase;pointer-events:none}
+  #archiveContainer .card.tier-low::after,#archiveContainer .card.tier-3::after{background:repeating-linear-gradient(45deg,#3a3025 0 4px,transparent 4px 8px)}
+  .archive-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:6px}
+
+  /* --- Legendary bases: a reference grid of well-known base designs --- */
+  .bases-section .info-body{padding:14px 18px 22px}
+  .bases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px}
+  .base-card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;transition:border-color .18s ease,transform .18s ease}
+  .base-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .base-card .base-name{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;letter-spacing:.01em;color:var(--text);line-height:1.15}
+  .base-card .base-author{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:-4px}
+  .base-card .base-author a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}
+  .base-card .base-author a:hover{color:var(--accent-bright)}
+  .base-card .base-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .base-card .base-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;padding:3px 8px;border-radius:3px;background:rgba(200,169,110,.08);color:var(--accent);border:1px solid rgba(200,169,110,.25);text-transform:uppercase}
+  .base-card .base-tag.fmt{background:rgba(255,255,255,.04);color:var(--muted2);border-color:var(--border)}
+  .base-card .base-desc{font-size:13px;color:var(--muted2);line-height:1.5;margin-top:4px}
+  .base-card .base-link{margin-top:auto;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent);align-self:flex-start}
+  .base-card .base-link:hover{color:var(--accent-bright);border-bottom-style:solid}
+  .base-card .base-link.muted{color:var(--muted);border-bottom-color:var(--muted);pointer-events:none}
+  .bases-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+
+  /* --- Suggest-builder form: collapsible, no backend ----------------- */
+  /* Submission paths: Discord-DM (gamunkul8515), Telegram link, mailto.
+     Form data is formatted into a clean text block + copied to clipboard. */
+  .suggest-section .info-body{padding:14px 18px 22px}
+  .suggest-form{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-top:14px}
+  .suggest-form .full{grid-column:1/-1}
+  .suggest-form label{display:flex;flex-direction:column;gap:4px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+  .suggest-form label .req{color:var(--accent)}
+  .suggest-form input,.suggest-form textarea,.suggest-form select{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:9px 11px;color:var(--text);font-family:'Space Mono',monospace;font-size:13px;outline:none;transition:border-color .15s}
+  .suggest-form input:focus,.suggest-form textarea:focus,.suggest-form select:focus{border-color:var(--accent)}
+  .suggest-form textarea{min-height:90px;resize:vertical;line-height:1.5}
+  .suggest-form input.invalid,.suggest-form textarea.invalid{border-color:var(--red-text)}
+  .suggest-form .hint{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:.04em;margin-top:2px}
+  .suggest-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .suggest-btn{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.05em;text-decoration:none;cursor:pointer;transition:all .15s;text-transform:uppercase}
+  .suggest-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .suggest-btn.primary{background:rgba(200,169,110,.12);border-color:var(--accent);color:var(--accent)}
+  .suggest-btn.primary:hover{background:var(--accent);color:#0d0d0d}
+  .suggest-btn[disabled]{opacity:.4;pointer-events:none}
+  .suggest-status{margin-top:14px;padding:12px 14px;border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;line-height:1.55;display:none}
+  .suggest-status.ok{display:block;background:var(--green-bg);color:var(--green-text);border:1px solid rgba(110,201,144,.25)}
+  .suggest-status.err{display:block;background:rgba(224,112,96,.08);color:var(--red-text);border:1px solid rgba(224,112,96,.25)}
+  .suggest-preview{display:none;margin-top:14px;background:var(--bg);border:1px dashed var(--border);border-radius:4px;padding:12px 14px;font-family:'Space Mono',monospace;font-size:12px;color:var(--muted2);white-space:pre-wrap;line-height:1.5;max-height:280px;overflow:auto}
+  .suggest-preview.show{display:block}
+  .suggest-meta{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+  .suggest-turnstile{margin-top:12px}
+  .suggest-turnstile .cf-turnstile{display:flex;justify-content:flex-start}
+  @media (max-width:560px){.suggest-form{grid-template-columns:1fr}}
+
+  /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
+     because resizing a pinned bar shifts the content below by ~150px. */
+  .controls.sticky-on{}
+  /* Floating "back to filters" button — appears alongside scroll-to-top. */
+  #scrollToFiltersBtn{position:fixed;right:30px;bottom:84px;width:48px;height:48px;background:var(--surface);color:var(--accent);border:1px solid var(--border);border-radius:50%;cursor:pointer;font-size:18px;display:none;align-items:center;justify-content:center;transition:all .15s;font-family:'Space Mono',monospace;z-index:40;line-height:1}
+  #scrollToFiltersBtn:hover{background:var(--accent);color:#0d0d0d;border-color:var(--accent);transform:scale(1.05)}
+  #scrollToFiltersBtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* --- Search highlight --- */
+  mark.search-hl{background:rgba(200,169,110,.28);color:var(--accent2);padding:0 2px;border-radius:2px;font-weight:600}
+
+  /* --- Theme toggle button --- */
+  .theme-btn{font-family:'Space Mono',monospace;font-size:13px;line-height:1;cursor:pointer;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:6px;transition:all .18s;margin-right:10px;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center}
+  .theme-btn:hover{color:var(--accent2);border-color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .lang-bar{align-items:center;gap:0}
+
+  /* --- Compact hero meta on small heights --- */
+  .header h1{margin-bottom:14px}
+
+  /* --- Multi-axis subscores --- */
+  .subscores{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+  .ss-item{display:flex;align-items:center;gap:6px}
+  .ss-label{min-width:30px}
+  .ss-bar{display:inline-flex;gap:2px}
+  .ss-dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
+  .ss-dot.on{background:var(--accent)}
+  .ss-num{color:var(--muted2);margin-left:2px;font-size:9px}
+  .subscores-empty{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);font-style:italic;margin:6px 0 10px;letter-spacing:.04em;opacity:.6}
+  .cmp-subscores{margin:8px 0 12px}
+
+  /* --- Compare feature --- */
+  .cmp-btn{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:rgba(200,169,110,.06);color:var(--muted);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:'Space Mono',monospace;z-index:2}
+  .cmp-btn:hover{color:var(--accent2);border-color:var(--accent);background:rgba(200,169,110,.12)}
+  .cmp-btn.active{background:var(--accent);color:#0d0d0d;border-color:var(--accent);font-weight:700}
+  .cmp-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .card.cmp-selected{box-shadow:0 0 0 2px var(--accent), 0 0 24px rgba(200,169,110,.18);transform:translateY(-2px)}
+  .card .paid-dot{right:48px}
+  .card.favorite .paid-dot{right:48px}
+
+  .cmp-bar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--surface);border:1px solid var(--accent);border-radius:14px;padding:12px 16px;display:none;align-items:center;gap:12px;flex-wrap:wrap;max-width:calc(100vw - 32px);z-index:100;box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 0 1px rgba(200,169,110,.2);font-family:'Space Mono',monospace;font-size:12px}
+  .cmp-bar.show{display:flex}
+  .cmp-bar-label{color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11px}
+  .cmp-chip{background:rgba(200,169,110,.1);border:1px solid var(--border);border-radius:14px;padding:5px 10px 5px 12px;color:var(--text);font-size:12px;display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:700}
+  .cmp-chip-x{cursor:pointer;color:var(--muted);font-weight:700;font-size:14px;line-height:1;border:none;background:none;padding:0}
+  .cmp-chip-x:hover{color:#e85a4f}
+  .cmp-go,.cmp-clear{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
+  .cmp-go{background:var(--accent);color:#0d0d0d;border-color:var(--accent);font-weight:700}
+  .cmp-go:hover{filter:brightness(1.08)}
+  .cmp-go:disabled{opacity:.5;cursor:not-allowed}
+  .cmp-clear:hover{color:var(--text);border-color:var(--accent)}
+
+  .cmp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:200;display:none;overflow-y:auto;padding:40px 20px}
+  .cmp-overlay.show{display:block}
+  .cmp-modal{max-width:1280px;margin:0 auto;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:32px}
+  .cmp-modal-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .cmp-modal-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.5px;margin:0}
+  .cmp-modal-eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+  .cmp-close{background:none;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:18px;line-height:1;font-family:'Space Mono',monospace}
+  .cmp-close:hover{color:var(--text);border-color:var(--accent)}
+  .cmp-cols{display:grid;gap:18px}
+  .cmp-cols.c2{grid-template-columns:repeat(2,1fr)}
+  .cmp-cols.c3{grid-template-columns:repeat(3,1fr)}
+  .cmp-col{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+  .cmp-col-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin-bottom:2px;letter-spacing:-.3px}
+  .cmp-col-handle{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px}
+  .cmp-col-rating{font-size:14px;color:var(--accent);margin-bottom:12px;letter-spacing:1px}
+  .cmp-col-rating .num{font-family:'Space Mono',monospace;color:var(--muted);font-size:11px;margin-left:8px;letter-spacing:0}
+  .cmp-row{padding:8px 0;border-top:1px dashed var(--border);font-size:12px;line-height:1.5}
+  .cmp-row:first-child{border-top:none}
+  .cmp-row-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  .cmp-row-val{color:var(--text)}
+  .cmp-row-val.good{color:var(--accent2)}
+  .cmp-row-val.warn{color:#d8a070}
+  .cmp-row-val.bad{color:#e85a4f}
+  .cmp-empty{color:var(--muted);font-style:italic}
+  .cmp-tags{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}
+  .cmp-desc{margin-top:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--muted2);line-height:1.55}
+  .cmp-links{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+  @media(max-width:760px){.cmp-cols.c2,.cmp-cols.c3{grid-template-columns:1fr}.cmp-modal{padding:20px}}
 </style>
 </head>
 <body>
 <div class="noise"></div>
 <div class="page">
   <div class="lang-bar">
+    <button class="theme-btn" id="themeToggle" type="button" aria-label="Сменить тему / Toggle theme" title="Сменить тему / Toggle theme">☾</button>
     <div class="lang-switcher">
-      <button class="lang-btn active" id="btn-ru">RU</button><button class="lang-btn" id="btn-en">EN</button>
+      <button class="lang-btn active" id="btn-ru" type="button" aria-label="Русский" aria-pressed="true">RU</button><button class="lang-btn" id="btn-en" type="button" aria-label="English" aria-pressed="false">EN</button>
     </div>
   </div>
   <div class="header">
@@ -126,30 +366,116 @@
     </div>
     <div class="disclaimer" id="disclaimer-ru">// все оценки — субъективное личное мнение автора гида и не претендуют на абсолютную истину</div>
     <div class="disclaimer" id="disclaimer-en" style="display:none">// all ratings are the subjective personal opinion of the guide author and do not claim to be absolute truth</div>
+    <div class="stat-strip" id="statStrip" aria-live="polite"></div>
   </div>
 
+  <details class="info-block" id="methodology">
+    <summary><span data-ru="// как я оцениваю" data-en="// how i rate">// как я оцениваю</span></summary>
+    <div class="info-body">
+      <div data-lang-block="ru">
+        <h4>Качество построек</h4>
+        <p>Структура и фишки: пики, крыши, защита бункеров, расширяемость, качество хоникомба. Чем умнее ходы для рейдеров — тем выше.</p>
+        <h4>Активность канала</h4>
+        <p>Свежесть последних видео и регулярность. Если канал в инактиве &gt;2 мес — он не в этом гиде.</p>
+        <h4>Уникальность</h4>
+        <p>Свой стиль или переснимает чужое? Адаптация чужих фишек ≠ оригинальность. Свежие концепты — это плюс.</p>
+        <h4>Доступность</h4>
+        <p>Цена контента, есть ли p2w-скины в базах, наличие бесплатных публичных баз, тарифы на кастом.</p>
+        <h4>Коммуникация</h4>
+        <p>Отвечает ли в Discord, поддерживает ли свои базы при апдейтах, общается с комьюнити.</p>
+        <h4>Что НЕ влияет</h4>
+        <p>Подписчики, монтаж, личные конфликты с другими билдерами, наличие/отсутствие меня в их Discord. Только сами базы и их экосистема.</p>
+      </div>
+      <div data-lang-block="en" style="display:none">
+        <h4>Build quality</h4>
+        <p>Structure &amp; features: peeks, roofs, bunker defense, expandability, honeycomb quality. The smarter the plays for raiders — the higher.</p>
+        <h4>Channel activity</h4>
+        <p>Recency and regularity of the latest videos. Inactive &gt;2 months → not in this guide.</p>
+        <h4>Originality</h4>
+        <p>Own style vs copying. Adapting others' features ≠ originality. Fresh concepts are a plus.</p>
+        <h4>Accessibility</h4>
+        <p>Cost of content, p2w-skin requirement in bases, presence of free public bases, custom-build pricing.</p>
+        <h4>Communication</h4>
+        <p>Discord responsiveness, supporting bases through game updates, community engagement.</p>
+        <h4>What does NOT count</h4>
+        <p>Subscribers, video editing, personal beef between builders, whether I'm in their Discord. Only the bases themselves and their ecosystem.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="info-block" id="glossary">
+    <summary><span data-ru="// глоссарий: 12 терминов" data-en="// glossary: 12 terms">// глоссарий: 12 терминов</span></summary>
+    <div class="info-body">
+      <div class="glossary-grid" data-lang-block="ru">
+        <div class="glossary-item"><strong>Floor stack / Флор стак</strong>Многослойное расположение TC и кейсов на разных полах — рейдер тратит больше ресурсов на пробой.</div>
+        <div class="glossary-item"><strong>Pixel gaps / Пиксель-гапы</strong>Тонкие щели между структурами для прострелов с минимальным экспозом.</div>
+        <div class="glossary-item"><strong>Wide gaps / Вайд гапы</strong>Широкие пики со ступенями и углами — больше углов для атаки и контроля.</div>
+        <div class="glossary-item"><strong>China wall / Китайка</strong>Стена-обманка из дешёвых блоков, прикрывающая основу базы и маскирующая структуру.</div>
+        <div class="glossary-item"><strong>Open core / Опен кор</strong>База без сплошных внутренних стен — простор для пиков, но риск для коробок.</div>
+        <div class="glossary-item"><strong>Snowball / Сноуболл</strong>Крошечный стартер 1×1, рассчитанный на быстрое расширение в первые 1-2 часа вайпа.</div>
+        <div class="glossary-item"><strong>Multi-TC / Мульти-ТС</strong>Несколько TC в одной базе для усложнения рейда с одного направления.</div>
+        <div class="glossary-item"><strong>Honeycomb / Соты</strong>Дополнительные стены вокруг ключевых структур — больше рекордов для пробоя.</div>
+        <div class="glossary-item"><strong>Bunker / Бункер</strong>Скрытая лут-комната, доступ к которой требует «открывалки» (turret/SAM/blockable).</div>
+        <div class="glossary-item"><strong>Open base / Открывашка</strong>Турельная конструкция, открывающая стену или потолок при нажатии — для пиков и логистики.</div>
+        <div class="glossary-item"><strong>Online / Offline def</strong>Онлайн-деф — оборона при играющих игроках. Оффлайн-деф — защита от ночных рейдов.</div>
+        <div class="glossary-item"><strong>Retake / Ретейк</strong>Угол или комната, специально спроектированные для отбивания базы у внутренних рейдеров.</div>
+      </div>
+      <div class="glossary-grid" data-lang-block="en" style="display:none">
+        <div class="glossary-item"><strong>Floor stack</strong>Multi-layered TC and box layout across floors — raiders waste resources punching through.</div>
+        <div class="glossary-item"><strong>Pixel gaps</strong>Tiny slits between structures allowing shots with minimum exposure.</div>
+        <div class="glossary-item"><strong>Wide gaps</strong>Wide peeks with stairs and angles — more attack and control angles.</div>
+        <div class="glossary-item"><strong>China wall</strong>Decoy wall of cheap blocks shielding the main base and obfuscating its layout.</div>
+        <div class="glossary-item"><strong>Open core</strong>Base without solid inner walls — room for peeks, exposure for boxes.</div>
+        <div class="glossary-item"><strong>Snowball</strong>Tiny 1×1 starter built to expand rapidly in the first 1-2 hours of wipe.</div>
+        <div class="glossary-item"><strong>Multi-TC</strong>Multiple TCs in one base to complicate raids from a single direction.</div>
+        <div class="glossary-item"><strong>Honeycomb</strong>Extra walls around key structures — more records to punch through.</div>
+        <div class="glossary-item"><strong>Bunker</strong>Hidden loot room requiring an "opener" mechanism (turret/SAM/blockable).</div>
+        <div class="glossary-item"><strong>Open base</strong>Turret-driven mechanism that opens a wall or ceiling on toggle — for peeks and logistics.</div>
+        <div class="glossary-item"><strong>Online / Offline def</strong>Online def — defense while team is online. Offline def — defense against night raids.</div>
+        <div class="glossary-item"><strong>Retake</strong>Angle or room specifically designed for retaking the base from internal raiders.</div>
+      </div>
+    </div>
+  </details>
+
   <div class="custom-section">
-    <div class="custom-title" id="custom-title-ru">// кто делает кастомные базы</div><div class="custom-title" id="custom-title-en" style="display:none">// who makes custom bases</div>
-    <div class="custom-grid">
-      <div class="custom-card"><div class="custom-name">Limi Lab <span title="Выбор редакции" style="font-size:12px;margin-left:2px">👑</span></div><div class="custom-desc" data-ru="Заказ через Discord — база под твои нужды. Patreon: $7+" data-en="Order via Discord — base tailored to your needs. Patreon: $7+">Заказ через Discord — база под твои нужды. Patreon: $7+</div></div>
-      <div class="custom-card"><div class="custom-name">One2Do <span title="Выбор редакции" style="font-size:12px;margin-left:2px">👑</span></div><div class="custom-desc" data-ru="Кастомные базы. Продаёт через FunPay." data-en="Custom bases. Sells via FunPay.">Кастомные базы. Продаёт через FunPay.</div></div>
-      <div class="custom-card"><div class="custom-name">HQM Core <span title="Выбор редакции" style="font-size:12px;margin-left:2px">👑</span></div><div class="custom-desc" data-ru="Качественные базы без лишнего мусора на Patreon." data-en="High-quality bases without junk on Patreon.">Качественные базы без лишнего мусора на Patreon.</div></div>
-      <div class="custom-card"><div class="custom-name">Akame</div><div class="custom-desc" data-ru="ТОЛЬКО кастомные базы под заказ. Boosty: boosty.to/akamexebet" data-en="CUSTOM ORDERS ONLY. Boosty: boosty.to/akamexebet">ТОЛЬКО кастомные базы под заказ. Boosty: boosty.to/akamexebet</div></div>
-      <div class="custom-card"><div class="custom-name">Erebus</div><div class="custom-desc" data-ru="Кастом через Discord: Budget $50, Standard $100, Ultimate $250" data-en="Custom via Discord: Budget $50, Standard $100, Ultimate $250">Кастом через Discord: Budget $50, Standard $100, Ultimate $250</div></div>
-      <div class="custom-card"><div class="custom-name">2devilzz</div><div class="custom-desc" data-ru="Кастом через Discord: Medium $60+, Large $100+. Оплата: крипта / скины (+10%)" data-en="Custom via Discord: Medium $60+, Large $100+. Payment: crypto / skins (+10%)">Кастом через Discord: Medium $60+, Large $100+. Оплата: крипта / скины (+10%)</div></div>
-      <div class="custom-card"><div class="custom-name">Luca.</div><div class="custom-desc" data-ru="Кастом через Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65" data-en="Custom via Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65">Кастом через Discord: Solo/Duo/Trio $30, 4-6 $40, 8+ $50, 12+ $65</div></div>
-      <div class="custom-card"><div class="custom-name">Kredbic & S4</div><div class="custom-desc" data-ru="Кастом через общий Discord. Kredbic: $50–100, S4: уточнять" data-en="Custom via shared Discord. Kredbic: $50–100, S4: inquire">Кастом через общий Discord. Kredbic: $50–100, S4: уточнять</div></div>
-      <div class="custom-card"><div class="custom-name">Pandabuilds</div><div class="custom-desc" data-ru="Кастом через Discord. PayPal / Rust Skins (+15%)" data-en="Custom via Discord. PayPal / Rust Skins (+15%)">Кастом через Discord. PayPal / Rust Skins (+15%)</div></div>
-      <div class="custom-card"><div class="custom-name">GrinchTheBuilder</div><div class="custom-desc" data-ru="Кастом через Discord: @chort228. Цена $15–20" data-en="Custom via Discord: @chort228. Price $15–20">Кастом через Discord: @chort228. Цена $15–20</div></div>
-      <div class="custom-card"><div class="custom-name">rookyo</div><div class="custom-desc" data-ru="Кастом через Discord. Small: 10-20€, Medium: 15-25€, Large: 20-40€" data-en="Custom via Discord. Small: 10-20€, Medium: 15-25€, Large: 20-40€">Кастом через Discord. Small: 10-20€, Medium: 15-25€, Large: 20-40€</div></div>
-      <div class="custom-card"><div class="custom-name">b00bster</div><div class="custom-desc" data-ru="Кастом через тикеты в Discord. Цена: обсуждается индивидуально." data-en="Custom via Discord tickets. Price: discussed individually.">Кастом через тикеты в Discord. Цена: обсуждается индивидуально.</div></div>
+    <div class="custom-head">
+      <div class="custom-title" id="custom-title-ru">// кто делает кастомные базы</div><div class="custom-title" id="custom-title-en" style="display:none">// who makes custom bases</div>
+      <div class="custom-sort" role="tablist" aria-label="Сортировка / Sort">
+        <span class="chip mini active" data-csort="price" data-ru="по цене" data-en="by price">по цене</span>
+        <span class="chip mini" data-csort="name" data-ru="по имени" data-en="by name">по имени</span>
+        <span class="chip mini" data-csort="fav" data-ru="фавориты" data-en="favs first">фавориты</span>
+      </div>
+    </div>
+    <div class="custom-table-wrap">
+      <table class="custom-table" id="customsTable">
+        <thead><tr>
+          <th data-ru="Билдер" data-en="Builder">Билдер</th>
+          <th data-ru="Где заказать" data-en="Where">Где заказать</th>
+          <th data-ru="Цена" data-en="Price">Цена</th>
+          <th data-ru="Оплата" data-en="Payment">Оплата</th>
+          <th data-ru="Примечание" data-en="Note">Примечание</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
 
-  <div class="controls">
+  <details class="info-block bases-section" id="bases-section">
+    <summary>
+      <span data-ru="// легендарные базы — справочник" data-en="// legendary bases — reference">// легендарные базы — справочник</span>
+      <span class="archive-count" id="basesCount"></span>
+    </summary>
+    <div class="info-body">
+      <p data-ru="Известные постройки, на которые ссылается всё сообщество. Если хочешь скачать или посмотреть тур — ищи по имени на YouTube канала автора. Этот раздел — справочник, а не тир-лист." data-en="Famous builds the whole community references. To download or watch a tour, search by name on the author's channel. This section is a reference, not a tier list.">Известные постройки, на которые ссылается всё сообщество. Если хочешь скачать или посмотреть тур — ищи по имени на YouTube канала автора. Этот раздел — справочник, а не тир-лист.</p>
+      <div id="basesContainer"></div>
+      <div class="bases-meta" data-ru="// записи отсортированы по узнаваемости. Имя автора кликабельно — переход на его карточку в гайде." data-en="// entries sorted by notoriety. Author name is clickable — jumps to their card.">// записи отсортированы по узнаваемости. Имя автора кликабельно — переход на его карточку в гайде.</div>
+    </div>
+  </details>
+
+  <div class="controls sticky-on">
     <div class="control-row">
       <span class="control-label" id="lbl-search-ru">ПОИСК</span><span class="control-label" id="lbl-search-en" style="display:none">SEARCH</span>
-      <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="searchInput" placeholder="Поиск..."></div>
+      <div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input class="search-input" id="searchInput" type="search" placeholder="Поиск..." aria-label="Поиск по билдерам" autocomplete="off"></div>
       <div class="paid-legend"><div class="paid-legend-dot"></div><span id="paid-legend-ru">есть платный контент</span><span id="paid-legend-en" style="display:none">paid content available</span></div>
     </div>
     <div class="control-row">
@@ -190,17 +516,101 @@
 
   <div id="cardsContainer"></div>
 
+  <details class="info-block archive-section" id="archive-section">
+    <summary>
+      <span data-ru="// архив — каналы заброшены или удалены" data-en="// archive — abandoned or deleted channels">// архив — каналы заброшены или удалены</span>
+      <span class="archive-count" id="archiveCount"></span>
+    </summary>
+    <div class="info-body">
+      <p data-ru="Билдеры, чьи каналы инактивны больше года, переименованы или удалены. Карточки тут просто для исторической справки — оценки замёрзли на момент архивации." data-en="Builders whose channels have been inactive for over a year, renamed, or deleted. Kept here for historical reference; ratings frozen at archive time.">Билдеры, чьи каналы инактивны больше года, переименованы или удалены. Карточки тут просто для исторической справки — оценки замёрзли на момент архивации.</p>
+      <div id="archiveContainer"></div>
+    </div>
+  </details>
+
+  <details class="info-block suggest-section" id="suggest-section">
+    <summary>
+      <span data-ru="// предложить билдера в гайд" data-en="// suggest a builder for the guide">// предложить билдера в гайд</span>
+    </summary>
+    <div class="info-body">
+      <p data-ru="Знаешь крутого билдера, которого тут нет? Заполни форму, нажми «Сформировать» — получишь готовый текст, который можно отправить мне в Discord (gamunkul8515) или Telegram. Без бэкенда: данные не уходят на сторонние серверы, всё происходит в твоём браузере." data-en="Know a great builder who's missing? Fill in the form and click 'Generate' — you'll get a ready-to-send text block to drop into Discord (gamunkul8515) or Telegram. No backend: nothing leaves your browser until you choose to send it.">Знаешь крутого билдера, которого тут нет? Заполни форму, нажми «Сформировать» — получишь готовый текст, который можно отправить мне в Discord (gamunkul8515) или Telegram. Без бэкенда: данные не уходят на сторонние серверы, всё происходит в твоём браузере.</p>
+
+      <form class="suggest-form" id="suggestForm" novalidate>
+        <label class="full">
+          <span data-ru="Имя канала / билдера" data-en="Channel / builder name">Имя канала / билдера</span> <span class="req">*</span>
+          <input type="text" name="name" id="sug-name" required maxlength="80" placeholder="напр. SomeNewBuilder">
+        </label>
+        <label class="full">
+          <span data-ru="Ссылка на YouTube" data-en="YouTube link">Ссылка на YouTube</span> <span class="req">*</span>
+          <input type="url" name="youtube" id="sug-youtube" required maxlength="200" placeholder="https://youtube.com/@...">
+          <span class="hint" data-ru="Любая публичная ссылка на канал — главная или на конкретное видео" data-en="Any public link to the channel — main page or a specific video">Любая публичная ссылка на канал — главная или на конкретное видео</span>
+        </label>
+        <label>
+          <span data-ru="Формат" data-en="Format">Формат</span>
+          <select name="format" id="sug-format">
+            <option value="">— не уверен —</option>
+            <option value="solo-duo" data-ru="Solo / Duo" data-en="Solo / Duo">Solo / Duo</option>
+            <option value="trio-small" data-ru="Trio / Small Group" data-en="Trio / Small Group">Trio / Small Group</option>
+            <option value="medium-large" data-ru="Medium / Large Group" data-en="Medium / Large Group">Medium / Large Group</option>
+            <option value="clan-zerg" data-ru="Clan / Zerg" data-en="Clan / Zerg">Clan / Zerg</option>
+            <option value="any" data-ru="Любой / разные" data-en="Any / mixed">Любой / разные</option>
+          </select>
+        </label>
+        <label>
+          <span data-ru="Язык канала" data-en="Channel language">Язык канала</span>
+          <select name="lang" id="sug-lang">
+            <option value="">— не уверен —</option>
+            <option value="ru">RU</option>
+            <option value="en">EN</option>
+            <option value="bilingual" data-ru="RU + EN (билингв)" data-en="RU + EN (bilingual)">RU + EN (билингв)</option>
+            <option value="other" data-ru="другой" data-en="other">другой</option>
+          </select>
+        </label>
+        <label class="full">
+          <span data-ru="Краткое описание (что в нём интересного)" data-en="Brief note (what's interesting about them)">Краткое описание (что в нём интересного)</span> <span class="req">*</span>
+          <textarea name="note" id="sug-note" required maxlength="600" placeholder="2-3 предложения: какой стиль, есть ли Patreon/Discord, на что обратить внимание, чем выделяется"></textarea>
+        </label>
+        <label class="full">
+          <span data-ru="Твой контакт (если хочешь, чтоб я ответил)" data-en="Your contact (if you want a reply)">Твой контакт (если хочешь, чтоб я ответил)</span>
+          <input type="text" name="contact" id="sug-contact" maxlength="100" placeholder="Discord, Telegram, email — что угодно">
+        </label>
+
+        <div class="suggest-actions full">
+          <button type="button" id="sug-generate-btn" class="suggest-btn primary" data-ru="Сформировать сообщение" data-en="Generate message">Сформировать сообщение</button>
+          <button type="button" id="sug-reset-btn" class="suggest-btn" data-ru="Очистить" data-en="Reset">Очистить</button>
+        </div>
+
+        <div class="suggest-preview" id="sug-preview" aria-live="polite"></div>
+
+        <div class="suggest-turnstile full" id="sug-turnstile-wrap" style="display:none">
+          <div id="sug-turnstile" class="cf-turnstile"></div>
+        </div>
+
+        <div class="suggest-actions full" id="sug-send-actions" style="display:none">
+          <button type="button" id="sug-send-btn" class="suggest-btn primary" data-ru="📨 Отправить заявку" data-en="📨 Send suggestion">📨 Отправить заявку</button>
+          <button type="button" id="sug-copy-btn" class="suggest-btn" data-ru="📋 Скопировать" data-en="📋 Copy">📋 Скопировать</button>
+          <a id="sug-tg-link" class="suggest-btn" target="_blank" rel="noopener noreferrer" data-ru="Через Telegram" data-en="Via Telegram">Через Telegram</a>
+        </div>
+
+        <div class="suggest-status" id="sug-status" role="status"></div>
+      </form>
+
+      <div class="suggest-meta" data-ru="// Заявка идёт через Cloudflare-прокси с капчей и лимитом 3/час · 10/сутки на IP — webhook-URL не светится. Альтернативно: «Скопировать» и вставить вручную в Discord (gamunkul8515)." data-en="// Submissions go through a Cloudflare proxy with captcha and a 3/hour · 10/day per-IP limit — the webhook URL is never exposed. Alternatively: copy the text and DM it to Discord (gamunkul8515).">// Заявка идёт через Cloudflare-прокси с капчей и лимитом 3/час · 10/сутки на IP — webhook-URL не светится. Альтернативно: «Скопировать» и вставить вручную в Discord (gamunkul8515).</div>
+    </div>
+  </details>
+
   <div class="update-note" id="update-note-ru">
-    <span>// глобальное обновление от мая 2026</span><br>
-    • Добавлены: Shield, Lacros, anika, One2Do, HQM Core, b00bster, XGN., Биг джони, rookyo, PANG<br>
-    • Xgamers Vault Of Bases и Walder добавлены на рассмотрение<br>
-    • Обновлены рейтинги и фавориты. Если кого-то не хватает — пиши в Discord: <strong>gamunkul8515</strong>
+    <span>// апдейт май 2026</span><br>
+    • Архив: Pandabuilds (4 года инактив) и RustLogic (канал удалён) — переехали в свёрнутую секцию внизу<br>
+    • Pending → оценка: Santess 2.5★, Opy4k 3.0★, Builder 2.0★, Walder 2.5★<br>
+    • Xgamers Vault — пока остаётся pending (3 видео всего, рано оценивать)<br>
+    • Если кого-то не хватает — пиши в Discord: <strong>gamunkul8515</strong>
   </div>
   <div class="update-note" id="update-note-en" style="display:none">
-    <span>// massive update May 2026</span><br>
-    • Added: Shield, Lacros, anika, One2Do, HQM Core, b00bster, XGN., Big Johnny, rookyo, PANG<br>
-    • Xgamers Vault Of Bases and Walder added under review<br>
-    • Updated ratings and favorites. Missing someone? Discord: <strong>gamunkul8515</strong>
+    <span>// update May 2026</span><br>
+    • Archive: Pandabuilds (4y inactive) and RustLogic (channel deleted) — moved to a collapsible archive section at the bottom<br>
+    • Pending → rated: Santess 2.5★, Opy4k 3.0★, Builder 2.0★, Walder 2.5★<br>
+    • Xgamers Vault stays pending (only 3 videos total, too early to rate)<br>
+    • Missing someone? Discord: <strong>gamunkul8515</strong>
   </div>
 
   <div class="footer">
@@ -209,7 +619,28 @@
     <span id="footer-note-en" style="display:none">ratings are subjective · active channels only · inactive &lt;2 months</span>
   </div>
 </div>
-<button id="scrollTopBtn" title="Наверх">↑</button>
+<button id="scrollTopBtn" type="button" title="Наверх" aria-label="Наверх страницы / Scroll to top">↑</button>
+<button id="scrollToFiltersBtn" type="button" title="К фильтрам / Filters" aria-label="К фильтрам / Filters" data-ru-title="К фильтрам" data-en-title="Filters">⌕</button>
+
+<div class="cmp-bar" id="cmpBar" role="region" aria-label="Сравнение билдеров">
+  <span class="cmp-bar-label" id="cmpLabel">сравнить</span>
+  <div class="cmp-chips" id="cmpChips"></div>
+  <button class="cmp-go" id="cmpGo" type="button" data-ru="Сравнить →" data-en="Compare →">Сравнить →</button>
+  <button class="cmp-clear" id="cmpClear" type="button" data-ru="Сбросить" data-en="Clear">Сбросить</button>
+</div>
+
+<div class="cmp-overlay" id="cmpOverlay" role="dialog" aria-modal="true" aria-labelledby="cmpModalTitle">
+  <div class="cmp-modal">
+    <div class="cmp-modal-head">
+      <div>
+        <div class="cmp-modal-eyebrow" data-ru="// сравнение" data-en="// comparison">// сравнение</div>
+        <h2 class="cmp-modal-title" id="cmpModalTitle"></h2>
+      </div>
+      <button class="cmp-close" id="cmpClose" type="button" aria-label="Закрыть / Close">×</button>
+    </div>
+    <div class="cmp-cols" id="cmpCols"></div>
+  </div>
+</div>
 
 <script>
 // MINIFIED DATA ENGINE
@@ -218,9 +649,16 @@ const rowLabels = {
   en:{'Форматы':'Group size','Кастомные базы':'Custom bases','Цена кастома':'Custom price','Patreon':'Patreon','Публичные базы':'Public bases','Цена базы':'Base price','Топ базы':'Top bases','Ниша':'Niche','Фишки':'Features','Особенности':'Features','Минусы':'Cons','Услуги':'Services','Упор':'Focus','Частота':'Frequency','Discord':'Discord','Сильные стороны':'Strengths','Фокус':'Focus','Статус':'Status','Активность':'Activity','Проблема':'Issue','Качество':'Quality','Особенность':'Note','Patreon доход':'Patreon revenue','Публичный контент':'Public content','Последняя база':'Latest base'}
 };
 
+// Build star string supporting 0.25 step. Always 5 visual slots.
 function getStars(rv){
-  if(rv>=5) return '★★★★★';if(rv>=4.5) return '★★★★½';if(rv>=4) return '★★★★☆';if(rv>=3.5) return '★★★½☆';if(rv>=3) return '★★★☆☆';
-  if(rv>=2.5) return '★★½☆☆';if(rv>=2) return '★★☆☆☆';if(rv>=1) return '★☆☆☆☆';return '⏳';
+  if(rv<=0) return '⏳';
+  const full=Math.floor(rv), frac=rv-full;
+  let s='★'.repeat(full);
+  if(frac>=0.75) s+='¾';
+  else if(frac>=0.5) s+='½';
+  else if(frac>=0.25) s+='¼';
+  while([...s].length<5) s+='☆';
+  return s;
 }
 function hasPaid(tags){return tags.some(t=>['Patreon','Boosty','Shop','fadedbuilds','Кастомные базы','Заказы баз','Custom orders','Custom bases','YouTube Sponsors','Website'].some(p=>t.includes(p)));}
 function matchesFormat(b,f){if(f==='all')return true;if(f==='solo')return b.fms.includes('solo');if(f==='trio')return b.fms.includes('trio');if(f==='medium')return b.fms.includes('medium')||b.fms.includes('clan');if(f==='clan')return b.fms.includes('clan');return false;}
@@ -253,7 +691,7 @@ const raw = [
    [["Форматы","Solo — Small Group","Solo — Small Group",""],["Фишки","Бункеры, Мета-пики, Шилд-воллы","Bunkers, Meta Peeks, Shield Walls","good"]],
    "Куча бункеров, хорошие пики, интересные решения. Для оффлайн и онлайн рейдов — золотая середина. Базы качественные, рекомендую.","Tons of bunkers, good shoots, interesting solutions. A solid middle ground for both offline and online raids. Quality bases, recommended.",
    [["Discord","https://discord.com/invite/W3qGzbM3ar"],["YouTube","https://youtube.com/@BuckyBuildz"]]],
-  ["Rat In The Dark","@RatInTheDark",3,3,0,"YouTube","solo,trio,clan",
+  ["Rat In The Dark","@RatInTheDark",3.25,3,0,"YouTube","solo,trio,clan",
    [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Корейская мета, Сложные бункеры","Korean Meta, Complex Bunkers","good"],["Минусы","Редко выпускает, крыши слабые","Rare uploads, weak roofs","warn"]],
    "Корейский билдер. Показал фишки о которых не знал даже я. Есть хорошие бункеры и интересные решения. Баз мало, выпускает редко.","Korean builder. Showed tricks even I didn't know. Has good bunkers and interesting solutions. Few bases, rarely uploads.",
    [["YouTube","https://youtube.com/@RatInTheDark"]]],
@@ -268,7 +706,7 @@ const raw = [
   ["b00bster","@b00bst4r",3.5,3,0,"Patreon,Boosty,Discord,Кастомные базы","solo,trio",
    [["Форматы","Solo — Small Group","Solo — Small Group",""],["Фишки","Скрытые бункеры, Китайка, Флорстак","Hidden Bunkers, China Wall, Floor Stack","good"]],
    "Делает базы на заказ через тикеты в Discord. Хорошие крыши, скрытые бункеры, china wall, floor stack. Середина между онлайн и оффлайн защитой.","Makes custom bases via Discord tickets. Good roofs, hidden bunkers, china wall, floor stack. Sweet spot between online and offline defense.",
-   [["YouTube","https://youtube.com"],["Patreon","https://patreon.com/b00bst4r"],["Boosty","https://boosty.to/b00bst4r"],["Discord","https://discord.gg/DZt3D26vJY"]]],
+   [["Patreon","https://patreon.com/b00bst4r"],["Boosty","https://boosty.to/b00bst4r"],["Discord","https://discord.gg/DZt3D26vJY"]]],
   ["PANG","@PangSquared",3.5,3,0,"","solo,trio,medium,clan",
    [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Кинематографичность, Китайка, Клановые базы","Cinematic edits, China Wall, Clan bases","good"],["Минусы","Отстойные крыши","Terrible roofs","warn"]],
    "Очень красивая подача видео. Строит дорогие базы для кланов и огромных групп. Хорошие пики, китайские стены, но крыши отстойные.","Very beautiful, cinematic video presentation. Builds expensive bases for clans. Good peeks, China Walls, but roofs are terrible.",
@@ -281,7 +719,7 @@ const raw = [
    [["Форматы","Solo — Trio+","Solo — Trio+",""],["Фишки","Вайд гапы, Опен кор, Бункеры","Wide Gaps, Open Core, Bunkers","good"],["Цена базы","€17–20","€17–20","good"]],
    "Свой Shopify-магазин вместо Patreon — разовая покупка базы. Обновления бесплатно. Качество баз бывает неровным.","Own Shopify store instead of Patreon — one-time purchase per base. Free updates. Overall, quality is inconsistent.",
    [["fadedbuilds.com","https://fadedbuilds.com"],["TikTok","https://tiktok.com/@fadedrust"],["YouTube","https://youtube.com/@FadedRust"]]],
-  ["aloneintokyo","@aloneintokyo",3.5,2,0,"Patreon,YouTube Sponsors","solo,trio",
+  ["aloneintokyo","@aloneintokyo",3.75,2,0,"Patreon,YouTube Sponsors","solo,trio",
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Опен кор, Ретейки, Открывашки","Open Core, Retake Angles, Turret Openers","good"]],
    "Уникальный стиль, которого нет ни у кого. Миллион пиков, много простора, открывашки с турелями. Крыши — слабое место.","A unique style. Tons of shoots, open layouts, autoturret openers. Roofs are the weak spot, but otherwise genuinely creative.",
    [["Patreon","https://patreon.com/cw/Aloneintokyo"],["YouTube","https://youtube.com/@aloneintokyo"]]],
@@ -301,15 +739,15 @@ const raw = [
    [["Форматы","Duo — Large Group","Duo — Large Group",""],["Фишки","Метовые базы, Шилд-воллы, Онлайн деф","Meta bases, Shield wall, Online defense","good"]],
    "Строит метовые дома, хорошие пики, есть shield wall. Бункеров нет, весь упор идёт на защиту в онлайне. Количество стенок до шкафа может разочаровать.","Builds meta bases with good peeks and shield walls. No bunkers, full focus on online raid defense.",
    [["YouTube","https://youtube.com/@XGN_Rust"],["TikTok","https://tiktok.com/@xgn_rust"]]],
-  ["rookyo","@rooperust",3,3,0,"Discord,TikTok,Кастомные базы","solo,trio,medium",
+  ["rookyo","@rooperust",3.25,3,0,"Discord,TikTok,Кастомные базы","solo,trio,medium",
    [["Форматы","Duo — Medium Group","Duo — Medium Group",""],["Фишки","Бункеры, Ретейки, Китайка","Bunkers, Retakes, China Wall","good"],["Цена кастома","€10-40 (Discord)","€10-40 (Discord)","good"]],
    "Продаёт кастомные базы в Discord (от €10 до €40). В постройках есть бункеры, ретейк-пики, китайские стены. Крепкий стандарт.","Sells custom bases via Discord (€10 to €40). Builds feature bunkers, retake peeks, and China Walls. A solid standard.",
    [["YouTube","https://youtube.com/@rooperust"],["TikTok","https://tiktok.com/@rooperustt"],["Discord","https://discord.com/invite/Q3ZRvGve4H"]]],
-  ["anika","@anika_rust",3,2,0,"","trio,medium",
+  ["anika","@anika_rust",3.25,2,0,"","trio,medium",
    [["Форматы","Trio — Small Group","Trio — Small Group",""],["Фишки","Китайка, Анти-рейд, Водопады","China Wall, Anti-Siege, Reverse Waterfall","good"]],
    "Отличные пики, подробные гайды. Бункеров нет. Упор на онлайн рейд. Крыши средние. Уверенный среднячок.","Great peeks, detailed guides. No bunkers. Focus on online raid defense. Roofs are average. Solid mid-tier.",
    [["YouTube","https://youtube.com/@anika_rust"]]],
-  ["Akame","@AkameBuilds",3.2,3,0,"Boosty,Кастомные базы","medium,clan",
+  ["Akame","@AkameBuilds",3.25,3,0,"Boosty,Кастомные базы","medium,clan",
    [["Форматы","Small group — Large group","Small group — Large group",""],["Фишки","Онлайн деф, Клановые планировки","Online Raid Defense, Clan Layouts","good"]],
    "Билдер сильнейшего клана R2. Основной упор на защиту во время онлайн рейда. Работает только под заказ через Boosty.","Builder for the top clan R2. Main focus is online raid defense. Works by custom order only via Boosty.",
    [["Boosty","https://boosty.to/akamexebet"],["YouTube","https://youtube.com/@Akame_Rust"]]],
@@ -317,7 +755,7 @@ const raw = [
    [["Форматы","Solo — Large Group","Solo — Large Group",""],["Фишки","Пещерные базы, Использование рельефа","Cave Bases, Terrain Use","good"]],
    "Билдер показывает как застраивать пещеру. Пики хорошие, но отстрелов мало и мобильность плохая. Кастом через Discord.","Shows how to build cave bases. Peaks are good, but limited shooting positions and poor mobility. Custom via Discord.",
    [["Discord","https://discord.com/invite/aY8StUeJXP"],["YouTube","https://youtube.com/@Luca.Builds"]]],
-  ["Darvel","@darvels",3,2,0,"","solo,trio",
+  ["Darvel","@darvels",3.25,2,0,"","solo,trio",
    [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Компактные бункеры, Мета Соло/Квад","Compact Bunkers, Solo/Quad Meta","good"]],
    "Строит Solo-Quad. Есть бункеры, интересные базы. Минусы: нет Patreon, нет Discord, кодов не оставляет.","Builds Solo–Quad. Has bunkers, interesting designs. Downsides: no Patreon, no Discord, no codes left.",
    [["YouTube","https://youtube.com/@darvels"]]],
@@ -333,7 +771,7 @@ const raw = [
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Доступные стартеры, Низкий апкип","Accessible Starters, Low Upkeep","good"]],
    "Строит доступные лёгкие базы для соло-трио, без p2w фишек. Однако есть и сомнительные, мемные постройки.","Makes accessible lightweight bases for solo-trio, no p2w required. But some bases are questionable.",
    [["Discord","https://discord.com/invite/THfp7TxEHJ"],["YouTube","https://youtube.com/@LeftyyP"]]],
-  ["HiddenJoint","@HiddenJoint / @GoodJoint",3,1,0,"Patreon,Boosty","solo,trio",
+  ["HiddenJoint","@HiddenJoint / @GoodJoint",3.25,1,0,"Patreon,Boosty","solo,trio",
    [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Простые соло базы, Ванилла-френдли","Simple Solo Bases, Vanilla Friendly","good"]],
    "Хорош для соло-игроков — базы простые, без переусложнения. Ведёт два канала: EN и RU.","Good for solo players — bases are clean, not overcomplicated. Runs two channels: EN and RU.",
    [["Patreon","https://www.patreon.com/c/GoodJoint"],["Boosty","https://boosty.to/goodjoint"],["YouTube EN","https://youtube.com/@HiddenJoint"],["YouTube RU","https://youtube.com/@GoodJoint"]]],
@@ -349,7 +787,7 @@ const raw = [
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Измененная классика, Баланс цены","Modified Classics, Balanced Cost","good"]],
    "Изменённая классика с удивляющими решениями. Выпускает редко, но качество стабильное.","Modified classics with surprising solutions. Uploads rarely, but quality is consistent.",
    [["Patreon","https://patreon.com/MrSkeem"],["Discord","https://discord.gg/YnS8zHJvkh"],["YouTube","https://youtube.com/@MrSkeem"]]],
-  ["Mellarrkk","YouTube",3,1,0,"","solo,trio",
+  ["Mellarrkk","YouTube",2.75,1,0,"","solo,trio",
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Базы для новичков, Простые бункеры","Beginner Friendly, Basic Bunkers","warn"]],
    "Простые базы для новичков. Ведёт три канала под разными именами: Mellarrkk, Rust Tricks и Rust Concepts.","Simple beginner bases. Runs three channels under different names.",
    [["Mellarrkk","https://youtube.com/@Mellarrkk"],["Rust Tricks","https://youtube.com/@RustTricks"],["Rust Concepts","https://youtube.com/@RustConcepts"]]],
@@ -397,7 +835,7 @@ const raw = [
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","UK-стиль, Сомнительное качество","UK Style, Controversial Quality","bad"]],
    "Позиционирует стиль как уникальный UK-дизайн. По факту базы очень плохие.","Markets himself as a unique UK design style. In reality the bases are very poor.",
    [["Patreon","https://www.patreon.com/IndominusRust"],["Discord","https://discord.com/invite/jgMr6YXPqC"],["YouTube","https://youtube.com/@IndominusRust"]]],
-  ["Ласти Раст","@ласти_раст",2,3,0,"Telegram","solo,trio",
+  ["Ласти Раст","@ласти_раст",1.5,3,0,"Telegram","solo,trio",
    [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Модовая мета, Слитый контент","Modded Meta, Leaked Content","bad"]],
    "Нет понимания ванильного билдинга. Сливает платные базы Good Joint. Пиратский контент.","No understanding of vanilla building. Telegram channel leaks paid bases. Pirated content.",
    [["Telegram","https://t.me/lastycfg"],["YouTube","https://youtube.com/@ласти_раст"]]],
@@ -417,54 +855,357 @@ const raw = [
    [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","Мета 10 часов игры","10-Hour Player Meta","bad"]],
    "Базы уровня игрока с 10 часами в Rust. Качество не соответствует базовым стандартам.","Bases at the level of someone with 10 hours in Rust. Quality doesn't meet basic standards.",
    [["YouTube","https://youtube.com/@Rusty_Youtube"]]],
-  ["Santess","@SantessRust",0,2,0,"","solo,trio",
-   [["Статус","На рассмотрении","Under review","warn"]],
-   "Видео выпускает не часто, их у него мало. Нужно время для оценки.","Doesn't upload often, few videos. Needs more time for proper evaluation.",
+  ["Santess","@SantessRust",2.5,2,0,"","trio,medium",
+   [["Форматы","Trio — Medium Group","Trio — Medium Group",""],["Фишки","Меточные клановые базы (3x3 / 4x4)","Meta clan bases (3x3 / 4x4)",""],["Минусы","Темп — ~1 видео в месяц, 7 баз всего","Slow cadence — ~1 video/month, 7 builds total","warn"]],
+   "Билингвальный канал (RU + EN заголовки). Метовые 3x3 и 4x4 клановые базы — спокойный мид-тир. Темп публикаций низкий, 7 видео за всё время. Хороший вариант для трио/мид-групп без переусложнения.","Bilingual RU/EN titles. Meta 3x3 and 4x4 clan bases — solid mid-tier. Output is slow (7 total videos). Decent fit for trios / medium groups who want straightforward designs.",
    [["YouTube","https://youtube.com/@SantessRust"]]],
-  ["Opy4k","@Opy4k",0,2,0,"Discord","solo,trio",
-   [["Статус","Тёмная лошадка","Dark horse","warn"]],
-   "Не выкладывал видео несколько лет, недавно выложил одну базу. Оценивать только по одной базе нельзя.","Went dark for years, recently posted one base. Can't judge from one build.",
+  ["Opy4k","@Opy4k",3,2,0,"Discord","solo,trio",
+   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","2x2 Trio (FrostLine), сложные мета-базы","2x2 Trio (FrostLine), advanced meta builds",""],["Минусы","Канал спал 2 года, тестово вернулся","Channel was dormant 2y, just restarting","warn"]],
+   "Был активен пару лет назад как 'Fastest Builder in Rust', потом канал ушёл в спячку. Недавно вернулся новой базой FrostLine (advanced 2x2 Trio). Темная лошадка — если темп удержит, оценка пойдёт вверх.","Was active 2 years ago as 'Fastest Builder in Rust', went dormant, recently returned with FrostLine (advanced 2x2 Trio meta build). Dark horse — rating moves up if cadence holds.",
    [["Discord","https://discord.com/invite/rSh97aJUVd"],["YouTube","https://youtube.com/@Opy4k"]]],
-  ["Builder","@BuilderRust",0,1,0,"","solo,trio",
-   [["Проблема","Нет тура, нет кодов","No tours, no codes","bad"]],
-   "Строит очевидно для новичков. Не даёт конечного результата (тура или кодов).","Clearly builds for beginners. Doesn't provide quick evaluation format (tour, codes).",
+  ["Builder","@BuilderRust",2,1,0,"","solo,trio",
+   [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","Высокий темп публикаций (436 видео)","High output (436 videos)",""],["Минусы","Базы для новичков, нет туров и кодов","Beginner-tier builds, no tours or codes","bad"]],
+   "Огромный канал — 436 видео и стабильный темп (новое каждые 2-9 дней). Контент массовый: simple 2x2 / mini china wall / solo bunker. Главные минусы — без тура внутри базы и без кодов. Подходит как 'кликабельный' источник для совсем новичков.","Massive channel — 436 videos with steady cadence (new builds every 2-9 days). Mass-market content: 2x2, mini china wall, solo bunker. Main issues — no in-base tour, no codes. Useful as quick reference for total beginners.",
    [["YouTube","https://youtube.com/@BuilderRust"]]],
   ["Xgamers Vault","@XgamersVault",0,2,0,"","solo,trio",
-   [["Статус","На рассмотрении","Under review","warn"]],
-   "Добавлен на рассмотрение. Пока не дошли руки детально изучить канал.","Added for review. Haven't gotten around to a detailed look yet.",
+   [["Статус","На рассмотрении (3 видео всего)","Under review (3 videos total)","warn"]],
+   "Канал крошечный — 3 видео, последнее 10 дней назад, ~30 просмотров. Заявленный стиль — Solo, 2 walls, meta peaks 2026. Слишком мало материала чтобы оценить. Перепроверка через месяц.","Tiny channel — 3 videos, latest 10 days ago, ~30 views. Stated style — Solo, 2 walls, meta peaks 2026. Too little material to rate. Recheck in a month.",
    [["YouTube","https://youtube.com/@XgamersVault"]]],
-  ["Walder","@Walder1x",0,2,0,"","solo,trio",
-   [["Статус","На рассмотрении","Under review","warn"]],
-   "Добавлен на рассмотрение, так как на канале пока слишком мало баз для объективной оценки.","Added for review, as there are currently too few bases on the channel for an objective rating.",
+  ["Walder","@Walder1x",2.5,2,0,"","solo,quad",
+   [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Egg-base, expansion 1x2→3x3, mini china wall","Egg-base, expansion 1x2→3x3, mini china wall",""],["Минусы","Последняя база 2 мес назад","Latest build 2mo ago","warn"]],
+   "20 видео, разнообразие форматов: solo egg base, expansion 1x2→3x3, snowball-видео для дуо/трио. Темп средний — последняя база 2 месяца назад, бывают паузы. Если активность вернётся — кандидат на 3.0+","20 videos with format variety: solo egg base, 1x2→3x3 expansion, snowball duo/trio videos. Cadence is medium — latest build 2mo ago, gaps happen. Candidate for 3.0+ if cadence picks up.",
    [["YouTube","https://youtube.com/@Walder1x"]]]
 ];
 
-const builders = raw.map(b => ({
-  name:b[0], handle:b[1], ratingValue:b[2], rating:getStars(b[2]), pending:b[2]===0, upkeep:b[3], favorite:!!b[4], tags:b[5]?b[5].split(','):[], fms:b[6]?b[6].split(','):[],
-  rows:b[7].map(r => ({label:r[0],valRU:r[1],valEN:r[2],c:r[3]||''})), desc:b[8], descEN:b[9], links:b[10].map(l => ({t:l[0],u:l[1]}))
-}));
+// Best-effort content-language assignment. Bilingual = ['en','ru']. Default = ['en'].
+// Heuristics used: Cyrillic name => RU; explicit YouTube EN+RU => bilingual;
+// Boosty/FunPay/Telegram presence => RU.
+const builderLangs={
+  'HiddenJoint':['en','ru'],
+  'b00bster':['en','ru'],
+  'One2Do':['ru'],
+  'Akame':['ru'],
+  'Биг джони':['ru'],
+  'Ласти Раст':['ru'],
+  'Santess':['en','ru']
+};
+
+// Multi-axis subscores: [Build, Active, Value] each on 1-5.
+//   B = качество построек (пики, бункеры, сложность фишек)
+//   A = активность канала (частота баз, размер аудитории)
+//   V = доступность (цена, p2w, бесплатный контент)
+// Заполнены по описаниям. Можно дополнять / переопределять — это карта по имени.
+// Билдеры без записи — рендерятся как «// рейтинг по осям ещё не выставлен».
+const subscores = {
+  'Limi Lab':         [5,5,3], // топ, кастом, большой канал; Patreon $7+ + p2w скины
+  'HQM Core':         [5,4,4], // "почти идеал", дешёвый Patreon $5/мес
+  'One2Do':           [4,3,3], // знает дело, FunPay-формат, доступно
+  'Brader Fik':       [5,3,5], // "автор заморачивается"; нет Patreon, бесплатно
+  'Erebus':           [5,4,2], // реальные футажи; кастом $50–250
+  'BuckyBuilds':      [4,4,4], // оффлайн+онлайн универсал, Discord-only
+  'Rat In The Dark':  [4,2,5], // "фишки даже мне неизвестные"; редко выпускает; YouTube-only
+  'Crow':             [4,4,3], // Patreon-серьёзный, активный
+  'Биг джони':        [3,4,5], // адаптирует чужое; бесплатно
+  'b00bster':         [4,3,3], // билингв, кастом
+  'PANG':             [3,4,4], // "крыши отстойные"; активный
+  '2devilzz':         [4,3,2], // зерги-специалист; $60–100+
+  'Faded':            [3,3,3], // "качество неровное"; €17–20
+  'aloneintokyo':     [5,3,3], // "уникальный стиль, миллион пиков"
+  'Spinky':           [4,5,2], // "самый крупный активный"; премиум Patreon
+  'Nini Rust':        [4,4,3], // multi-platform, Patreon
+  'Tarre':            [3,3,3], // YouTube Sponsors
+  'XGN.':             [3,3,5], // только TikTok, бесплатно
+  'rookyo':           [3,3,4], // 10–40€ доступно
+  'anika':            [3,3,4], // нет монетизации
+  'Akame':            [4,3,2], // кастом-специалист, Boosty премиум
+  'Luca.':            [3,3,3], // $30–65 средне
+  'Darvel':           [3,3,5], // нет монетизации
+  'GrinchTheBuilder': [3,3,5], // самый дешёвый кастом $15–20
+  'S4':               [3,3,3], // Patreon среднего уровня
+  'LeftyyP':          [3,2,3], // Patreon, реже
+  'HiddenJoint':      [3,3,4], // билингв EN+RU — большой плюс
+  'Krub':             [3,3,4], // Discord-only
+  'Pandabuilds':      [3,3,3], // PayPal/скины
+  'MrSkeem':          [3,3,3], // Patreon среднего уровня
+  'Kredbic':          [3,3,3], // общий кастом
+  'slvtv':            [3,2,3], // YouTube Sponsors
+  'Zypic':            [3,2,5], // нет монетизации
+  'Relbuild':         [3,3,5], // нет монетизации
+  'Lacros':           [3,2,5], // бесплатно
+  'Build Lab':        [3,3,4], // Patreon + Sponsors
+  'Void':             [3,2,5], // бесплатно
+  'Willjum':          [2,2,3], // слабый Patreon
+  'pagdawg':          [2,2,5], // бесплатно
+  'IndominusRust':    [2,2,3], // Patreon
+  'Ласти Раст':       [1,3,1], // сливает платное, пиратство — value 1 за этику
+  'Shield':           [1,1,3],
+  'zYn':              [1,1,3],
+  'Stelic':           [1,1,3],
+  // Pending → rated:
+  'Santess':          [3,2,4], // приличные мета-3x3/4x4, темп низкий, бесплатно
+  'Opy4k':            [3,2,4], // одна сильная база-FrostLine, канал только восстанавливается
+  'Builder':          [2,5,4], // 436 видео, темп очень высокий, но качество новичкое и без туров
+  'Walder':           [3,3,5]  // разнообразие форматов, бесплатно, темп средний
+};
+
+// Archive: builders whose YouTube channels are abandoned (>1 year), renamed, or
+// deleted (404). Detected automatically via channel-page scraping in 04/2026.
+// To restore a builder to the active list, just remove their entry here.
+const archived = {
+  'Pandabuilds':  {lastActive:'2022', reason:'inactive 4y+', reasonRU:'неактивен 4+ года', reasonEN:'inactive 4y+'},
+  'RustLogic':    {lastActive:'2025', reason:'channel 404',  reasonRU:'канал удалён',       reasonEN:'channel 404'}
+};
+
+const builders = raw.map(b => {
+  const ss = subscores[b[0]];
+  const arc = archived[b[0]];
+  return {
+    name:b[0], handle:b[1], ratingValue:b[2], rating:getStars(b[2]), pending:b[2]===0, upkeep:b[3], favorite:!!b[4], tags:b[5]?b[5].split(','):[], fms:b[6]?b[6].split(','):[],
+    rows:b[7].map(r => ({label:r[0],valRU:r[1],valEN:r[2],c:r[3]||''})), desc:b[8], descEN:b[9], links:b[10].map(l => ({t:l[0],u:l[1]})),
+    langs: builderLangs[b[0]] || ['en'],
+    subscores: ss ? {build:ss[0], active:ss[1], value:ss[2]} : null,
+    archived: arc || null
+  };
+});
+
+// Schema.org JSON-LD: surface the rating + reviews to Google so the
+// guide can earn rich snippets in search results. Only rated builders
+// (ratingValue > 0) are exposed; pending entries are skipped because
+// reviewRating without a value triggers schema warnings in Google's
+// Rich Results Test.
+(function injectSchemaOrg(){
+  const PAGE_URL='https://paradox-iq.github.io/RustTopBuilders/';
+  const author={'@type':'Person','name':'altyshenskiy'};
+  const items=builders
+    .filter(b=>b.ratingValue>0 && !b.archived)
+    .sort((a,b)=>b.ratingValue-a.ratingValue)
+    .map((b,i)=>{
+      const ytLink=b.links.find(l=>/youtube/i.test(l.u||l.t));
+      const person={'@type':'Person','name':b.name};
+      if(ytLink) person.sameAs=[ytLink.u];
+      const review={
+        '@type':'Review',
+        'itemReviewed':person,
+        'reviewRating':{'@type':'Rating','ratingValue':b.ratingValue,'bestRating':5,'worstRating':1},
+        'author':author,
+        'name':`${b.name} — ${b.ratingValue}/5`,
+        'reviewBody':b.descEN || b.desc || ''
+      };
+      return {'@type':'ListItem','position':i+1,'url':`${PAGE_URL}?b=${encodeURIComponent(b.name)}`,'item':review};
+    });
+  const ratedCount=items.length;
+  const avgRating=ratedCount?(builders.filter(b=>b.ratingValue>0 && !b.archived).reduce((s,b)=>s+b.ratingValue,0)/ratedCount):0;
+  const ld={
+    '@context':'https://schema.org',
+    '@graph':[
+      {
+        '@type':'WebSite','@id':PAGE_URL+'#website','url':PAGE_URL,
+        'name':'Rust Builders Tier List','inLanguage':['ru','en'],
+        'publisher':{'@type':'Person','name':'altyshenskiy','url':PAGE_URL}
+      },
+      {
+        '@type':'WebPage','@id':PAGE_URL+'#webpage','url':PAGE_URL,
+        'name':'Rust Builders — Полный гид 2026',
+        'inLanguage':document.documentElement.lang||'ru',
+        'isPartOf':{'@id':PAGE_URL+'#website'},
+        'about':{'@type':'Thing','name':'Rust (видеоигра) — билдеры баз'},
+        'datePublished':'2025-12-01',
+        'dateModified':new Date().toISOString().slice(0,10)
+      },
+      {
+        '@type':'ItemList','@id':PAGE_URL+'#tierlist',
+        'name':'Rust Base Builders Tier List',
+        'description':'Curated subjective ranking of 49+ Rust base builders with ¼-star granularity.',
+        'numberOfItems':items.length,
+        'itemListOrder':'https://schema.org/ItemListOrderDescending',
+        'mainEntityOfPage':{'@id':PAGE_URL+'#webpage'},
+        'itemListElement':items
+      }
+    ]
+  };
+  if(ratedCount){
+    ld['@graph'].push({
+      '@type':'AggregateRating','@id':PAGE_URL+'#aggregate',
+      'itemReviewed':{'@type':'ItemList','@id':PAGE_URL+'#tierlist'},
+      'ratingValue':+avgRating.toFixed(2),'reviewCount':ratedCount,'bestRating':5,'worstRating':1
+    });
+  }
+  const tag=document.createElement('script');
+  tag.type='application/ld+json';
+  tag.textContent=JSON.stringify(ld);
+  document.head.appendChild(tag);
+})();
+
+// Build the visual subscores row (5-dot bars + numbers).
+function subscoresHTML(b){
+  if(b.pending) return '';
+  if(!b.subscores) return `<div class="subscores-empty">${currentLang==='ru'?'// оси не выставлены':'// axes not set'}</div>`;
+  const labels = currentLang==='ru'
+    ? {build:'Базы',active:'Канал',value:'Цена'}
+    : {build:'Build',active:'Active',value:'Value'};
+  const titles = currentLang==='ru'
+    ? {build:'Качество построек: пики, бункеры, фишки',active:'Активность канала: частота баз, аудитория',value:'Доступность: цена, p2w, бесплатный контент'}
+    : {build:'Build quality: peeks, bunkers, tricks',active:'Channel activity: upload rate, audience',value:'Accessibility: price, p2w, free content'};
+  return ['build','active','value'].map(k=>{
+    const v=b.subscores[k]||0;
+    const dots=[1,2,3,4,5].map(i=>`<span class="ss-dot ${i<=v?'on':''}"></span>`).join('');
+    return `<span class="ss-item" title="${titles[k]}: ${v}/5"><span class="ss-label">${labels[k]}</span><span class="ss-bar">${dots}</span><span class="ss-num">${v}</span></span>`;
+  }).reduce((a,c)=>a+c,'<div class="subscores" aria-label="'+(currentLang==='ru'?'Оценки по осям':'Axis ratings')+'">') + '</div>';
+}
 
 let currentLang='ru', currentFormat='all', currentLangFilter='all', currentSort='rating', searchQuery='';
+// URL state sync — keeps share-link compatibility for filters, search, lang, compare set, and builder anchor.
+function builderSlug(name){return String(name).toLowerCase().replace(/[^a-zа-яё0-9]+/gi,'-').replace(/^-|-$/g,'');}
+function urlSyncSuspended(){return !!window.__urlSyncSuspended;}
+function syncURL(){
+  if(urlSyncSuspended()) return;
+  const p=new URLSearchParams();
+  if(searchQuery) p.set('q',searchQuery);
+  if(currentFormat!=='all') p.set('fmt',currentFormat);
+  if(currentLangFilter!=='all') p.set('lang',currentLangFilter);
+  if(currentSort!=='rating') p.set('sort',currentSort);
+  if(currentLang!=='ru') p.set('ui','en');
+  if(typeof cmpSet!=='undefined' && cmpSet.size) p.set('cmp',[...cmpSet].join('|'));
+  const qs=p.toString();
+  const url=window.location.pathname+(qs?'?'+qs:'')+window.location.hash;
+  history.replaceState(null,'',url);
+}
+function applyURLStateToControls(){
+  const p=new URLSearchParams(window.location.search);
+  // Search query
+  const q=p.get('q'); if(q){searchInput.value=q; searchQuery=q.toLowerCase();}
+  // Format / language / sort
+  const fmt=p.get('fmt'); if(fmt && document.querySelector(`#formatFilters .chip[data-format="${CSS.escape(fmt)}"]`)){currentFormat=fmt; formatChips.forEach(c=>c.classList.toggle('active',c.dataset.format===fmt));}
+  const lng=p.get('lang'); if(lng && document.querySelector(`#langFilters .chip[data-lang="${CSS.escape(lng)}"]`)){currentLangFilter=lng; langChips.forEach(c=>c.classList.toggle('active',c.dataset.lang===lng));}
+  const srt=p.get('sort'); if(srt && document.querySelector(`#sortFilters .chip[data-sort="${CSS.escape(srt)}"]`)){currentSort=srt; sortChips.forEach(c=>c.classList.toggle('active',c.dataset.sort===srt));}
+  // Compare set (deferred until cmpSet exists; processed at the end of script)
+  const cmp=p.get('cmp'); if(cmp) window.__pendingCmpFromURL=cmp.split('|').filter(Boolean).slice(0,3);
+}
+function focusBuilderFromURL(){
+  const p=new URLSearchParams(window.location.search);
+  const target=p.get('b') || (window.location.hash.startsWith('#b-')?window.location.hash.slice(3):null);
+  if(!target) return;
+  // Find the card by name slug match (active list first, then archive)
+  const slug=builderSlug(target);
+  let card=document.querySelector(`.card[id="b-${CSS.escape(slug)}"]`) || [...document.querySelectorAll('.card')].find(c=>builderSlug(c.dataset.builder||'')===slug);
+  if(!card){
+    // Maybe in the archive — open the <details> so the card is in the layout.
+    const arc=document.getElementById('archive-section'); if(arc){arc.open=true;}
+    card=document.querySelector(`.card[id="b-arc-${CSS.escape(slug)}"]`);
+  }
+  if(!card) return;
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+  card.classList.add('focus-pulse');
+  setTimeout(()=>card.classList.remove('focus-pulse'), 2400);
+}
 const formatChips=document.querySelectorAll('#formatFilters .chip'), langChips=document.querySelectorAll('#langFilters .chip'), sortChips=document.querySelectorAll('#sortFilters .chip'), searchInput=document.getElementById('searchInput');
 
 function setLang(l){
-  currentLang=l; document.getElementById('btn-ru').classList.toggle('active',l==='ru'); document.getElementById('btn-en').classList.toggle('active',l==='en');
+  currentLang=l;
+  document.documentElement.lang=l;
+  const btnRu=document.getElementById('btn-ru'), btnEn=document.getElementById('btn-en');
+  btnRu.classList.toggle('active',l==='ru'); btnEn.classList.toggle('active',l==='en');
+  btnRu.setAttribute('aria-pressed',l==='ru'); btnEn.setAttribute('aria-pressed',l==='en');
   ['h-title','hm-updated','hm-active','disclaimer','custom-title','lbl-search','lbl-format','lbl-lang','lbl-sort','lbl-upkeep','paid-legend','footer-note','update-note'].forEach(id=>{
     let r=document.getElementById(id+'-ru'), e=document.getElementById(id+'-en');
     if(r) r.style.display=l==='ru'?'':'none'; if(e) e.style.display=l==='en'?'':'none';
   });
   document.querySelectorAll('.chip').forEach(c=>{if(c.dataset[l]) c.textContent=c.dataset[l]});
-  document.querySelectorAll('.custom-desc[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  document.querySelectorAll('[data-lang-block]').forEach(el=>{el.style.display=el.dataset.langBlock===l?'':'none'});
+  document.querySelectorAll('summary span[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  document.querySelectorAll('p[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  document.querySelectorAll('.custom-table thead th[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  // Suggest-form: labels, options, hints, buttons, action links, meta line
+  document.querySelectorAll('.suggest-form label > span[data-ru], .suggest-form .hint[data-ru], .suggest-form option[data-ru], .suggest-form button[data-ru], .suggest-form a[data-ru], .suggest-meta[data-ru]')
+    .forEach(el=>{el.textContent=el.dataset[l]});
+  // Suggest-form placeholders (no data-attr — switched here directly)
+  const phRu = {
+    'sug-name':'напр. SomeNewBuilder',
+    'sug-youtube':'https://youtube.com/@...',
+    'sug-note':'2-3 предложения: какой стиль, есть ли Patreon/Discord, на что обратить внимание, чем выделяется',
+    'sug-contact':'Discord, Telegram, email — что угодно'
+  };
+  const phEn = {
+    'sug-name':'e.g. SomeNewBuilder',
+    'sug-youtube':'https://youtube.com/@...',
+    'sug-note':'2-3 sentences: their style, Patreon/Discord, what to look for, what makes them stand out',
+    'sug-contact':'Discord, Telegram, email — anything'
+  };
+  Object.entries(l==='ru'?phRu:phEn).forEach(([id,ph])=>{const el=document.getElementById(id); if(el) el.placeholder=ph;});
+  renderCustoms();
+  if(typeof refreshCmpBar==='function') refreshCmpBar();
   document.title=l==='ru'?'Rust Builders — Полный гид 2026':'Rust Builders — Full Guide 2026';
+  searchInput.placeholder=l==='ru'?'Поиск...':'Search...';
+  searchInput.setAttribute('aria-label',l==='ru'?'Поиск по билдерам':'Search builders');
+  renderStats();
   applyFilters();
+  if(typeof renderArchive==='function') renderArchive();
+  if(typeof renderBases==='function') renderBases();
+}
+
+// Custom-base providers: comparison data
+// [name, fav, where, [priceRU,priceEN], [payRU,payEN], [noteRU,noteEN], priceUSDForSort]
+const customs=[
+  ['Limi Lab',     true,  'Patreon \u2192 Discord',['от $7/мес','from $7/mo'],            ['подписка','subscription'],         ['персональный onboarding','personal onboarding'], 7],
+  ['HQM Core',     true,  'Patreon',                ['от $5/мес','from $5/mo'],            ['подписка','subscription'],         ['готовые базы, не bespoke','curated, not bespoke'], 5],
+  ['One2Do',       true,  'FunPay',                 ['индивидуально','inquire'],           ['FunPay','FunPay'],                 ['доступно через FunPay-сделки','via FunPay escrow'], 9999],
+  ['GrinchTheBuilder',false,'Discord (@chort228)', ['$15\u201320','$15\u201320'],         ['—','—'],                            ['самый дешёвый кастом','cheapest custom'], 15],
+  ['rookyo',       false, 'Discord',                ['10\u201340 \u20ac','10\u201340 \u20ac'],['—','—'],                         ['тарифы по размеру','size tiers'], 10],
+  ['Luca.',        false, 'Discord',                ['$30 \u2192 $65','$30 \u2192 $65'],   ['—','—'],                            ['по размеру группы (соло \u2192 12+)','by group size (solo \u2192 12+)'], 30],
+  ['Erebus',       false, 'Discord',                ['$50 / $100 / $250','$50 / $100 / $250'],['—','—'],                          ['Budget / Standard / Ultimate','Budget / Standard / Ultimate'], 50],
+  ['Kredbic & S4', false, 'общий Discord',           ['$50\u2013100','$50\u2013100'],       ['—','—'],                            ['S4: уточнять','S4: inquire'], 50],
+  ['2devilzz',     false, 'Discord',                ['$60+ / $100+','$60+ / $100+'],       ['крипта / скины +10%','crypto / skins +10%'],['medium / large; зерги','medium / large; zerg-tier'], 60],
+  ['Pandabuilds',  false, 'Discord',                ['индивидуально','inquire'],           ['PayPal / Rust Skins +15%','PayPal / Rust Skins +15%'],['—','—'], 9999],
+  ['Akame',        false, 'Boosty (akamexebet)',    ['индивидуально','inquire'],           ['Boosty','Boosty'],                  ['ТОЛЬКО кастом, ничего ещё','custom-only, nothing else'], 9999],
+  ['b00bster',     false, 'Discord (тикеты)',       ['индивидуально','inquire'],           ['—','—'],                            ['обсуждается лично','discussed individually'], 9999]
+];
+let customSort='price';
+
+function renderCustoms(){
+  const tb=document.querySelector('#customsTable tbody'); if(!tb) return;
+  // Hide archived builders from the customs comparison too — they live in the archive section.
+  const list=customs.filter(r=>!archived[r[0]]);
+  if(customSort==='price') list.sort((a,b)=>a[6]-b[6]||a[0].localeCompare(b[0]));
+  else if(customSort==='name') list.sort((a,b)=>a[0].localeCompare(b[0]));
+  else if(customSort==='fav') list.sort((a,b)=>(b[1]?1:0)-(a[1]?1:0)||a[6]-b[6]);
+  const i=currentLang==='en'?1:0;
+  tb.innerHTML=list.map(r=>{
+    const fav=r[1]?` <span class="ct-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'';
+    return `<tr class="${r[1]?'fav':''}"><td>${esc(r[0])}${fav}</td><td>${esc(r[2])}</td><td>${esc(r[3][i])}</td><td>${esc(r[4][i])}</td><td class="muted">${esc(r[5][i])}</td></tr>`;
+  }).join('');
+}
+
+// Compute & render hero stat-strip
+function renderStats(){
+  const el=document.getElementById('statStrip'); if(!el) return;
+  const live=builders.filter(b=>!b.archived);
+  const total=live.length, rated=live.filter(b=>!b.pending), pending=total-rated.length;
+  const top=rated.filter(b=>b.ratingValue>=4).length;
+  const patreon=rated.filter(b=>b.tags.some(t=>t.includes('Patreon'))).length;
+  const customs=rated.filter(b=>b.tags.some(t=>t.includes('Кастом')||t.includes('Custom'))).length;
+  const bilingual=rated.filter(b=>b.langs.length>1).length;
+  const arc=builders.filter(b=>b.archived).length;
+  const u=currentLang==='ru'
+    ?{b:'билдеров',top:'топ ≥4★',pat:'patreon',cust:'кастом',bi:'билингв',pend:'на рассмотрении',arc:'в архиве',upd:'обновлено май 2026'}
+    :{b:'builders',top:'top ≥4★',pat:'patreon',cust:'custom',bi:'bilingual',pend:'pending',arc:'archived',upd:'updated may 2026'};
+  el.innerHTML=`<span><strong>${total}</strong> ${u.b}</span>`+
+    `<span><strong>${top}</strong> ${u.top}</span>`+
+    `<span><strong>${patreon}</strong> ${u.pat}</span>`+
+    `<span><strong>${customs}</strong> ${u.cust}</span>`+
+    `<span><strong>${bilingual}</strong> ${u.bi}</span>`+
+    `<span><strong>${pending}</strong> ${u.pend}</span>`+
+    (arc?`<span><strong>${arc}</strong> ${u.arc}</span>`:'')+
+    `<span>${u.upd}</span>`;
 }
 
 function applyFilters(){
-  searchQuery=searchInput.value.toLowerCase().trim();
+  const newQ=searchInput.value.toLowerCase().trim();
+  if(newQ!==searchQuery){searchQuery=newQ; syncURL();}
+  else searchQuery=newQ;
   let f=builders.filter(b=>{
+    if(b.archived) return false; // archived live in their own section
     if(!matchesFormat(b,currentFormat)) return false;
-    if(currentLangFilter!=='all' && currentLangFilter==='en' && !b.handle.includes('EN')) return false;
-    if(currentLangFilter!=='all' && currentLangFilter==='ru' && !b.handle.includes('RU')) return false;
+    if(currentLangFilter!=='all' && !b.langs.includes(currentLangFilter)) return false;
     if(searchQuery){
       let v = b.name.toLowerCase()+' '+(b.tags.join(' ').toLowerCase())+' '+(currentLang==='en'?b.descEN.toLowerCase():b.desc.toLowerCase());
       b.rows.forEach(r=>v+=' '+(r.valRU||'').toLowerCase()+' '+(r.valEN||'').toLowerCase()+' '+r.label.toLowerCase());
@@ -478,20 +1219,95 @@ function applyFilters(){
   render(f);
 }
 
+let searchDebounceTimer;
+function debouncedApplyFilters(){
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer=setTimeout(applyFilters,150);
+}
+
+// Map rating value -> tier-* class for left accent stripe.
+function tierClass(v){
+  if(v<=0) return 'tier-pending';
+  if(v>=5) return 'tier-5';
+  if(v>=4.5) return 'tier-45';
+  if(v>=4) return 'tier-4';
+  if(v>=3.5) return 'tier-35';
+  if(v>=3) return 'tier-3';
+  return 'tier-low';
+}
+
+// Avatar map: builder name -> file slug under assets/avatars/<slug>.jpg.
+// Real channel avatars scraped from YouTube. Builders missing from the map
+// fall back to a CSS hash-hue tile with initials.
+const avatarSlugs={'2devilzz':'2devilzz','Akame':'akame','Brader Fik':'brader-fik','BuckyBuilds':'buckybuilds','Build Lab':'build-lab','Builder':'builder','Crow':'crow','Darvel':'darvel','Erebus':'erebus','Faded':'faded','GrinchTheBuilder':'grinchthebuilder','HQM Core':'hqm-core','HiddenJoint':'hiddenjoint','IndominusRust':'indominusrust','Kredbic':'kredbic','Krub':'krub','Lacros':'lacros','LeftyyP':'leftyyp','Limi Lab':'limi-lab','Luca.':'luca','Mellarrkk':'mellarrkk','MrSkeem':'mrskeem','Nini Rust':'nini-rust','One2Do':'one2do','Opy4k':'opy4k','PANG':'pang','Pandabuilds':'pandabuilds','Rat In The Dark':'rat-in-the-dark','Relbuild':'relbuild','RustyYT':'rustyyt','S4':'s4','Santess':'santess','Shield':'shield','Spinky':'spinky','Stelic':'stelic','Tarre':'tarre','Void':'void','Walder':'walder','Willjum':'willjum','XGN.':'xgn','Xgamers Vault':'xgamers-vault','Zypic':'zypic','aloneintokyo':'aloneintokyo','anika':'anika','b00bster':'b00bster','pagdawg':'pagdawg','rookyo':'rookyo','slvtv':'slvtv','zYn':'zyn','Биг джони':'d091d0b8d0b320d0b4d0b6d0','Ласти Раст':'d09bd0b0d181d182d0b820d0'};
+function hashHue(s){let h=0;for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i); h|=0;} return Math.abs(h)%360;}
+function avatarInitials(name){const cleaned=name.replace(/[^\p{L}\p{N} ]/gu,'').trim(); const parts=cleaned.split(/\s+/); if(parts.length>=2) return (parts[0][0]+parts[1][0]).toUpperCase(); return cleaned.slice(0,2).toUpperCase();}
+function avatarFallbackStyle(name){const hue=hashHue(name); return `linear-gradient(135deg,hsl(${hue},38%,32%),hsl(${(hue+30)%360},42%,22%))`;}
+function avatarHTML(name){
+  const slug=avatarSlugs[name];
+  const alt=(currentLang==='ru'?'Аватар ':'Avatar of ')+name;
+  if(slug){
+    const fb=`background:${avatarFallbackStyle(name)}`;
+    // Fallback: if image 404s (e.g. channel renamed), turn the wrapper into a CSS hash-hue tile with initials.
+    return `<div class="card-avatar" data-name="${esc(name)}" data-initials="${esc(avatarInitials(name))}" data-bg="${esc(fb)}"><img src="assets/avatars/${slug}.jpg" alt="${esc(alt)}" loading="lazy" decoding="async" onerror="avatarFallback(this)"></div>`;
+  }
+  return `<div class="card-avatar fallback" role="img" aria-label="${esc(alt)}" style="background:${avatarFallbackStyle(name)}">${esc(avatarInitials(name))}</div>`;
+}
+window.avatarFallback=function(img){const w=img.parentNode; w.classList.add('fallback'); w.setAttribute('style',w.dataset.bg); w.textContent=w.dataset.initials;};
+
+// Escape HTML special chars so dynamic strings can't break markup.
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+// Wrap matches of the current search query in <mark>; assumes input is already escaped.
+function hl(escaped){if(!searchQuery) return escaped; const re=new RegExp(searchQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'); return escaped.replace(re,m=>`<mark class="search-hl">${m}</mark>`);}
+
 function tagClass(tag){
   if(tag.includes('Patreon')) return 'tag tag-patreon';if(tag.includes('Boosty')) return 'tag tag-boosty';if(tag.includes('Shop')||tag.includes('fadedbuilds')) return 'tag tag-shop';if(tag.includes('Discord')) return 'tag tag-discord';if(tag.includes('Кастом')||tag.includes('Custom')) return 'tag tag-custom';if(tag.includes('TikTok')) return 'tag tag-tiktok';if(tag.includes('Twitch')) return 'tag tag-twitch';if(tag.includes('Website')) return 'tag tag-website';if(tag.includes('Telegram')) return 'tag tag-telegram';if(tag.includes('Instagram')) return 'tag tag-instagram';return 'tag';
 }
 
+// Group label uses 0.5-step buckets and reuses getStars for visual consistency.
 function groupLabel(v){
-  if(v>=5) return {stars:'★★★★★',label:currentLang==='ru'?'Лучший':'Best'};
-  if(v>=4.5) return {stars:'★★★★½',label:currentLang==='ru'?'Топ-уровень':'Top tier'};
-  if(v>=4) return {stars:'★★★★☆',label:currentLang==='ru'?'Хорошие':'Good'};
-  if(v>=3.5) return {stars:'★★★½',label:currentLang==='ru'?'Выше среднего':'Above average'};
-  if(v>=3) return {stars:'★★★☆☆',label:currentLang==='ru'?'Средне-хорошие':'Decent'};
-  if(v>=2.5) return {stars:'★★½☆☆',label:currentLang==='ru'?'Ниже среднего':'Below average'};
-  if(v>=2) return {stars:'★★☆☆☆',label:currentLang==='ru'?'Слабые':'Weak'};
-  if(v>=1) return {stars:'★☆☆☆☆',label:currentLang==='ru'?'Провал':'Poor'};
-  return {stars:'⌛',label:currentLang==='ru'?'На рассмотрении':'Under review'};
+  if(v<=0) return {stars:'⏳',label:currentLang==='ru'?'На рассмотрении':'Under review'};
+  let bucket;
+  if(v>=5) bucket=5;
+  else if(v>=4.5) bucket=4.5;
+  else if(v>=4) bucket=4;
+  else if(v>=3.5) bucket=3.5;
+  else if(v>=3) bucket=3;
+  else if(v>=2.5) bucket=2.5;
+  else if(v>=2) bucket=2;
+  else bucket=1;
+  const labels={
+    5: ['Лучший','Best'], 4.5:['Топ-уровень','Top tier'], 4:['Хорошие','Good'],
+    3.5:['Выше среднего','Above average'], 3:['Средне-хорошие','Decent'],
+    2.5:['Ниже среднего','Below average'], 2:['Слабые','Weak'], 1:['Провал','Poor']
+  };
+  return {stars:getStars(bucket), label:currentLang==='ru'?labels[bucket][0]:labels[bucket][1]};
+}
+
+function cardHTML(b, opts){
+  const isArc = !!(opts && opts.archived);
+  const paid=hasPaid(b.tags), desc=currentLang==='en'?b.descEN:b.desc, rNum=b.ratingValue>=1?`${b.ratingValue%1===0?b.ratingValue+'.0':b.ratingValue} / 5`:'';
+  const rowsH=b.rows.map(r=>{
+    const lT=currentLang==='en'&&rowLabels.en[r.label]?rowLabels.en[r.label]:r.label, vT=currentLang==='en'?r.valEN:r.valRU;
+    return `<div class="row"><span class="row-label">${lT}</span><span class="row-val ${r.c}">${vT}</span></div>`;
+  }).join('');
+  const linksH=b.links.length?`<div class="links">${b.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>`:'';
+  const fav=b.favorite?`<span class="badge-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'', upI=getUpkeepIcons(b.upkeep);
+  const nameH=hl(esc(b.name)), handleH=hl(esc(b.handle)), descH=hl(desc);
+  const cmpOn=cmpSet.has(b.name);
+  const cmpBtn = isArc ? '' : `<button class="cmp-btn ${cmpOn?'active':''}" data-cmp="${esc(b.name)}" type="button" aria-pressed="${cmpOn}" title="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}" aria-label="${currentLang==='ru'?'Добавить в сравнение':'Add to comparison'}">${cmpOn?'✓':'+'}</button>`;
+  const arcAttr = isArc && b.archived ? `data-archive-reason="${esc(currentLang==='en'?b.archived.reasonEN:b.archived.reasonRU)} · ${esc(b.archived.lastActive)}"` : '';
+  const idAttr = isArc ? `id="b-arc-${esc(builderSlug(b.name))}"` : `id="b-${esc(builderSlug(b.name))}"`;
+  return `<div class="card ${tierClass(b.ratingValue)} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''} ${cmpOn?'cmp-selected':''}" data-builder="${esc(b.name)}" ${idAttr} ${arcAttr}>
+    ${cmpBtn}
+    ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
+    <div class="card-head"><div class="card-head-left">${avatarHTML(b.name)}<div>
+    <div class="card-name">${nameH}${fav}</div><div class="card-handle">${handleH}</div>
+    ${upI?`<div class="cost-indicator">${upI}</div>`:''}</div></div>
+    <div class="card-rating">${b.rating}<span class="card-rating-num">${rNum}</span></div></div>
+    ${subscoresHTML(b)}
+    <div class="tags">${b.tags.map(t=>`<span class="${tagClass(t)}">${t}</span>`).join('')}</div>
+    <div class="divider"></div><div>${rowsH}</div><div class="card-desc">${descH}</div>${linksH}</div>`;
 }
 
 function render(list){
@@ -502,39 +1318,548 @@ function render(list){
     const gl=groupLabel(b.ratingValue), gKey=gl.label;
     if(useG&&gKey!==curG){if(curG!==null)html+='</div>'; curG=gKey; html+=`<div class="section-header"><div class="section-stars">${gl.stars}</div><div class="section-label">${gl.label}</div><div class="section-line"></div></div><div class="grid">`;}
     else if(!useG&&curG===null){curG='open'; html+='<div class="grid">';}
-    
-    let paid=hasPaid(b.tags), desc=currentLang==='en'?b.descEN:b.desc, rNum=b.ratingValue>=1?`${b.ratingValue%1===0?b.ratingValue+'.0':b.ratingValue} / 5`:'';
-    let rowsH=b.rows.map(r=>{
-      let lT=currentLang==='en'&&rowLabels.en[r.label]?rowLabels.en[r.label]:r.label, vT=currentLang==='en'?r.valEN:r.valRU;
-      return `<div class="row"><span class="row-label">${lT}</span><span class="row-val ${r.c}">${vT}</span></div>`;
-    }).join('');
-    let linksH=b.links.length?`<div class="links">${b.links.map(l=>`<a href="${l.u}" target="_blank" class="link ${getLinkClass(l.t)}">${l.t}</a>`).join('')}</div>`:'';
-    let avUrl=`https://ui-avatars.com/api/?name=${encodeURIComponent(b.name.split(' ')[0])}&background=2a2a2a&color=e8e4db&bold=true`;
-    let fav=b.favorite?`<span class="badge-fav" title="${currentLang==='ru'?'Выбор редакции':'Top Choice'}">👑</span>`:'', upI=getUpkeepIcons(b.upkeep);
-    
-    html+=`<div class="card ${b.ratingValue>=5?'top':''} ${b.pending?'pending-review':''} ${b.favorite?'favorite':''}">
-      ${paid?`<div class="paid-dot" title="${currentLang==='ru'?'Есть платный контент':'Paid content'}"></div>`:''}
-      <div class="card-head"><div class="card-head-left"><img src="${avUrl}" class="card-avatar" alt="av"><div>
-      <div class="card-name">${b.name}${fav}</div><div class="card-handle">${b.handle}</div>
-      ${upI?`<div class="cost-indicator">${upI}</div>`:''}</div></div>
-      <div class="card-rating">${b.rating}<span class="card-rating-num">${rNum}</span></div></div>
-      <div class="tags">${b.tags.map(t=>`<span class="${tagClass(t)}">${t}</span>`).join('')}</div>
-      <div class="divider"></div><div>${rowsH}</div><div class="card-desc">${desc}</div>${linksH}</div>`;
+    html += cardHTML(b);
   });
   if(curG!==null) html+='</div>';
   cont.innerHTML=html;
 }
 
+// Render archive section: reduced, dimmed cards with last-active badge.
+function renderArchive(){
+  const cont=document.getElementById('archiveContainer'); if(!cont) return;
+  const list=builders.filter(b=>b.archived).sort((a,b)=>b.ratingValue-a.ratingValue);
+  const countEl=document.getElementById('archiveCount');
+  if(countEl) countEl.textContent=list.length?`(${list.length})`:'';
+  if(!list.length){cont.innerHTML=`<div class="archive-empty">${currentLang==='ru'?'архив пуст':'archive is empty'}</div>`;return;}
+  cont.innerHTML='<div class="grid">'+list.map(b=>cardHTML(b,{archived:true})).join('')+'</div>';
+}
+
+// --- Legendary bases reference list --------------------------------------
+// Order matters — first entries are surfaced first. Each entry:
+//   name, author, format, tags[], descRU, descEN, link (or null for "no canonical url")
+// To add a base: append a row. To attribute to a different builder: change `author`
+// to that builder's exact name (must match raw[][0]) so the click jumps to their card.
+const legendaryBases = [
+  { name:'Humbug',           author:'Crow',         format:'Solo — Trio',       tags:['Multi-TC','Floor stack','Compact bunker'],
+    descRU:'Самая обсуждаемая Patreon-база Crow. Компактный multi-TC бункер на solo/duo/trio с флор-стаком и плотной защитой шкафов.',
+    descEN:'Crow\u2019s most-discussed Patreon base. A compact multi-TC bunker for solo/duo/trio with floor-stack and tight TC protection.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'Cyclone',          author:'Crow',         format:'Medium — Clan',     tags:['Wide gaps','Online def','Rotation'],
+    descRU:'Крупная клановая база с упором на онлайн-деф и ротацию по периметру. Wide gaps + multi-shot peeks.',
+    descEN:'A large clan base focused on online defense and perimeter rotations. Wide gaps with multi-shot peeks.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'Synchro',          author:'Crow',         format:'Solo — Duo',        tags:['Pixel gaps','Bunker','Meta'],
+    descRU:'Мета solo/duo с пиксель-гапами и скрытым бункером — одна из самых тиражируемых баз 2024-2026.',
+    descEN:'A meta solo/duo with pixel gaps and a hidden bunker — one of the most-copied designs of 2024-2026.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'Jupiter',          author:'Crow',         format:'Clan',              tags:['Heavy upkeep','Shield walls','Zerg-ready'],
+    descRU:'Клановая постройка с тяжёлым upkeep и shield wall по периметру — для зерг-форматов 8+.',
+    descEN:'A clan build with heavy upkeep and a perimeter shield wall — for zerg formats of 8+ players.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'Chimera',          author:'Crow',         format:'Trio — Medium',     tags:['Hybrid','Dual-bunker','Modular'],
+    descRU:'Гибрид соло-бункера и клановой коробки. Двойной бункер с возможностью отключаемых шкафов.',
+    descEN:'A hybrid of a solo bunker and a clan box. Dual bunker with toggleable TC rooms.',
+    link:'https://www.patreon.com/c/CrowBuilds' },
+
+  { name:'FrostLine',        author:'Opy4k',        format:'Trio (advanced 2x2)', tags:['Compact','High skill cap','2x2'],
+    descRU:'Свежая база-визитка возвращения Opy4k — продвинутый 2x2 trio с высоким skill-cap. Не для новичков.',
+    descEN:'The signature base of Opy4k\u2019s return — an advanced 2x2 trio with a high skill cap. Not for beginners.',
+    link:'https://youtube.com/@Opy4k' },
+
+  { name:'Open Concept Bunker', author:null,        format:'Solo — Duo',        tags:['Open core','Bunker','Generic concept'],
+    descRU:'Архетип, а не одна конкретная база — открытая планировка с центральным бункером. Реализаций много (Faded, b00bster, Brader Fik).',
+    descEN:'An archetype rather than a single base — open layout with a central bunker. Many takes (Faded, b00bster, Brader Fik).',
+    link:null },
+
+  { name:'Egg Base',         author:null,           format:'Solo',              tags:['Solo bunker','Snowball','Cheap'],
+    descRU:'Соло-бункер с минимальным апкипом — стартер первого вайп-вечера. Walder, Tarre и десятки других делают свои версии.',
+    descEN:'A solo bunker with minimal upkeep — a starter for the first wipe night. Walder, Tarre and dozens of others have their takes.',
+    link:null },
+
+  { name:'China Wall Honeycomb', author:null,       format:'Any',               tags:['Defensive technique','Honeycomb','Decoy'],
+    descRU:'Не база, а техника — стена-обманка из дешёвых блоков вокруг ключевого ядра. Используется во всём, от Brader Fik до b00bster.',
+    descEN:'Not a base but a technique — a decoy wall of cheap blocks around the key core. Used everywhere from Brader Fik to b00bster.',
+    link:null },
+
+  { name:'Multi-TC Floor Stack', author:null,       format:'Trio — Clan',       tags:['Floor stack','Multi-TC','Anti-raid'],
+    descRU:'Концепт раскладывать TC и кейсы на разных полах — рейдер тратит втрое больше ресурсов. Crow и Nini Rust — главные пропагандисты.',
+    descEN:'The concept of spreading TCs and boxes across multiple floors — raiders waste 3× the resources. Crow and Nini Rust are the main proponents.',
+    link:null },
+
+  { name:'Akame Online Def Box', author:'Akame',    format:'Small Group — Clan', tags:['Online def','Clan layout','Custom only'],
+    descRU:'Архетип Akame — клановая база, спроектированная под защиту во время онлайн-рейда. Только под заказ через Boosty.',
+    descEN:'Akame\u2019s archetype — a clan base designed for defense during online raids. Custom-only via Boosty.',
+    link:'https://boosty.to/akamexebet' },
+
+  { name:'Limi Lab Patreon Pack', author:'Limi Lab', format:'Solo — Clan',      tags:['Subscription','Custom','Premium'],
+    descRU:'Не одна база, а вся подписка Limi Lab — самый цитируемый pack за $7/мес. С персональным onboarding\'ом.',
+    descEN:'Not a single base but Limi Lab\u2019s whole subscription — the most-cited pack at $7/mo. Includes personal onboarding.',
+    link:'https://www.patreon.com/LimiLAB' }
+];
+
+function renderBases(){
+  const cont=document.getElementById('basesContainer'); if(!cont) return;
+  const countEl=document.getElementById('basesCount');
+  if(countEl) countEl.textContent=`(${legendaryBases.length})`;
+  const isRu=currentLang==='ru';
+  cont.innerHTML='<div class="bases-grid">'+legendaryBases.map(b=>{
+    const desc=isRu?b.descRU:b.descEN;
+    const tags=b.tags.map(t=>`<span class="base-tag">${esc(t)}</span>`).join('');
+    const fmt=`<span class="base-tag fmt">${esc(b.format)}</span>`;
+    let authorH;
+    if(b.author){
+      // Make author clickable — jumps to that builder's card via deep-link.
+      const builderExists = builders.some(x=>x.name===b.author);
+      if(builderExists){
+        const slug=builderSlug(b.author);
+        authorH=`<div class="base-author">${isRu?'автор':'author'}: <a href="?b=${encodeURIComponent(b.author)}#b-${esc(slug)}" data-base-author="${esc(b.author)}">${esc(b.author)}</a></div>`;
+      } else {
+        authorH=`<div class="base-author">${isRu?'автор':'author'}: ${esc(b.author)}</div>`;
+      }
+    } else {
+      authorH=`<div class="base-author">${isRu?'архетип / общий концепт':'archetype / generic concept'}</div>`;
+    }
+    const linkH=b.link
+      ? `<a href="${esc(b.link)}" target="_blank" rel="noopener noreferrer" class="base-link">${isRu?'смотреть →':'view →'}</a>`
+      : `<span class="base-link muted">${isRu?'нет одной канонической ссылки':'no single canonical url'}</span>`;
+    return `<div class="base-card">
+      <div class="base-name">${esc(b.name)}</div>
+      ${authorH}
+      <div class="base-meta">${fmt}${tags}</div>
+      <div class="base-desc">${esc(desc)}</div>
+      ${linkH}
+    </div>`;
+  }).join('')+'</div>';
+  // Wire up author links so they go through focusBuilderFromURL pulse logic.
+  cont.querySelectorAll('a[data-base-author]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      const name=a.getAttribute('data-base-author');
+      const url=new URL(window.location.href);
+      url.searchParams.set('b',name);
+      window.history.replaceState(null,'',url.pathname+url.search+`#b-${builderSlug(name)}`);
+      if(typeof focusBuilderFromURL==='function') focusBuilderFromURL();
+    });
+  });
+}
+
+// --- Suggest-builder form ------------------------------------------------
+// No backend: fields are formatted into a clean text block. The user can
+// copy to clipboard or open Telegram/email pre-filled with the same text.
+// Discord doesn't have a real DM-by-username deep-link, so we suggest the
+// clipboard path + show the Discord handle in the status message.
+const SUGGEST_DISCORD = 'gamunkul8515';
+// Optional Telegram username; if set, the share button opens t.me/<user>
+// directly. When empty, falls back to t.me/share/url which lets the user
+// paste the prefilled text into any chat.
+const SUGGEST_TG = '';
+// Cloudflare Worker that proxies suggestions to Discord with Turnstile +
+// per-IP rate limit. Source lives in /worker. Replace these two values
+// after deploying the Worker (see worker/README.md). When SUGGEST_WORKER_URL
+// is empty, the form falls back to the manual Copy/Telegram path.
+const SUGGEST_WORKER_URL = 'https://rusttop-suggest-proxy.altyshenskiy.workers.dev';
+const SUGGEST_TURNSTILE_SITE_KEY = '0x4AAAAAADDOTml9zu5mxjwD';
+// Per-device cooldown — secondary defense in addition to the server-side
+// IP rate limit. Catches accidental double-clicks instantly.
+const SUGGEST_COOLDOWN_MS = 30000;
+const SUGGEST_LS_KEY = 'rtb_suggest_last_send';
+
+function buildSuggestText(){
+  const get = id => (document.getElementById(id).value || '').trim();
+  const name = get('sug-name');
+  const yt = get('sug-youtube');
+  const fmtVal = get('sug-format');
+  const langVal = get('sug-lang');
+  const note = get('sug-note');
+  const contact = get('sug-contact');
+  const fmtSel = document.getElementById('sug-format');
+  const langSel = document.getElementById('sug-lang');
+  const fmtTxt = fmtVal ? fmtSel.options[fmtSel.selectedIndex].textContent.trim() : '';
+  const langTxt = langVal ? langSel.options[langSel.selectedIndex].textContent.trim() : '';
+  const ru = currentLang==='ru';
+  const lines = [];
+  lines.push(ru ? '— Предложение нового билдера —' : '— Builder suggestion —');
+  lines.push((ru?'Имя:        ':'Name:       ')+name);
+  lines.push((ru?'YouTube:    ':'YouTube:    ')+yt);
+  if(fmtTxt) lines.push((ru?'Формат:     ':'Format:     ')+fmtTxt);
+  if(langTxt) lines.push((ru?'Язык:       ':'Language:   ')+langTxt);
+  lines.push('');
+  lines.push((ru?'Описание:':'Note:'));
+  lines.push(note);
+  if(contact){
+    lines.push('');
+    lines.push((ru?'Связь со мной: ':'My contact: ')+contact);
+  }
+  return lines.join('\n');
+}
+
+function buildSuggestPayload(turnstileToken){
+  const get = id => (document.getElementById(id).value || '').trim();
+  const fmtSel = document.getElementById('sug-format');
+  const langSel = document.getElementById('sug-lang');
+  return {
+    name: get('sug-name'),
+    youtube: get('sug-youtube'),
+    format: fmtSel.value,
+    formatLabel: fmtSel.value ? fmtSel.options[fmtSel.selectedIndex].textContent.trim() : '',
+    lang: langSel.value,
+    langLabel: langSel.value ? langSel.options[langSel.selectedIndex].textContent.trim() : '',
+    note: get('sug-note'),
+    contact: get('sug-contact'),
+    turnstileToken
+  };
+}
+
+function validateSuggest(){
+  const fields = [
+    {id:'sug-name', test:v=>v.length>=2 && v.length<=80},
+    {id:'sug-youtube', test:v=>/^https?:\/\/.+/i.test(v) && /(youtube\.com|youtu\.be)/i.test(v)},
+    {id:'sug-note', test:v=>v.length>=20 && v.length<=600}
+  ];
+  let firstBad = null;
+  fields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    const ok=f.test((el.value||'').trim());
+    el.classList.toggle('invalid', !ok);
+    if(!ok && !firstBad) firstBad=el;
+  });
+  return firstBad;
+}
+
+function setupSuggestForm(){
+  const form = document.getElementById('suggestForm'); if(!form) return;
+  const previewEl = document.getElementById('sug-preview');
+  const sendActions = document.getElementById('sug-send-actions');
+  const statusEl = document.getElementById('sug-status');
+  const genBtn = document.getElementById('sug-generate-btn');
+  const resetBtn = document.getElementById('sug-reset-btn');
+  const copyBtn = document.getElementById('sug-copy-btn');
+  const tgLink = document.getElementById('sug-tg-link');
+  const sendBtn = document.getElementById('sug-send-btn');
+  const turnstileWrap = document.getElementById('sug-turnstile-wrap');
+  const turnstileEl = document.getElementById('sug-turnstile');
+  const workerConfigured = !!(SUGGEST_WORKER_URL && SUGGEST_TURNSTILE_SITE_KEY);
+  let turnstileToken = '';
+  let turnstileWidgetId = null;
+
+  function setStatus(msg, kind){
+    statusEl.className = 'suggest-status' + (kind?' '+kind:'');
+    statusEl.textContent = msg;
+  }
+  function clearStatus(){ statusEl.className='suggest-status'; statusEl.textContent=''; }
+
+  function ensureTurnstile(){
+    if(!workerConfigured) return;
+    if(turnstileWidgetId !== null) return;
+    if(typeof window.turnstile === 'undefined'){
+      // Script may still be loading — retry in a moment.
+      setTimeout(ensureTurnstile, 400);
+      return;
+    }
+    turnstileWidgetId = window.turnstile.render(turnstileEl, {
+      sitekey: SUGGEST_TURNSTILE_SITE_KEY,
+      theme: 'dark',
+      callback: tok => { turnstileToken = tok; sendBtn.disabled = false; },
+      'expired-callback': () => { turnstileToken = ''; sendBtn.disabled = true; },
+      'error-callback': () => { turnstileToken = ''; sendBtn.disabled = true; }
+    });
+  }
+
+  function resetTurnstile(){
+    turnstileToken = '';
+    if(workerConfigured && turnstileWidgetId !== null && window.turnstile){
+      try{ window.turnstile.reset(turnstileWidgetId); } catch(_){}
+    }
+  }
+
+  // If the Worker isn't configured yet, hide the auto-send button and
+  // fall back to the manual Copy / Telegram path.
+  if(!workerConfigured){
+    sendBtn.style.display = 'none';
+  }
+
+  genBtn.addEventListener('click', ()=>{
+    const bad = validateSuggest();
+    if(bad){
+      setStatus(currentLang==='ru'
+        ? 'Заполни обязательные поля (имя, YouTube, описание ≥ 20 символов).'
+        : 'Please fill the required fields (name, YouTube, note ≥ 20 chars).',
+        'err');
+      bad.focus();
+      previewEl.classList.remove('show');
+      sendActions.style.display='none';
+      turnstileWrap.style.display='none';
+      return;
+    }
+    const text = buildSuggestText();
+    previewEl.textContent = text;
+    previewEl.classList.add('show');
+    sendActions.style.display='flex';
+    if(workerConfigured){
+      turnstileWrap.style.display='block';
+      sendBtn.disabled = !turnstileToken;
+      ensureTurnstile();
+    }
+    const body = encodeURIComponent(text);
+    tgLink.href = SUGGEST_TG
+      ? `https://t.me/${SUGGEST_TG}?text=${body}`
+      : `https://t.me/share/url?url=${encodeURIComponent('https://paradox-iq.github.io/RustTopBuilders/')}&text=${body}`;
+    setStatus(currentLang==='ru'
+      ? (workerConfigured
+          ? 'Готово. Пройди капчу и жми «Отправить заявку».'
+          : 'Готово. Скопируй текст и отправь в Discord (gamunkul8515) или открой Telegram.')
+      : (workerConfigured
+          ? "Ready. Solve the captcha and click 'Send suggestion'."
+          : 'Ready. Copy the text and DM Discord (gamunkul8515) or open Telegram.'),
+      'ok');
+  });
+
+  sendBtn.addEventListener('click', async ()=>{
+    if(!workerConfigured) return;
+    const bad = validateSuggest();
+    if(bad){ bad.focus(); return; }
+    if(!turnstileToken){
+      setStatus(currentLang==='ru'
+        ? 'Сначала пройди капчу выше.'
+        : 'Please complete the captcha above first.',
+        'err');
+      return;
+    }
+    const last = parseInt(localStorage.getItem(SUGGEST_LS_KEY) || '0', 10);
+    const wait = SUGGEST_COOLDOWN_MS - (Date.now() - last);
+    if(wait > 0){
+      const sec = Math.ceil(wait/1000);
+      setStatus(currentLang==='ru'
+        ? `Подожди ${sec} сек. перед следующей отправкой.`
+        : `Please wait ${sec}s before sending again.`,
+        'err');
+      return;
+    }
+    sendBtn.disabled = true;
+    setStatus(currentLang==='ru' ? 'Отправляем…' : 'Sending…', '');
+    try{
+      const payload = buildSuggestPayload(turnstileToken);
+      const res = await fetch(SUGGEST_WORKER_URL, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(()=>({}));
+      if(res.status === 429){
+        const sec = data.retryAfterSeconds ? Math.ceil(data.retryAfterSeconds/60) : null;
+        setStatus(currentLang==='ru'
+          ? `Слишком много заявок с твоего IP. Попробуй${sec?` через ~${sec} мин`:' позже'}.`
+          : `Too many submissions from your IP. Try${sec?` again in ~${sec} min`:' again later'}.`,
+          'err');
+        resetTurnstile();
+        return;
+      }
+      if(res.status === 403){
+        setStatus(currentLang==='ru'
+          ? 'Капча не прошла. Обнови страницу и попробуй снова.'
+          : 'Captcha rejected. Refresh the page and try again.',
+          'err');
+        resetTurnstile();
+        return;
+      }
+      if(!res.ok || !data.ok){
+        throw new Error('worker_error');
+      }
+      localStorage.setItem(SUGGEST_LS_KEY, String(Date.now()));
+      setStatus(currentLang==='ru'
+        ? '✓ Заявка отправлена. Спасибо! Если есть что добавить — пиши в Discord (gamunkul8515).'
+        : '✓ Suggestion sent. Thanks! Anything to add — DM Discord (gamunkul8515).',
+        'ok');
+      sendBtn.style.display='none';
+      turnstileWrap.style.display='none';
+    } catch(err){
+      setStatus(currentLang==='ru'
+        ? 'Не получилось отправить автоматически. Скопируй текст и отправь в Discord (gamunkul8515) вручную.'
+        : "Couldn't send automatically. Copy the text and DM it on Discord (gamunkul8515) manually.",
+        'err');
+      sendBtn.disabled = false;
+      resetTurnstile();
+    }
+  });
+
+  resetBtn.addEventListener('click', ()=>{
+    form.reset();
+    form.querySelectorAll('.invalid').forEach(el=>el.classList.remove('invalid'));
+    previewEl.classList.remove('show');
+    previewEl.textContent='';
+    sendActions.style.display='none';
+    turnstileWrap.style.display='none';
+    if(workerConfigured){
+      sendBtn.style.display='';
+      sendBtn.disabled = true;
+    }
+    resetTurnstile();
+    clearStatus();
+  });
+
+  copyBtn.addEventListener('click', async ()=>{
+    const text = previewEl.textContent;
+    if(!text) return;
+    try{
+      await navigator.clipboard.writeText(text);
+      setStatus(currentLang==='ru'
+        ? `Скопировано. Открой Discord и вставь сообщение в DM пользователю ${SUGGEST_DISCORD}.`
+        : `Copied. Open Discord and paste the message into a DM to ${SUGGEST_DISCORD}.`,
+        'ok');
+    } catch(e){
+      // Fallback for browsers without clipboard API
+      previewEl.scrollIntoView({behavior:'smooth', block:'center'});
+      const sel = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(previewEl);
+      sel.removeAllRanges(); sel.addRange(range);
+      setStatus(currentLang==='ru'
+        ? 'Не удалось скопировать автоматически — выдели текст и нажми Ctrl+C.'
+        : 'Auto-copy failed — select the text and press Ctrl+C.',
+        'err');
+    }
+  });
+
+  // Live invalid-class clearing on input
+  ['sug-name','sug-youtube','sug-note'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input', ()=>el.classList.remove('invalid'));
+  });
+}
+
+setupSuggestForm();
+
 const stBtn=document.getElementById("scrollTopBtn");
-window.addEventListener('scroll',()=>stBtn.style.display=window.scrollY>400?"block":"none");
+const filtBtn=document.getElementById("scrollToFiltersBtn");
+const ctrls=document.querySelector('.controls');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  stBtn.style.display=y>400?"flex":"none";
+  // Show "to filters" button only after scrolling well past the filter block.
+  if(filtBtn && ctrls){
+    const ctrlsBottom=ctrls.getBoundingClientRect().bottom+y;
+    filtBtn.style.display=y>ctrlsBottom+100?"flex":"none";
+  }
+},{passive:true});
+if(filtBtn && ctrls){
+  filtBtn.addEventListener('click',()=>{
+    const top=ctrls.getBoundingClientRect().top+window.scrollY-12;
+    window.scrollTo({top,behavior:'smooth'});
+  });
+}
 stBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-document.getElementById('btn-ru').addEventListener('click',()=>setLang('ru'));
-document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
-formatChips.forEach(c=>{c.addEventListener('click',()=>{formatChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentFormat=c.dataset.format; applyFilters();})});
-langChips.forEach(c=>{c.addEventListener('click',()=>{langChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentLangFilter=c.dataset.lang; applyFilters();})});
-sortChips.forEach(c=>{c.addEventListener('click',()=>{sortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentSort=c.dataset.sort; applyFilters();})});
-searchInput.addEventListener('input',applyFilters);
-applyFilters();
+document.getElementById('btn-ru').addEventListener('click',()=>{setLang('ru'); syncURL();});
+document.getElementById('btn-en').addEventListener('click',()=>{setLang('en'); syncURL();});
+
+// Theme toggle (persists in localStorage).
+const themeBtn=document.getElementById('themeToggle');
+function applyTheme(t){document.documentElement.dataset.theme=t; themeBtn.textContent=t==='light'?'☀':'☾';}
+try{const saved=localStorage.getItem('rtb-theme'); if(saved==='light') applyTheme('light');}catch(e){}
+themeBtn.addEventListener('click',()=>{const cur=document.documentElement.dataset.theme==='light'?'dark':'light'; applyTheme(cur); try{localStorage.setItem('rtb-theme',cur);}catch(e){}});
+formatChips.forEach(c=>{c.addEventListener('click',()=>{formatChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentFormat=c.dataset.format; applyFilters(); syncURL();})});
+langChips.forEach(c=>{c.addEventListener('click',()=>{langChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentLangFilter=c.dataset.lang; applyFilters(); syncURL();})});
+sortChips.forEach(c=>{c.addEventListener('click',()=>{sortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); currentSort=c.dataset.sort; applyFilters(); syncURL();})});
+const customSortChips=document.querySelectorAll('.custom-sort .chip');
+customSortChips.forEach(c=>{c.addEventListener('click',()=>{customSortChips.forEach(x=>x.classList.remove('active')); c.classList.add('active'); customSort=c.dataset.csort; renderCustoms();})});
+searchInput.addEventListener('input',debouncedApplyFilters);
+
+// --- Compare feature ---
+const CMP_MAX=3;
+const cmpSet=new Set();
+const cmpBar=document.getElementById('cmpBar');
+const cmpChipsEl=document.getElementById('cmpChips');
+const cmpLabel=document.getElementById('cmpLabel');
+const cmpGo=document.getElementById('cmpGo');
+const cmpClear=document.getElementById('cmpClear');
+const cmpOverlay=document.getElementById('cmpOverlay');
+const cmpClose=document.getElementById('cmpClose');
+const cmpCols=document.getElementById('cmpCols');
+const cmpModalTitle=document.getElementById('cmpModalTitle');
+
+function refreshCmpBar(){
+  const arr=[...cmpSet];
+  if(!arr.length){cmpBar.classList.remove('show'); return;}
+  cmpBar.classList.add('show');
+  cmpLabel.textContent=currentLang==='ru'?`сравнить (${arr.length}/${CMP_MAX})`:`compare (${arr.length}/${CMP_MAX})`;
+  cmpChipsEl.innerHTML=arr.map(n=>`<span class="cmp-chip">${esc(n)}<button class="cmp-chip-x" data-rm="${esc(n)}" type="button" aria-label="${currentLang==='ru'?'Убрать':'Remove'}">×</button></span>`).join('');
+  cmpGo.disabled=arr.length<2;
+  cmpGo.textContent=currentLang==='ru'?'Сравнить →':'Compare →';
+  cmpClear.textContent=currentLang==='ru'?'Сбросить':'Clear';
+  document.querySelectorAll('.card').forEach(card=>{
+    const btn=card.querySelector('.cmp-btn'); if(!btn) return;
+    const name=btn.dataset.cmp, on=cmpSet.has(name);
+    btn.classList.toggle('active',on); btn.setAttribute('aria-pressed',on); btn.textContent=on?'✓':'+';
+    card.classList.toggle('cmp-selected',on);
+  });
+}
+
+function toggleCmp(name){
+  if(cmpSet.has(name)){cmpSet.delete(name);}
+  else if(cmpSet.size<CMP_MAX){cmpSet.add(name);}
+  else {alert(currentLang==='ru'?`Максимум ${CMP_MAX} билдеров за раз. Убери одного и добавь нового.`:`Up to ${CMP_MAX} at a time. Remove one before adding another.`); return;}
+  refreshCmpBar();
+  syncURL();
+}
+
+document.getElementById('cardsContainer').addEventListener('click',e=>{
+  const b=e.target.closest('.cmp-btn'); if(!b) return;
+  e.stopPropagation(); toggleCmp(b.dataset.cmp);
+});
+cmpChipsEl.addEventListener('click',e=>{const x=e.target.closest('[data-rm]'); if(x){toggleCmp(x.dataset.rm);}});
+cmpClear.addEventListener('click',()=>{cmpSet.clear(); refreshCmpBar(); syncURL();});
+
+function openCompare(){
+  const arr=[...cmpSet]; if(arr.length<2) return;
+  const items=arr.map(n=>builders.find(b=>b.name===n)).filter(Boolean);
+  cmpModalTitle.textContent=items.map(b=>b.name).join(' vs ');
+  cmpCols.className='cmp-cols c'+items.length;
+  cmpCols.innerHTML=items.map(b=>{
+    const desc=currentLang==='en'?b.descEN:b.desc;
+    const rNum=b.ratingValue>=1?`${b.ratingValue%1===0?b.ratingValue+'.0':b.ratingValue} / 5`:'';
+    const fav=b.favorite?' 👑':'';
+    const upI=getUpkeepIcons(b.upkeep);
+    const tagsH=b.tags.map(t=>`<span class="${tagClass(t)}">${esc(t)}</span>`).join('');
+    const formats=b.formats?b.formats.replace(/,/g,', '):'';
+    const rowsH=b.rows.map(r=>{
+      let lT=currentLang==='en'&&rowLabels.en[r.label]?rowLabels.en[r.label]:r.label;
+      let vT=currentLang==='en'?r.valEN:r.valRU;
+      return `<div class="cmp-row"><div class="cmp-row-label">${esc(lT)}</div><div class="cmp-row-val ${r.c||''}">${vT||'<span class="cmp-empty">—</span>'}</div></div>`;
+    }).join('');
+    const linksH=b.links.length?`<div class="cmp-links">${b.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener noreferrer" class="link ${getLinkClass(l.t)}">${esc(l.t)}</a>`).join('')}</div>`:'';
+    const upkRow=upI?`<div class="cmp-row"><div class="cmp-row-label">${currentLang==='ru'?'Апкип':'Upkeep'}</div><div class="cmp-row-val">${upI}</div></div>`:'';
+    const fmtRow=formats?`<div class="cmp-row"><div class="cmp-row-label">${currentLang==='ru'?'Форматы':'Group size'}</div><div class="cmp-row-val">${esc(formats)}</div></div>`:'';
+    return `<div class="cmp-col">
+      <div class="cmp-col-name">${esc(b.name)}${fav}</div>
+      <div class="cmp-col-handle">${esc(b.handle)}</div>
+      <div class="cmp-col-rating">${b.rating}<span class="num">${rNum}</span></div>
+      <div class="cmp-subscores">${subscoresHTML(b)}</div>
+      <div class="cmp-tags">${tagsH}</div>
+      ${fmtRow}${upkRow}${rowsH}
+      <div class="cmp-desc">${esc(desc)}</div>
+      ${linksH}
+    </div>`;
+  }).join('');
+  cmpOverlay.classList.add('show'); document.body.style.overflow='hidden';
+}
+function closeCompare(){cmpOverlay.classList.remove('show'); document.body.style.overflow='';}
+cmpGo.addEventListener('click',openCompare);
+cmpClose.addEventListener('click',closeCompare);
+cmpOverlay.addEventListener('click',e=>{if(e.target===cmpOverlay) closeCompare();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cmpOverlay.classList.contains('show')) closeCompare();});
+
+// Apply URL params (set chip states, search, language) before first render.
+applyURLStateToControls();
+// If a UI language was specified in URL, honor it.
+const _uiLang=new URLSearchParams(window.location.search).get('ui')==='en'?'en':'ru';
+setLang(_uiLang);
+// Restore compare set from URL after cmpSet is populated.
+if(window.__pendingCmpFromURL){window.__pendingCmpFromURL.forEach(n=>{if(builders.find(b=>b.name===n)) cmpSet.add(n);}); refreshCmpBar(); applyFilters();}
+// After first render, scroll to and pulse the targeted builder if URL has ?b=Name.
+requestAnimationFrame(()=>requestAnimationFrame(focusBuilderFromURL));
 </script>
 </body>
 </html>
