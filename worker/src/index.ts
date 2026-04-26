@@ -90,7 +90,7 @@ interface RateLimitDecision {
   retryAfterSeconds?: number;
 }
 
-async function checkAndBumpRateLimit(
+async function checkRateLimit(
   kv: KVNamespace,
   ip: string,
 ): Promise<RateLimitDecision> {
@@ -115,8 +115,23 @@ async function checkAndBumpRateLimit(
     const retry = (dayBucket + 1) * DAY_SECONDS - now;
     return { allowed: false, reason: 'day', retryAfterSeconds: retry };
   }
+  return { allowed: true };
+}
 
-  // Bump counters with TTL aligned to the end of each bucket.
+async function bumpRateLimit(kv: KVNamespace, ip: string): Promise<void> {
+  const now = Math.floor(Date.now() / 1000);
+  const hourBucket = Math.floor(now / HOUR_SECONDS);
+  const dayBucket = Math.floor(now / DAY_SECONDS);
+  const hourKey = `h:${ip}:${hourBucket}`;
+  const dayKey = `d:${ip}:${dayBucket}`;
+
+  const [hourRaw, dayRaw] = await Promise.all([
+    kv.get(hourKey),
+    kv.get(dayKey),
+  ]);
+  const hourCount = parseInt(hourRaw ?? '0', 10);
+  const dayCount = parseInt(dayRaw ?? '0', 10);
+
   await Promise.all([
     kv.put(hourKey, String(hourCount + 1), {
       expirationTtl: (hourBucket + 1) * HOUR_SECONDS - now + 5,
@@ -125,7 +140,6 @@ async function checkAndBumpRateLimit(
       expirationTtl: (dayBucket + 1) * DAY_SECONDS - now + 5,
     }),
   ]);
-  return { allowed: true };
 }
 
 function clampStr(value: unknown, max: number): string {
@@ -147,8 +161,7 @@ function validatePayload(raw: unknown): SuggestPayload | null {
   const langLabel = clampStr(r.langLabel, 64);
   const turnstileToken = clampStr(r.turnstileToken, 4096);
   if (name.length < 2) return null;
-  if (!/^https?:\/\/.+/i.test(youtube)) return null;
-  if (!/(youtube\.com|youtu\.be)/i.test(youtube)) return null;
+  if (!/^https?:\/\/(www\.|m\.)?(youtube\.com|youtu\.be)\//i.test(youtube)) return null;
   if (note.length < 20) return null;
   if (!turnstileToken) return null;
   return {
@@ -236,7 +249,7 @@ export default {
       return jsonResponse({ error: 'captcha_failed' }, 403, origin);
     }
 
-    const rate = await checkAndBumpRateLimit(env.RATE_LIMIT, ip);
+    const rate = await checkRateLimit(env.RATE_LIMIT, ip);
     if (!rate.allowed) {
       return jsonResponse(
         {
@@ -262,6 +275,12 @@ export default {
         origin,
       );
     }
+
+    // Bump per-IP counters only after a successful Discord delivery so failed
+    // webhooks don't burn the user's allowance. KV is eventually consistent —
+    // a small race window remains, but this is much fairer than the previous
+    // bump-before-send behaviour.
+    await bumpRateLimit(env.RATE_LIMIT, ip);
 
     return jsonResponse({ ok: true }, 200, origin);
   },
