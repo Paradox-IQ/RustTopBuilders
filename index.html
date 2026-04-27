@@ -1505,69 +1505,391 @@ function renderArchive(){
 
 // --- Legendary bases reference list --------------------------------------
 // Order matters — first entries are surfaced first. Each entry:
-//   name, author, format, tags[], descRU, descEN, link (or null for "no canonical url")
-// To add a base: append a row. To attribute to a different builder: change `author`
-// to that builder's exact name (must match raw[][0]) so the click jumps to their card.
+//   name, author, format, tags[], descRU, descEN, link (YouTube tutorial)
+// Авторы, чьи имена совпадают с raw[][0], автоматически становятся
+// кликабельными (deep-link на карточку билдера). Внешние авторы (Walski,
+// ap-rust, Cosmonatic Films) показываются как обычный текст.
 const legendaryBases = [
-  { name:'Humbug',           author:'Crow',         format:'Solo — Trio',       tags:['Multi-TC','Floor stack','Compact bunker'],
-    descRU:'Самая обсуждаемая Patreon-база Crow. Компактный multi-TC бункер на solo/duo/trio с флор-стаком и плотной защитой шкафов.',
-    descEN:'Crow\u2019s most-discussed Patreon base. A compact multi-TC bunker for solo/duo/trio with floor-stack and tight TC protection.',
-    link:'https://www.patreon.com/c/CrowBuilds' },
+  // ====================================================================
+  // TIER 1 — most-cited bases of 2024-2026 (views ≥ 250K or ranked #1
+  // в категории на rustbasedesign.com)
+  // ====================================================================
 
-  { name:'Cyclone',          author:'Crow',         format:'Medium — Clan',     tags:['Wide gaps','Online def','Rotation'],
-    descRU:'Крупная клановая база с упором на онлайн-деф и ротацию по периметру. Wide gaps + multi-shot peeks.',
-    descEN:'A large clan base focused on online defense and perimeter rotations. Wide gaps with multi-shot peeks.',
-    link:'https://www.patreon.com/c/CrowBuilds' },
+  { name:'The TITAN',         author:'Faded',                format:'Trio — Quad',          tags:['Inner ring','Head-glitch peeks','31 rockets to raid'],
+    descRU:'Эталонная trio/quad-база Faded — 555K просмотров, 14.9K лайков. Просторный open core, head-glitch shooting floor, баланс online + offline. Цитируется как «новая мета 2024» для квадов.',
+    descEN:'Faded\u2019s flagship trio/quad — 555K views, 14.9K likes. Spacious open core, head-glitch shooting floor, balanced for online + offline. Cited as the 2024 quad meta benchmark.',
+    link:'https://www.youtube.com/watch?v=KPPLhtjRprs' },
 
-  { name:'Synchro',          author:'Crow',         format:'Solo — Duo',        tags:['Pixel gaps','Bunker','Meta'],
-    descRU:'Мета solo/duo с пиксель-гапами и скрытым бункером — одна из самых тиражируемых баз 2024-2026.',
-    descEN:'A meta solo/duo with pixel gaps and a hidden bunker — one of the most-copied designs of 2024-2026.',
-    link:'https://www.patreon.com/c/CrowBuilds' },
+  { name:'The AURA',          author:'ap-rust',              format:'Clan (4-8 man)',       tags:['Egg starter','Open-core loot room','64 large boxes'],
+    descRU:'Самый просматриваемый клан-туториал 2025 года (467K просмотров, ap-rust). Egg-стартер расширяется до 4-8 чел, open-core лут-рум, 64 крупных ящика. Часто называют «новой эталонной» клановой мета 2025.',
+    descEN:'The biggest clan tutorial of 2025 (467K views, by ap-rust). Egg starter scales to 4-8 players, open-core loot room, 64 large boxes. Frequently cited as the 2025 clan-meta benchmark.',
+    link:'https://www.youtube.com/watch?v=KOXU_EEX8uI' },
 
-  { name:'Jupiter',          author:'Crow',         format:'Clan',              tags:['Heavy upkeep','Shield walls','Zerg-ready'],
-    descRU:'Клановая постройка с тяжёлым upkeep и shield wall по периметру — для зерг-форматов 8+.',
-    descEN:'A clan build with heavy upkeep and a perimeter shield wall — for zerg formats of 8+ players.',
-    link:'https://www.patreon.com/c/CrowBuilds' },
+  { name:'The AGITATOR',      author:'Zypic',                format:'Solo — Trio',          tags:['Open core','Triple bunker','Vending bunkers'],
+    descRU:'Главная solo/duo/trio база Zypic. Tiny open-core bunker — three bunkers, no-buildout wide gaps, vending-machine bunkers. Дёшево строится, дорого рейдится.',
+    descEN:'Zypic\u2019s headline solo/duo/trio. A tiny open-core bunker — three bunkers, no-buildout wide gaps and vending-machine bunkers. Cheap to build, expensive to raid.',
+    link:'https://www.youtube.com/watch?v=UcZnoAjjCa0' },
 
-  { name:'Chimera',          author:'Crow',         format:'Trio — Medium',     tags:['Hybrid','Dual-bunker','Modular'],
-    descRU:'Гибрид соло-бункера и клановой коробки. Двойной бункер с возможностью отключаемых шкафов.',
-    descEN:'A hybrid of a solo bunker and a clan box. Dual bunker with toggleable TC rooms.',
-    link:'https://www.patreon.com/c/CrowBuilds' },
+  { name:'The Fort',          author:'Walski',               format:'Solo',                 tags:['Shooting floor','Inner peakdowns','Pixel peaks'],
+    descRU:'Эталонная соло-мета 2024 (Walski, 271K просмотров). Pixel-peak бункер + shooting floor с inner peakdowns. Долго была главной соло-базой комьюнити.',
+    descEN:'The benchmark solo meta of 2024 (Walski, 271K views). Pixel-peak bunker + shooting floor with inner peakdowns. Held the solo meta crown for years.',
+    link:'https://www.youtube.com/watch?v=EawMvYz1G5M' },
 
-  { name:'FrostLine',        author:'Opy4k',        format:'Trio (advanced 2x2)', tags:['Compact','High skill cap','2x2'],
-    descRU:'Свежая база-визитка возвращения Opy4k — продвинутый 2x2 trio с высоким skill-cap. Не для новичков.',
-    descEN:'The signature base of Opy4k\u2019s return — an advanced 2x2 trio with a high skill cap. Not for beginners.',
-    link:'https://youtube.com/@Opy4k' },
+  { name:'The HEFTY SAINT',   author:'Spinky',               format:'Quad',                 tags:['Anti-siege','Furnace funnel','Roof bunkers','60 rockets to raid'],
+    descRU:'Лучшая квад-база 2024 по rustbasedesign.com. Anti-siege, furnace funnel, roof bunkers + external bunker + core bunker. Полный рейд — 60 рокет.',
+    descEN:'Top-pick quad base of 2024 per rustbasedesign.com. Anti-siege, furnace funnel, roof bunkers + external bunker + core bunker. 60 rockets to fully raid.',
+    link:'https://www.youtube.com/watch?v=YkrPyHn8-V8' },
 
-  { name:'Open Concept Bunker', author:null,        format:'Solo — Duo',        tags:['Open core','Bunker','Generic concept'],
-    descRU:'Архетип, а не одна конкретная база — открытая планировка с центральным бункером. Реализаций много (Faded, b00bster, Brader Fik).',
-    descEN:'An archetype rather than a single base — open layout with a central bunker. Many takes (Faded, b00bster, Brader Fik).',
-    link:null },
+  { name:'FABERG\u00c9',      author:'Crow',                 format:'Clan (5+ man)',        tags:['Triple bunker','Open core','Funnel compound'],
+    descRU:'Клан-флагман Crow: тройной бункер, open-core, funnel-компаунд. На rustbasedesign.com стоит в топе клан-баз 2024 года.',
+    descEN:'Crow\u2019s clan flagship: triple bunker, open core, funnel compound. Sits at the top of rustbasedesign.com\u2019s 2024 clan picks.',
+    link:'https://www.youtube.com/watch?v=odZc5VmccCo' },
 
-  { name:'Egg Base',         author:null,           format:'Solo',              tags:['Solo bunker','Snowball','Cheap'],
-    descRU:'Соло-бункер с минимальным апкипом — стартер первого вайп-вечера. Walder, Tarre и десятки других делают свои версии.',
-    descEN:'A solo bunker with minimal upkeep — a starter for the first wipe night. Walder, Tarre and dozens of others have their takes.',
-    link:null },
+  // ====================================================================
+  // Crow — самая большая коллекция мета-баз в комьюнити
+  // ====================================================================
 
-  { name:'China Wall Honeycomb', author:null,       format:'Any',               tags:['Defensive technique','Honeycomb','Decoy'],
-    descRU:'Не база, а техника — стена-обманка из дешёвых блоков вокруг ключевого ядра. Используется во всём, от Brader Fik до b00bster.',
-    descEN:'Not a base but a technique — a decoy wall of cheap blocks around the key core. Used everywhere from Brader Fik to b00bster.',
-    link:null },
+  { name:'HUMBUG X',          author:'Crow',                 format:'Solo — Duo',           tags:['Bunker','Pixel gaps','Compact'],
+    descRU:'Визитка Crow для соло/дуо — компактный анпатч-бункер с пиксель-гапами и плотной защитой шкафов.',
+    descEN:'Crow\u2019s solo/duo signature — a compact unpatchable bunker with pixel gaps and tight TC protection.',
+    link:'https://www.youtube.com/watch?v=83WCdSaXoqY' },
 
-  { name:'Multi-TC Floor Stack', author:null,       format:'Trio — Clan',       tags:['Floor stack','Multi-TC','Anti-raid'],
-    descRU:'Концепт раскладывать TC и кейсы на разных полах — рейдер тратит втрое больше ресурсов. Crow и Nini Rust — главные пропагандисты.',
-    descEN:'The concept of spreading TCs and boxes across multiple floors — raiders waste 3× the resources. Crow and Nini Rust are the main proponents.',
-    link:null },
+  { name:'RAZOR',             author:'Crow',                 format:'Solo — Duo',           tags:['Wide gap','Bunker','Beginner-friendly'],
+    descRU:'Самый «simple & strong» гайд Crow. Wide-gap shooting floor, понятная сборка, всё ещё мета. Хороший выбор когда устал от пиксель-пиков.',
+    descEN:'Crow\u2019s "simple & strong" tutorial. Wide-gap shooting floor, beginner-friendly yet still meta. Good pick if you\u2019re burnt out on pixel peaks.',
+    link:'https://www.youtube.com/watch?v=GxztoOgV0n8' },
 
-  { name:'Akame Online Def Box', author:'Akame',    format:'Small Group — Clan', tags:['Online def','Clan layout','Custom only'],
-    descRU:'Архетип Akame — клановая база, спроектированная под защиту во время онлайн-рейда. Только под заказ через Boosty.',
-    descEN:'Akame\u2019s archetype — a clan base designed for defense during online raids. Custom-only via Boosty.',
-    link:'https://boosty.to/akamexebet' },
+  { name:'OBSIDIAN',          author:'Crow',                 format:'Small Group',          tags:['Funnel wall','Twin bunkers','Open core'],
+    descRU:'Small-group мета от Crow — funnel wall, два бункера, open-core. Под 4-6 чел, балансирует ресурсы и защищаемость. Один из самых тиражируемых клан-стартеров.',
+    descEN:'Crow\u2019s small-group meta — funnel wall, twin bunkers, open core. Built for 4-6 players, balances resources and defendability.',
+    link:'https://www.youtube.com/watch?v=0W9iDjLbzmo' },
 
-  { name:'Limi Lab Patreon Pack', author:'Limi Lab', format:'Solo — Clan',      tags:['Subscription','Custom','Premium'],
-    descRU:'Не одна база, а вся подписка Limi Lab — самый цитируемый pack за $7/мес. С персональным onboarding\'ом.',
-    descEN:'Not a single base but Limi Lab\u2019s whole subscription — the most-cited pack at $7/mo. Includes personal onboarding.',
-    link:'https://www.patreon.com/LimiLAB' }
+  { name:'PEGASUS II 2x1',    author:'Crow',                 format:'Duo — Quad',           tags:['Twin bunker','Inner peeks','Multi-TC'],
+    descRU:'Эволюция самого тиражируемого 2x1-формата Crow. Twin bunker, inner peeks, multi-TC. Считается одной из лучших duo/trio баз 2024-2025.',
+    descEN:'The evolution of Crow\u2019s most-copied 2x1. Twin bunker, inner peeks, multi-TC. Considered one of the best duo/trio bases of 2024-2025.',
+    link:'https://www.youtube.com/watch?v=FDSmRGFx1i4' },
+
+  { name:'SYNCHRO V2',        author:'Crow',                 format:'Small Group',          tags:['Open core','Spacious','Updated meta'],
+    descRU:'V2-релиз классического SYNCHRO — open core, обновлённые гэпы и пики. Возвращение легенды, частый клан-старт на 5-6 чел.',
+    descEN:'V2 update of the legendary SYNCHRO — open core, refreshed gaps and peeks. Common 5-6 player clan starter.',
+    link:'https://www.youtube.com/watch?v=oO9pnqZjJkY' },
+
+  { name:'TSUNAMI',           author:'Crow',                 format:'Small Group (6 Man)',  tags:['Triple bunker','Open core','Disconnectable externals'],
+    descRU:'Самая «трюк-нагруженная» small-group база Crow — три бункера, multi-TC, отключаемые external-ы. Идеально под 6-man формат.',
+    descEN:'Crow\u2019s trick-heavy small-group base — triple bunker, multi-TC, disconnectable externals. Built for the 6-man format.',
+    link:'https://www.youtube.com/watch?v=XLva_JtROzo' },
+
+  { name:'CARBON',            author:'Crow',                 format:'Medium (4-6 man)',     tags:['Quad bunker','Open core','Mobility ring'],
+    descRU:'Quad-бункер с просторным open core и кольцом мобильности — главный 4-6 man билд Crow.',
+    descEN:'A quad-bunker base with spacious open core and mobility ring — Crow\u2019s flagship 4-6 man build.',
+    link:'https://www.youtube.com/watch?v=wWeiME4qsNQ' },
+
+  { name:'THUNDERBIRD',       author:'Crow',                 format:'Clan (8-12 man)',      tags:['6 bunkers','Open core','Funnel'],
+    descRU:'Клановая база на 8-12 человек: 6 бункеров, open core, funnel-вход и кольцо мобильности.',
+    descEN:'An 8-12 man clan base with 6 bunkers, open core, funnel entry and a mobility ring.',
+    link:'https://www.youtube.com/watch?v=RYnOra81B0s' },
+
+  { name:'HILUX',             author:'Crow',                 format:'Clan (4x4)',           tags:['No-freehand','4x4','Open core'],
+    descRU:'4x4 клановая постройка без freehand — собирается без читерских ракурсов, при этом крепкая.',
+    descEN:'A no-freehand 4x4 clan base — buildable without exploit camera angles yet still solid.',
+    link:'https://www.youtube.com/watch?v=T6IFX7zntkc' },
+
+  // ====================================================================
+  // Faded
+  // ====================================================================
+
+  { name:'The BEAST',         author:'Faded',                format:'Solo — Trio',          tags:['Bunker','Expandable','Compound (optional)','16 rockets'],
+    descRU:'Соло-флагман Faded 2026 года. Бункер + расширяемый стартер + опциональный компаунд. Очень дешёвая в сборке, силён против оффлайн-рейдов (всего 16 ракет, но снежок-friendly).',
+    descEN:'Faded\u2019s 2026 solo flagship. Bunker + expandable starter + optional compound. Very cheap to build, strong vs offline raids (16 rockets, snowball-friendly).',
+    link:'https://www.youtube.com/watch?v=auhPevJ6cRk' },
+
+  { name:'Hydra V2',          author:'Faded',                format:'Solo — Trio',          tags:['Cozy compound','Roof bunker','Head-glitch SF'],
+    descRU:'Просторная solo/trio база Faded — roof bunker, head-glitch shooting floor, удобная для длинных вайпов. «База-дом», в которой комфортно жить, а не только защищаться.',
+    descEN:'Faded\u2019s spacious solo/trio base — roof bunker, head-glitch shooting floor, comfortable for long wipes. A base you actually want to live in, not just defend.',
+    link:'https://www.youtube.com/watch?v=ykfE9kQpYI8' },
+
+  // ====================================================================
+  // Limi Lab
+  // ====================================================================
+
+  { name:'FEROS',             author:'Limi Lab',             format:'Solo — Duo',           tags:['Open core','Inside area','Bunker'],
+    descRU:'Самая популярная база Limi за последний год: solo/duo с open core, inside-зоной и бункером. 245K просмотров.',
+    descEN:'Limi\u2019s most-popular base of the year — solo/duo with open core, inside area and bunker. 245K views.',
+    link:'https://www.youtube.com/watch?v=vzPkNywQ-AQ' },
+
+  { name:'AETHER',            author:'Limi Lab',             format:'Clan (140 rockets)',   tags:['7 bunkers','5 walls','Easy to build'],
+    descRU:'Клановая база на 140 ракет: 7 бункеров, 5 стен и простая сборка — флагман Limi.',
+    descEN:'A 140-rocket clan base with 7 bunkers, 5 walls and simple build — Limi\u2019s flagship clan design.',
+    link:'https://www.youtube.com/watch?v=4FoiWxPZecg' },
+
+  { name:'LAGOON',            author:'Limi Lab',             format:'Small group',          tags:['5 walls','Open core','Online defence'],
+    descRU:'Small-group база с пятью стенами и огромным open core — заточена под онлайн-деф.',
+    descEN:'A small-group base with 5 walls and a huge open core — built for online defence.',
+    link:'https://www.youtube.com/watch?v=hH9if6-GPPA' },
+
+  { name:'HAZE',              author:'Limi Lab',             format:'Clan (180+ rockets)',  tags:['15 bunkers','6 walls','Offline monster'],
+    descRU:'Оффлайн-монстр на 180+ ракет: 15 бункеров и 6 стен. Топ-выбор для клана, который рейдят ночами.',
+    descEN:'An offline monster taking 180+ rockets — 15 bunkers and 6 walls. The pick for clans raided overnight.',
+    link:'https://www.youtube.com/watch?v=m9ZqQWVZDeQ' },
+
+  // ====================================================================
+  // HQM Core
+  // ====================================================================
+
+  { name:'The Argon',         author:'HQM Core',             format:'Solo',                 tags:['Cheap','Easy to build','Bunker'],
+    descRU:'Лучший соло-билд HQM Core: дешёвый, простой в сборке, с скрытым бункером. Подходит для первой ночи.',
+    descEN:'HQM Core\u2019s best solo build — cheap, easy to build, with a hidden bunker. Good for the first night.',
+    link:'https://www.youtube.com/watch?v=08jKVjqaEYU' },
+
+  { name:'Havoc',             author:'HQM Core',             format:'Solo — Trio',          tags:['5 bunkers','Open core','Easy to build'],
+    descRU:'Solo/Duo/Trio с пятью бункерами и cozy open core. Лёгкая сборка, плотная защита.',
+    descEN:'Solo/Duo/Trio with 5 bunkers and a cozy open core. Easy to build, tight defence.',
+    link:'https://www.youtube.com/watch?v=9wZRxh33Ngk' },
+
+  { name:'The Ultimate Small Group', author:'HQM Core',      format:'Small group',          tags:['Meta 2026','Shield wall','Wide gaps'],
+    descRU:'Свежая мета-база HQM Core 2026 года для small-group: shield wall и wide-gap пики.',
+    descEN:'HQM Core\u2019s fresh 2026 meta base for small groups — shield wall with wide-gap peeks.',
+    link:'https://www.youtube.com/watch?v=BwA9myRkK-I' },
+
+  // ====================================================================
+  // Erebus
+  // ====================================================================
+
+  { name:'The Erebus 2x2',    author:'Erebus',               format:'2-4 man (2x2)',        tags:['Meta 2x2','Bunkered','Open core'],
+    descRU:'Эталонная 2x2 от Erebus — 268K просмотров. Bunkered starter с open core, под 2-4 человека.',
+    descEN:'Erebus\u2019 reference 2x2 — 268K views. Bunkered starter with open core for 2-4 man.',
+    link:'https://www.youtube.com/watch?v=PHLguI8gb6w' },
+
+  { name:'The Naxos',         author:'Erebus',               format:'Trio',                 tags:['Meta 2025','Bunkered starter','Open core'],
+    descRU:'Trio-база с bunkered стартером и open core — одна из самых востребованных у Erebus.',
+    descEN:'A trio base with bunkered starter and open core — one of Erebus\u2019 most-requested.',
+    link:'https://www.youtube.com/watch?v=s3qN033zkgQ' },
+
+  { name:'The Khonsu',        author:'Erebus',               format:'Trio — Quad (2x1)',    tags:['Open core','Bunkers','Meta 2x1'],
+    descRU:'2x1 trio/quad: open core с двойным бункером. Заточена под анти-сидж.',
+    descEN:'A 2x1 trio/quad with open core and double bunkers. Built for anti-siege.',
+    link:'https://www.youtube.com/watch?v=NWSGV2WSriE' },
+
+  // ====================================================================
+  // HiddenJoint
+  // ====================================================================
+
+  { name:'The SCARAB',        author:'HiddenJoint',          format:'Solo — Duo',           tags:['Mini SHELL','HQM bunker','Unlootable lockers'],
+    descRU:'Топ-база Hidden Joint — 164K просмотров, 7.8K лайков. Mini shell вокруг 2x2 ядра, HQM-бункер с unlootable шкафами. Компактная, но раскручивает рейдеров на много рокетов.',
+    descEN:'Hidden Joint\u2019s top hit — 164K views, 7.8K likes. Mini shell around a 2x2 core, HQM bunker with unlootable lockers. Compact but extremely raid-cost-efficient.',
+    link:'https://www.youtube.com/watch?v=uaxKa5BWKGo' },
+
+  { name:'The TOKYO',         author:'HiddenJoint',          format:'Small group',          tags:['Circle SHELL','Mini opencore','7 bunkers'],
+    descRU:'Самая популярная small-group база HiddenJoint — круглый shell с mini open core и семью бункерами. 170K просмотров.',
+    descEN:'HiddenJoint\u2019s most-popular small-group base — circle shell with mini open core and 7 bunkers. 170K views.',
+    link:'https://www.youtube.com/watch?v=LiMnSDbFseM' },
+
+  { name:'The JOINTbox',      author:'HiddenJoint',          format:'2x1 (small group)',    tags:['Shell','Online defence','Clan destroyer'],
+    descRU:'2x1 shell для онлайн-дефа против кланов — мобильность, peek-floor, нормальная цена.',
+    descEN:'A 2x1 shell tuned for online defence against clans — mobility, peek-floor, sane cost.',
+    link:'https://www.youtube.com/watch?v=PgpPdLTJ3_4' },
+
+  { name:'The 4x4 BEAST',     author:'HiddenJoint',          format:'Clan (4x4)',           tags:['8 bunkers','Online','Offline'],
+    descRU:'4x4 клановая с восемью бункерами — баланс онлайн и оффлайн защиты.',
+    descEN:'A 4x4 clan base with 8 bunkers — balanced for both online and offline defence.',
+    link:'https://www.youtube.com/watch?v=dhagPD3Ep5A' },
+
+  // ====================================================================
+  // Brader Fik
+  // ====================================================================
+
+  { name:'ONRYU',             author:'Brader Fik',           format:'Trio (2x2)',           tags:['Shell','Open core','China wall'],
+    descRU:'2x2 с shell-фасадом, open core и china wall — фирменный стиль Brader Fik.',
+    descEN:'A 2x2 with shell facade, open core and china wall — Brader Fik\u2019s signature style.',
+    link:'https://www.youtube.com/watch?v=WquQVYekeE0' },
+
+  { name:'OKAMI',             author:'Brader Fik',           format:'Trio (2x2)',           tags:['Bunker','Shell','Open core'],
+    descRU:'Свежий 2x2 бункер: shell + open core + china wall. Один из самых клонируемых дизайнов 2026.',
+    descEN:'A fresh 2x2 bunker — shell + open core + china wall. One of the most-copied designs of 2026.',
+    link:'https://www.youtube.com/watch?v=mzNR-lUjb74' },
+
+  // ====================================================================
+  // Nini Rust
+  // ====================================================================
+
+  { name:'THE FORGE',         author:'Nini Rust',            format:'Solo — Duo',           tags:['10 bunkers','Funnel wall','Offline tank'],
+    descRU:'Solo/Duo с десятью бункерами и funnel wall — оффлайн-танк, с которым возиться часами.',
+    descEN:'Solo/Duo with 10 bunkers and a funnel wall — an offline tank that eats hours of raid time.',
+    link:'https://www.youtube.com/watch?v=YhwNvJCWTp4' },
+
+  { name:'THE SHADE',         author:'Nini Rust',            format:'Duo — Quad',           tags:['7 bunkers','Open core','Cheap'],
+    descRU:'Duo/Trio/Quad с семью бункерами и open core — дёшево и сердито на онлайн и оффлайн.',
+    descEN:'Duo/Trio/Quad with 7 bunkers and open core — cheap and effective for both online and offline.',
+    link:'https://www.youtube.com/watch?v=aPS-BVnJRho' },
+
+  { name:'THE CHUNK',         author:'Nini Rust',            format:'Solo — Duo',           tags:['Solo tank','Bunker','Cheap'],
+    descRU:'«Соло-танк» — простая в сборке база для одного-двух с надёжной онлайн/оффлайн защитой.',
+    descEN:'A "solo tank" — simple-to-build base for 1-2 players with solid online/offline protection.',
+    link:'https://www.youtube.com/watch?v=DcPnSuB7VxQ' },
+
+  // ====================================================================
+  // Akame
+  // ====================================================================
+
+  { name:'IRVIX 4x4',         author:'Akame',                format:'Clan (8-16 man)',      tags:['Custom only','Online def','Clan layout'],
+    descRU:'Клановая база Akame на 8-16 человек — заточена под защиту во время онлайн-рейда.',
+    descEN:'Akame\u2019s clan base for 8-16 players — built for defending during online raids.',
+    link:'https://www.youtube.com/watch?v=oUyixOR0K3A' },
+
+  { name:'WARHAVEN 5x5',      author:'Akame',                format:'Clan (16-25 man)',     tags:['Mega clan','5x5','Anti-zerg'],
+    descRU:'5x5 для клана 16-25 человек — против больших зергов и долгих сиджей.',
+    descEN:'A 5x5 for 16-25 player clans — against large zergs and long sieges.',
+    link:'https://www.youtube.com/watch?v=-wW7M4SXHJk' },
+
+  { name:'OASIS',             author:'Akame',                format:'Small group — Clan',   tags:['Online def','Offline def','Snowball ready'],
+    descRU:'Универсальная база для онлайн и оффлайн защиты — баланс для small group и среднего клана.',
+    descEN:'A universal base balanced for online and offline defence — fits small groups to mid clans.',
+    link:'https://www.youtube.com/watch?v=VUMjFeybVD4' },
+
+  // ====================================================================
+  // BuckyBuilds
+  // ====================================================================
+
+  { name:'THE MALICE',        author:'BuckyBuilds',          format:'Trio — Quad',          tags:['6 bunkers','Open core','Shield wall'],
+    descRU:'Главная trio/quad от Bucky: шесть бункеров, open core и shield wall по фасаду.',
+    descEN:'Bucky\u2019s headline trio/quad — 6 bunkers, open core and a shield-wall facade.',
+    link:'https://www.youtube.com/watch?v=ut4U09rU2K4' },
+
+  { name:'The Wraith',        author:'BuckyBuilds',          format:'Small group',          tags:['6 bunkers','Circle base','Meta'],
+    descRU:'Small-group circle база на 6 бункеров — модный мета-каркас 2026.',
+    descEN:'A small-group circle base with 6 bunkers — the trendy 2026 meta shell.',
+    link:'https://www.youtube.com/watch?v=7tlHmVxmDYM' },
+
+  // ====================================================================
+  // PANG
+  // ====================================================================
+
+  { name:'THE OT MAIN',       author:'PANG',                 format:'Clan (25-man)',        tags:['Mega clan','Anti-zerg','2026 meta'],
+    descRU:'Главная PANG-постройка 2026 — 25-местная клановая база, против больших зергов.',
+    descEN:'PANG\u2019s flagship 2026 build — a 25-man clan base built against large zergs.',
+    link:'https://www.youtube.com/watch?v=-0rU6iZIGZE' },
+
+  { name:'Mini Ymir',         author:'PANG',                 format:'Clan',                 tags:['Meta clan','Compact','2025'],
+    descRU:'Компактная мета-клановая база PANG — упрощённый Ymir.',
+    descEN:'PANG\u2019s compact meta clan base — a simplified Ymir.',
+    link:'https://www.youtube.com/watch?v=Tef77hUrQX8' },
+
+  // ====================================================================
+  // MrSkeem
+  // ====================================================================
+
+  { name:'The Moana',         author:'MrSkeem',              format:'Boat',                 tags:['Boat base','Bunker','Deep Sea Update'],
+    descRU:'Лучший бункер-boat MrSkeem под Deep Sea Update 2026 — мобильная база на воде.',
+    descEN:'MrSkeem\u2019s best bunker boat for the Deep Sea Update 2026 — a mobile water base.',
+    link:'https://www.youtube.com/watch?v=ZRtSmHnq3pg' },
+
+  { name:'The Jade',          author:'MrSkeem',              format:'Solo — Duo',           tags:['Shield wall','Meta','2025'],
+    descRU:'Эталонная мета solo/duo MrSkeem с shield wall — частый выбор small-group.',
+    descEN:'MrSkeem\u2019s reference solo/duo meta with shield wall — a common small-group pick.',
+    link:'https://www.youtube.com/watch?v=8tFP-ARh0lA' },
+
+  // ====================================================================
+  // Tarre
+  // ====================================================================
+
+  { name:'Mini Opencore',     author:'Tarre',                format:'Solo — Duo',           tags:['Mini opencore','Compact','2026'],
+    descRU:'Компактная solo/duo с mini opencore — простая, но рабочая на низких ресурсах.',
+    descEN:'A compact solo/duo with mini opencore — simple but works on a low budget.',
+    link:'https://www.youtube.com/watch?v=2mB-PAY-lxY' },
+
+  { name:'Perfect 4x4',       author:'Tarre',                format:'Clan (4x4)',           tags:['Bunkered','Affordable','2026'],
+    descRU:'4x4 с бункерами и адекватной ценой — главный клановый билд Tarre 2026.',
+    descEN:'A bunkered, affordable 4x4 — Tarre\u2019s headline 2026 clan build.',
+    link:'https://www.youtube.com/watch?v=4YciMkQ1ZLc' },
+
+  // ====================================================================
+  // b00bster
+  // ====================================================================
+
+  { name:'Circle Base 12 Bunkers', author:'b00bster',        format:'Small group',          tags:['12 bunkers','190 rockets','Online + offline'],
+    descRU:'Круглая small-group база на 12 бункеров и 190 ракет на пробив.',
+    descEN:'A circle small-group base with 12 bunkers and 190 rockets to break.',
+    link:'https://www.youtube.com/watch?v=-4D2RAEhLdQ' },
+
+  { name:'META Egg Base',     author:'b00bster',             format:'Small group',          tags:['9 bunkers','External TC','Open core'],
+    descRU:'Egg-формат с девятью бункерами и внешними TC — возрождение классической схемы.',
+    descEN:'Egg format with 9 bunkers and external TCs — a revival of the classic scheme.',
+    link:'https://www.youtube.com/watch?v=OAyxSX7PTys' },
+
+  // ====================================================================
+  // Opy4k
+  // ====================================================================
+
+  { name:'FrostLine',         author:'Opy4k',                format:'Trio (advanced 2x2)',  tags:['2x2 core','Floor-stacking','High skill'],
+    descRU:'Возвращение Opy4k в 2026 — продвинутая 2x2 trio с глубоким floor-stacking и двумя внешними TC. Высокий skill-cap, не для первого вайпа.',
+    descEN:'Opy4k\u2019s 2026 comeback — an advanced 2x2 trio with deep floor-stacking and two external TCs. High skill cap, not a first-wipe pick.',
+    link:'https://www.youtube.com/watch?v=czu5kqqeB-A' },
+
+  { name:'The Tenzin V3',     author:'Opy4k',                format:'Medium group',         tags:['Wide gaps','Open core','High skill'],
+    descRU:'Medium-group база с wide gaps и open core — продвинутая постройка для опытных.',
+    descEN:'A medium-group base with wide gaps and open core — advanced build for experienced players.',
+    link:'https://www.youtube.com/watch?v=wrIAhor79Bc' },
+
+  { name:'The Tank 5x5',      author:'Opy4k',                format:'Clan (5x5)',           tags:['Massive','Anti-raid','Resource heavy'],
+    descRU:'Огромный 5x5 клановый «танк» Opy4k — для клана, готового вкладывать ресурсы.',
+    descEN:'Opy4k\u2019s massive 5x5 clan "tank" — for clans willing to pour resources in.',
+    link:'https://www.youtube.com/watch?v=7KsiS9algYw' },
+
+  // ====================================================================
+  // Builder
+  // ====================================================================
+
+  { name:'NEW META Trio Base 2026', author:'Builder',        format:'Trio',                 tags:['2026 meta','Trio','Bunker'],
+    descRU:'Свежая trio-мета 2026 от канала Builder — простой, но рабочий каркас.',
+    descEN:'A fresh 2026 trio meta from the Builder channel — a simple but working frame.',
+    link:'https://www.youtube.com/watch?v=Fok2bW4Xe00' },
+
+  { name:'Updated 2x2',       author:'Builder',              format:'Solo — Duo',           tags:['2x2','Updated','Popular'],
+    descRU:'Самое популярное видео Builder — обновлённый 2x2 на 153K просмотров.',
+    descEN:'Builder\u2019s most-viewed video — an updated 2x2 with 153K views.',
+    link:'https://www.youtube.com/watch?v=Sj8XbVb3HOU' },
+
+  // ====================================================================
+  // Walder
+  // ====================================================================
+
+  { name:'4x4 Online Raid Tank', author:'Walder',            format:'Clan (4x4)',           tags:['22 turrets','Online raid','Anti-siege'],
+    descRU:'4x4 с 22-турельной оборонной — заточена под онлайн-рейды и анти-сидж.',
+    descEN:'A 4x4 with a 22-turret setup — built for online raids and anti-siege.',
+    link:'https://www.youtube.com/watch?v=Cp73GVz56pI' },
+
+  { name:'Egg Base Online',   author:'Walder',               format:'Duo — Trio',           tags:['Egg base','24 turrets','Online'],
+    descRU:'Egg-каркас с 24-турельной оборонной — solo/duo/trio под онлайн-рейды.',
+    descEN:'Egg shell with 24-turret defence — solo/duo/trio for online raid scenarios.',
+    link:'https://www.youtube.com/watch?v=dEG1n5YzhII' },
+
+  // ====================================================================
+  // Darvel
+  // ====================================================================
+
+  { name:'The BLACK',         author:'Darvel',               format:'Solo',                 tags:['Solo bunker','Cozy','Cheap'],
+    descRU:'Соло-бункер от Darvel — уютный и дешёвый, удобен в первую ночь вайпа.',
+    descEN:'A solo bunker from Darvel — cozy, cheap, comfortable for the first wipe night.',
+    link:'https://www.youtube.com/watch?v=TQ_P-D-gjg4' },
+
+  { name:'The KRAKEN (Boat)', author:'Darvel',               format:'Boat',                 tags:['Boat base','5K HP','High mass'],
+    descRU:'Boat-база с 5K HP и высокой мощностью/массой — мобильная альтернатива стационарной.',
+    descEN:'A boat base with 5K HP and high power/mass — a mobile alternative to a stationary base.',
+    link:'https://www.youtube.com/watch?v=MJibvftsHsM' },
+
+  // ====================================================================
+  // Santess
+  // ====================================================================
+
+  { name:'FOREST 4x4',        author:'Santess',              format:'Clan (4x4)',           tags:['Meta clan','4x4','2026'],
+    descRU:'Свежий 4x4 клановый билд Santess для команды NWR — мета 2026.',
+    descEN:'Santess\u2019 fresh 4x4 clan build for team NWR — 2026 meta.',
+    link:'https://www.youtube.com/watch?v=bdnpHT_SreA' },
+
+  { name:'THE CHAMBER',       author:'Santess',              format:'Trio',                 tags:['Egg base','Meta trio','2026'],
+    descRU:'Trio egg-база Santess — компактный мета-каркас 2026.',
+    descEN:'Santess\u2019 trio egg base — a compact 2026 meta shell.',
+    link:'https://www.youtube.com/watch?v=FRxoi0vDTbU' }
 ];
 
 function renderBases(){
