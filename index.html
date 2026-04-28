@@ -299,7 +299,6 @@
 
   /* Filter bar: non-sticky. Earlier sticky+collapse caused scroll jitter
      because resizing a pinned bar shifts the content below by ~150px. */
-  .controls.sticky-on{}
   /* Floating "back to filters" button — appears alongside scroll-to-top. */
   #scrollToFiltersBtn{position:fixed;right:30px;bottom:84px;width:48px;height:48px;background:var(--surface);color:var(--accent);border:1px solid var(--border);border-radius:50%;cursor:pointer;font-size:18px;display:none;align-items:center;justify-content:center;transition:all .15s;font-family:'Space Mono',monospace;z-index:40;line-height:1}
   #scrollToFiltersBtn:hover{background:var(--accent);color:#0d0d0d;border-color:var(--accent);transform:scale(1.05)}
@@ -1822,6 +1821,8 @@ function setupSuggestForm(){
   // fall back to the manual Copy path.
   if(!workerConfigured){
     sendBtn.style.display = 'none';
+  } else {
+    sendBtn.disabled = true;
   }
 
   genBtn.addEventListener('click', ()=>{
@@ -2000,7 +2001,7 @@ function buildReviewPayload(turnstileToken){
     type: 'review',
     rating: parseInt(document.getElementById('rev-rating').value, 10),
     agree: agreeEl ? agreeEl.dataset.value : '',
-    agreeLabel: agreeEl ? (agreeEl.dataset.ru || agreeEl.textContent.trim()) : '',
+    agreeLabel: agreeEl ? (agreeEl.dataset[currentLang] || agreeEl.textContent.trim()) : '',
     comment: (document.getElementById('rev-comment').value || '').trim(),
     contact: (document.getElementById('rev-contact').value || '').trim(),
     turnstileToken
@@ -2071,6 +2072,8 @@ function setupReviewForm(){
 
   if(!workerConfigured){
     sendBtn.style.display = 'none';
+  } else {
+    sendBtn.disabled = true;
   }
 
   genBtn.addEventListener('click', ()=>{
