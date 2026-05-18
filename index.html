@@ -434,7 +434,7 @@
   </details>
 
   <details class="info-block" id="glossary">
-    <summary><span data-ru="// глоссарий: 31 термин" data-en="// glossary: 31 terms">// глоссарий: 31 термин</span></summary>
+    <summary><span id="glossary-summary-label" data-ru="// глоссарий" data-en="// glossary">// глоссарий</span></summary>
     <div class="info-body">
       <div class="glossary-grid" data-lang-block="ru">
         <div class="glossary-item"><strong>Floor stack / Флор стак</strong>Многослойное расположение TC и кейсов на разных полах — рейдер тратит больше ресурсов на пробой.</div>
@@ -821,221 +821,1024 @@ function getStars(rv){
   while([...s].length<5) s+='☆';
   return s;
 }
-function hasPaid(tags){return tags.some(t=>['Patreon','Boosty','Shop','fadedbuilds','Кастомные базы','Заказы баз','Custom orders','Custom bases','YouTube Sponsors','Website'].some(p=>t.includes(p)));}
-function matchesFormat(b,f){if(f==='all')return true;if(f==='solo')return b.fms.includes('solo');if(f==='trio')return b.fms.includes('trio');if(f==='medium')return b.fms.includes('medium')||b.fms.includes('clan');if(f==='clan')return b.fms.includes('clan');return false;}
+// Tags that mark a builder as having paid offerings. Uses exact-match
+// against this Set instead of substring search — earlier substring logic
+// would have false-positive on any future tag containing one of these
+// words (e.g. a hypothetical "Customer support" tag would match "Custom").
+const PAID_TAGS = new Set([
+  'Patreon','Boosty','Shop','fadedbuilds','Кастомные базы','Заказы баз',
+  'Custom orders','Custom bases','YouTube Sponsors','Website'
+]);
+function hasPaid(tags){return tags.some(t => PAID_TAGS.has(t));}
+function matchesFormat(b,f){if(f==='all')return true;if(f==='solo')return b.formats.includes('solo');if(f==='trio')return b.formats.includes('trio');if(f==='medium')return b.formats.includes('medium')||b.formats.includes('clan');if(f==='clan')return b.formats.includes('clan');return false;}
 function getUpkeepIcons(u){if(u===1)return '💰';if(u===2)return '💰💰';if(u===3)return '💰💰💰';return '';}
 function getLinkClass(t){const l=t.toLowerCase();if(l.includes('youtube'))return 'link-yt';if(l.includes('discord'))return 'link-dc';if(l.includes('patreon'))return 'link-pt';if(l.includes('tiktok'))return 'link-tt';if(l.includes('twitch'))return 'link-tw';if(l.includes('boosty'))return 'link-bs';return 'link-web';}
 
 // COMPACT BUILDER ARRAY [ Name, Handle, Rating, Upkeep, Fav(0/1), "Tags", "Formats", [[row_label, ru, en, class]], descRU, descEN, [[linkName, url]] ]
 const raw = [
-  ["Limi Lab","@LimiLab",5,3,1,"Patreon,Кастомные базы,Discord,TikTok","solo,trio,clan",
-   [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Флорстак, Пиксель-гапы, Кастом","Floor Stack, Pixel Gaps, Custom","good"],["Кастомные базы","Да — через Discord","Yes — via Discord","good"]],
-   "Принимает персональные заказы на базы под конкретные нужды — через Discord. Патреон полностью оправдывает вложения — базы уникальные. Минус: иногда нужны p2w скины.","Accepts custom base orders via Discord. Patreon is worth every penny — bases are genuinely unique. Downside: some builds require p2w skins.",
-   [["Discord","https://discord.com/invite/PeFQnPZyPd"],["Patreon","https://www.patreon.com/LimiLAB"],["YouTube","https://youtube.com/@LimiLab"],["TikTok","https://tiktok.com/@limilab"]]],
-  ["HQM Core","@HQMcore",4.5,3,1,"Patreon","solo,trio,medium",
-   [["Форматы","Solo — Medium Group","Solo — Medium Group",""],["Фишки","Анти-рейд, Скрытые бункеры, Вайд-гапы","Anti Siege, Hidden Bunkers, Wide Gaps","good"]],
-   "Недооценённый билдер, строит великолепные базы. Ничего лишнего, нет никакого мусора, почти что идеал.","Underrated builder, makes magnificent bases. Nothing redundant, no garbage, almost ideal.",
-   [["YouTube","https://youtube.com/@HQMcore"],["Patreon","https://patreon.com/cw/HQMCore"]]],
-  ["One2Do","@One2Do / FunPay",4,3,1,"Shop,Кастомные базы","trio,medium",
-   [["Форматы","Small Group — Medium Group","Small Group — Medium Group",""],["Фишки","Таверки, Мобильность, FunPay магазин","Towers, Mobile Layouts, FunPay Shop","good"],["Цена кастома","~800-1150 ₽","~800-1150 ₽","good"]],
-   "Продаёт базы на FunPay (Juckly). В основном строит таверки. Очень удобные и мобильные базы. Пики хорошие, базы достойные. Билдер явно знает своё дело.","Sells bases on FunPay (Juckly). Mostly builds towers. Very comfortable and mobile bases. Good peeks, worthy bases. Builder clearly knows his stuff.",
-   [["YouTube","https://youtube.com/@One2Do"],["Shop","https://funpay.com/users/10713273/"]]],
-  ["Brader Fik","@BraderFik",4.5,2,0,"","solo,trio",
-   [["Форматы","Solo — Small Group","Solo — Small Group",""],["Фишки","Дабл бункеры, Китайка, Флорстак","Double Bunkers, China Wall, Floor Stack","good"]],
-   "Автор заморачивается и не зря! Базы очень хорошие — пики супер, но проблема — крыша. Кодов не оставляет, что минус. Патреона нет. Качественный билдер.","The effort shows! Bases are very good — shoots are excellent, but weakness is the roof. No codes left. No Patreon. Quality builder.",
-   [["YouTube","https://youtube.com/@BraderFik"]]],
-  ["Erebus","@ErebusBuilds",4.5,3,0,"Discord,TikTok,Кастомные базы","solo,trio,clan",
-   [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Реальные дефы, Мульти-шкаф, Мета-пики","Live Defense, Multi-TC, Meta Peeks","good"],["Цена кастома","$50–250","$50–250","good"]],
-   "Главная фишка — реальные футажи геймплея в построенных домах. Базы качественные, но нужно будет неплохо пофармить. Кастом через Discord.","Key feature — real gameplay footage inside built bases. Bases are quality but not budget-friendly. Custom via Discord.",
-   [["Discord","https://discord.com/invite/NSGg8ykrx9"],["TikTok","https://tiktok.com/@erebusbuilds"],["YouTube","https://youtube.com/@ErebusRust"]]],
-  ["BuckyBuilds","@BuckyBuildz",4,2,0,"Discord","solo,trio",
-   [["Форматы","Solo — Small Group","Solo — Small Group",""],["Фишки","Бункеры, Мета-пики, Шилд-воллы","Bunkers, Meta Peeks, Shield Walls","good"]],
-   "Куча бункеров, хорошие пики, интересные решения. Для оффлайн и онлайн рейдов — золотая середина. Базы качественные, рекомендую.","Tons of bunkers, good shoots, interesting solutions. A solid middle ground for both offline and online raids. Quality bases, recommended.",
-   [["Discord","https://discord.com/invite/W3qGzbM3ar"],["YouTube","https://youtube.com/@BuckyBuildz"]]],
-  ["Rat In The Dark","@RatInTheDark",3.25,3,0,"YouTube","solo,trio,clan",
-   [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Корейская мета, Сложные бункеры","Korean Meta, Complex Bunkers","good"],["Минусы","Редко выпускает, крыши слабые","Rare uploads, weak roofs","warn"]],
-   "Корейский билдер. Показал фишки о которых не знал даже я. Есть хорошие бункеры и интересные решения. Баз мало, выпускает редко.","Korean builder. Showed tricks even I didn't know. Has good bunkers and interesting solutions. Few bases, rarely uploads.",
-   [["YouTube","https://youtube.com/@RatInTheDark"]]],
-  ["Crow","@CrowRust",3.5,3,0,"Patreon,TikTok,Discord","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Вайд гапы, Мульти-шкаф, Отключаемые шкафы","Wide Gaps, Multi-TC, Disconnectable TCs","good"],["Patreon","от $5/мес · приват базы","from $5/mo · private bases","good"]],
-   "Культовые базы: Humbug, Cyclone, Jupiter, Chimera, Synchro. Видео для спонсоров дублируют Patreon-контент. Грамотный билдер.","Iconic bases: Humbug, Cyclone, Jupiter. YouTube sponsor videos mirror Patreon content. A skilled builder with deep game knowledge.",
-   [["Discord","https://discord.com/invite/m8WNpc6hqD"],["Patreon","https://www.patreon.com/c/CrowBuilds"],["YouTube","https://youtube.com/@CrowRust"],["TikTok","https://tiktok.com/@crowbuilds"]]],
-  ["Биг джони","@Бигджони",3.5,3,0,"","solo,trio,medium",
-   [["Форматы","Solo — Medium Group","Solo — Medium Group",""],["Фишки","Сборник меты, Уникальный shell, Разрыв шаблонов","Meta compilation, Unique shell, Breaks templates","good"]],
-   "Собирает лучшие метовые фишки с других билдеров и адаптирует под себя. Много интересных решений, отличный shell. Действительно ломает шаблоны.","Collects the best meta features from other builders and adapts them. Many interesting solutions, excellent shell designs.",
-   [["YouTube","https://youtube.com/@Бигджони"]]],
-  ["b00bster","@b00bst4r",3.5,3,0,"Patreon,Boosty,Discord,Кастомные базы","solo,trio",
-   [["Форматы","Solo — Small Group","Solo — Small Group",""],["Фишки","Скрытые бункеры, Китайка, Флорстак","Hidden Bunkers, China Wall, Floor Stack","good"]],
-   "Делает базы на заказ через тикеты в Discord. Хорошие крыши, скрытые бункеры, china wall, floor stack. Середина между онлайн и оффлайн защитой.","Makes custom bases via Discord tickets. Good roofs, hidden bunkers, china wall, floor stack. Sweet spot between online and offline defense.",
-   [["YouTube","https://youtube.com/@b00bst4r"],["Patreon","https://patreon.com/b00bst4r"],["Boosty","https://boosty.to/b00bst4r"],["Discord","https://discord.gg/DZt3D26vJY"]]],
-  ["PANG","@PangSquared",3.5,3,0,"","solo,trio,medium,clan",
-   [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Кинематографичность, Китайка, Клановые базы","Cinematic edits, China Wall, Clan bases","good"],["Минусы","Отстойные крыши","Terrible roofs","warn"]],
-   "Очень красивая подача видео. Строит дорогие базы для кланов и огромных групп. Хорошие пики, китайские стены, но крыши отстойные.","Very beautiful, cinematic video presentation. Builds expensive bases for clans. Good peeks, China Walls, but roofs are terrible.",
-   [["YouTube","https://youtube.com/@PangSquared"]]],
-  ["2devilzz","@2devilzzRust",3.5,3,0,"Discord,Кастомные базы","medium,clan",
-   [["Форматы","Small Group — Zerg","Small Group — Zerg",""],["Фишки","Огромные базы, Шилд-воллы, Китайки","Massive Bases, Shield Walls, China Walls","good"],["Цена кастома","Medium $60+, Large $100+","Medium $60+, Large $100+","good"]],
-   "Строит в основном очень большие базы. Кастом через Discord. Постройки качественные, отличные пики. Мобильность страдает из-за размера.","Builds primarily very large bases. Custom via Discord. Quality builds, excellent peaks. Mobility suffers due to size.",
-   [["Discord","https://discord.gg/cdSEfVHYEp"],["YouTube","https://youtube.com/@2devilzzRust"]]],
-  ["Faded","@FadedRust",3.5,2,0,"Shop,TikTok","solo,trio",
-   [["Форматы","Solo — Trio+","Solo — Trio+",""],["Фишки","Вайд гапы, Опен кор, Бункеры","Wide Gaps, Open Core, Bunkers","good"],["Цена базы","€17–20","€17–20","good"]],
-   "Свой Shopify-магазин вместо Patreon — разовая покупка базы. Обновления бесплатно. Качество баз бывает неровным.","Own Shopify store instead of Patreon — one-time purchase per base. Free updates. Overall, quality is inconsistent.",
-   [["fadedbuilds.com","https://fadedbuilds.com"],["TikTok","https://tiktok.com/@fadedrust"],["YouTube","https://youtube.com/@FadedRust"]]],
-  ["aloneintokyo","@aloneintokyo",3.75,2,0,"Patreon,YouTube Sponsors","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Опен кор, Ретейки, Открывашки","Open Core, Retake Angles, Turret Openers","good"]],
-   "Уникальный стиль, которого нет ни у кого. Миллион пиков, много простора, открывашки с турелями. Крыши — слабое место.","A unique style. Tons of shoots, open layouts, autoturret openers. Roofs are the weak spot, but otherwise genuinely creative.",
-   [["Patreon","https://patreon.com/cw/Aloneintokyo"],["YouTube","https://youtube.com/@aloneintokyo"]]],
-  ["Spinky","@spinky",3.5,1,0,"Patreon,Discord","solo,trio,clan",
-   [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Сноуболл коробки, Расширяемые стартеры","Snowball Boxes, Expandable Starters","good"]],
-   "Самый крупный активный билдер. Patreon серьёзный. Публично неровный — иногда выдаёт шедевры, иногда проходняк, но приватки стабильные.","Biggest active builder. Patreon is serious. Public content is inconsistent, but private bases are reliable.",
-   [["Discord","https://discord.gg/Zcf83nJ3YV"],["Patreon","https://www.patreon.com/spinkyRUST"],["YouTube","https://youtube.com/@spinky"],["TikTok","https://tiktok.com/@spinkyrust"]]],
-  ["Nini Rust","@NiniRust",3.5,3,0,"Patreon,TikTok,Twitch,Discord,Website","solo,trio,clan",
-   [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Пиксель-гапы, Флорстак, Мульти-шкаф","Pixel Gaps, Floor Stack, Multi-TC","good"]],
-   "Один из самых подробных Patreon в нише — там целые гайды с реворками. Тестирует базы вживую на Twitch. Базы недешёвые по ресурсам.","One of the most detailed Patreons — full guides with reworks. Tests bases live on Twitch. Builds aren't cheap on resources.",
-   [["Website","https://nini-rust.com"],["Discord","https://discord.com/invite/fhDmyx5v9w"],["Patreon","https://patreon.com/NiniRust"],["Twitch","https://twitch.tv/ninirust"],["YouTube","https://youtube.com/@NiniRust"],["TikTok","https://tiktok.com/@ninirust"]]],
-  ["Tarre","@tarrerust",3,1,0,"TikTok,Discord,YouTube Sponsors","solo,trio",
-   [["Форматы","Solo · Duo · Trio","Solo · Duo · Trio",""],["Фишки","Соло/Дуо сноуболл, Дешевые стартеры","Solo/Duo Snowball, Cheap Starters","good"]],
-   "Лучший для ДОСТУПНЫХ solo/duo snowball баз. Отлично подходит для новичков без доната.","Best for affordable solo/duo snowball bases. Perfect for beginners or players who want to hit a server without p2w gear.",
-   [["Discord","https://discord.com/invite/W4nQHsPCnJ"],["YouTube","https://youtube.com/@tarrerust"],["TikTok","https://tiktok.com/@tarrerust"]]],
-  ["XGN.","@XGN_Rust",3,2,0,"TikTok","solo,trio,medium,clan",
-   [["Форматы","Duo — Large Group","Duo — Large Group",""],["Фишки","Метовые базы, Шилд-воллы, Онлайн деф","Meta bases, Shield wall, Online defense","good"]],
-   "Строит метовые дома, хорошие пики, есть shield wall. Бункеров нет, весь упор идёт на защиту в онлайне. Количество стенок до шкафа может разочаровать.","Builds meta bases with good peeks and shield walls. No bunkers, full focus on online raid defense.",
-   [["YouTube","https://youtube.com/@XGN_Rust"],["TikTok","https://tiktok.com/@xgn_rust"]]],
-  ["rookyo","@rooperust",3.25,3,0,"Discord,TikTok,Кастомные базы","solo,trio,medium",
-   [["Форматы","Duo — Medium Group","Duo — Medium Group",""],["Фишки","Бункеры, Ретейки, Китайка","Bunkers, Retakes, China Wall","good"],["Цена кастома","€10-40 (Discord)","€10-40 (Discord)","good"]],
-   "Продаёт кастомные базы в Discord (от €10 до €40). В постройках есть бункеры, ретейк-пики, китайские стены. Крепкий стандарт.","Sells custom bases via Discord (€10 to €40). Builds feature bunkers, retake peeks, and China Walls. A solid standard.",
-   [["YouTube","https://youtube.com/@rooperust"],["TikTok","https://tiktok.com/@rooperustt"],["Discord","https://discord.com/invite/Q3ZRvGve4H"]]],
-  ["anika","@anika_rust",3.25,2,0,"","trio,medium",
-   [["Форматы","Trio — Small Group","Trio — Small Group",""],["Фишки","Китайка, Анти-рейд, Водопады","China Wall, Anti-Siege, Reverse Waterfall","good"]],
-   "Отличные пики, подробные гайды. Бункеров нет. Упор на онлайн рейд. Крыши средние. Уверенный среднячок.","Great peeks, detailed guides. No bunkers. Focus on online raid defense. Roofs are average. Solid mid-tier.",
-   [["YouTube","https://youtube.com/@anika_rust"]]],
-  ["Akame","@AkameBuilds",3.25,3,0,"Boosty,Кастомные базы","medium,clan",
-   [["Форматы","Small group — Large group","Small group — Large group",""],["Фишки","Онлайн деф, Клановые планировки","Online Raid Defense, Clan Layouts","good"]],
-   "Билдер сильнейшего клана R2. Основной упор на защиту во время онлайн рейда. Работает только под заказ через Boosty.","Builder for the top clan R2. Main focus is online raid defense. Works by custom order only via Boosty.",
-   [["Boosty","https://boosty.to/akamexebet"],["YouTube","https://youtube.com/@Akame_Rust"]]],
-  ["Luca.","@Luca.Builds",3,2,0,"Discord,Кастомные базы","solo,trio,medium",
-   [["Форматы","Solo — Large Group","Solo — Large Group",""],["Фишки","Пещерные базы, Использование рельефа","Cave Bases, Terrain Use","good"]],
-   "Билдер показывает как застраивать пещеру. Пики хорошие, но отстрелов мало и мобильность плохая. Кастом через Discord.","Shows how to build cave bases. Peaks are good, but limited shooting positions and poor mobility. Custom via Discord.",
-   [["Discord","https://discord.com/invite/aY8StUeJXP"],["YouTube","https://youtube.com/@Luca.Builds"]]],
-  ["Darvel","@darvels",3.25,2,0,"","solo,trio",
-   [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Компактные бункеры, Мета Соло/Квад","Compact Bunkers, Solo/Quad Meta","good"]],
-   "Строит Solo-Quad. Есть бункеры, интересные базы. Минусы: нет Patreon, нет Discord, кодов не оставляет.","Builds Solo–Quad. Has bunkers, interesting designs. Downsides: no Patreon, no Discord, no codes left.",
-   [["YouTube","https://youtube.com/@darvels"]]],
-  ["GrinchTheBuilder","@GrinchTheBuilder",3,3,0,"Discord,Кастомные базы","solo,medium,clan",
-   [["Форматы","Solo — Zerg","Solo — Zerg",""],["Фишки","Клановые таверки, Высокий апкип","Clan Towers, High Upkeep","good"]],
-   "В основном строит таверки — дорогие по ресурсам. Есть неприятные минусы: неиграбельные крыши. Из плюсов — хорошие пики.","Mostly builds large expensive bases. Some downsides: unplayable roofs. Upsides — very good shoot positions.",
-   [["YouTube","https://youtube.com/@GrinchTheBuilder"]]],
-  ["S4","@S4Rust",3,2,0,"Patreon,Discord,Кастомные базы","solo,medium",
-   [["Форматы","Solo — Medium Group","Solo — Medium Group",""],["Фишки","Стандартные формы, Классика","Standard Layouts, Classic Designs","warn"]],
-   "Строит как все — максимально неинтересные базы. Работает в связке с Kredbic. Норм вариант, но ничего выдающегося.","Builds like everyone else — generic, nothing interesting. Partners with Kredbic. If you want something safe — it works.",
-   [["Discord","https://discord.gg/DZRVsUcYSE"],["Patreon","https://patreon.com/S4Rust"],["YouTube","https://youtube.com/@S4Rust"]]],
-  ["LeftyyP","@LeftyyP",3,1,0,"Patreon,Discord","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Доступные стартеры, Низкий апкип","Accessible Starters, Low Upkeep","good"]],
-   "Строит доступные лёгкие базы для соло-трио, без p2w фишек. Однако есть и сомнительные, мемные постройки.","Makes accessible lightweight bases for solo-trio, no p2w required. But some bases are questionable.",
-   [["Discord","https://discord.com/invite/THfp7TxEHJ"],["YouTube","https://youtube.com/@LeftyyP"]]],
-  ["HiddenJoint","@HiddenJoint / @GoodJoint",3.25,1,0,"Patreon,Boosty","solo,trio",
-   [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Простые соло базы, Ванилла-френдли","Simple Solo Bases, Vanilla Friendly","good"]],
-   "Хорош для соло-игроков — базы простые, без переусложнения. Ведёт два канала: EN и RU.","Good for solo players — bases are clean, not overcomplicated. Runs two channels: EN and RU.",
-   [["Patreon","https://www.patreon.com/c/GoodJoint"],["Boosty","https://boosty.to/goodjoint"],["YouTube EN","https://youtube.com/@HiddenJoint"],["YouTube RU","https://youtube.com/@GoodJoint"]]],
-  ["Krub","@KrubRust",3,2,0,"Discord","solo,medium",
-   [["Форматы","Solo — Medium Group","Solo — Medium Group",""],["Фишки","Мета средних групп, Гайды","Medium Group Meta, Educational","good"]],
-   "Базы неплохие, но стоимость постройки не совсем оправдана. В Discord есть обучающие посты. Связан с Pandabuilds.","Bases are mechanically decent, but the resource cost isn't fully justified. Discord has useful educational posts.",
-   [["Discord","https://discord.com/invite/buildingbulletin"],["YouTube","https://youtube.com/@KrubRust"]]],
-  ["Pandabuilds","@PandaBuildsRust",3,2,0,"Discord,Кастомные базы","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Командные базы, Кастомизация","Team Bases, Paid Customization","good"]],
-   "Делает кастомные базы под заказ. Принимает PayPal и Rust Skins с наценкой 15%. Видимо работает в команде с Krub.","Takes custom base orders via Discord. Accepts PayPal and Rust Skins with a 15% markup. Works with Krub.",
-   [["Discord","https://discord.com/invite/XQSztD5JHk"],["YouTube","https://youtube.com/@PandaBuildsRust"]]],
-  ["MrSkeem","@MrSkeem",3,2,0,"Patreon,Discord","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Измененная классика, Баланс цены","Modified Classics, Balanced Cost","good"]],
-   "Изменённая классика с удивляющими решениями. Выпускает редко, но качество стабильное.","Modified classics with surprising solutions. Uploads rarely, but quality is consistent.",
-   [["Patreon","https://patreon.com/MrSkeem"],["Discord","https://discord.gg/YnS8zHJvkh"],["YouTube","https://youtube.com/@MrSkeem"]]],
-  ["Mellarrkk","YouTube",2.75,1,0,"","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Базы для новичков, Простые бункеры","Beginner Friendly, Basic Bunkers","warn"]],
-   "Простые базы для новичков. Ведёт три канала под разными именами: Mellarrkk, Rust Tricks и Rust Concepts.","Simple beginner bases. Runs three channels under different names.",
-   [["Mellarrkk","https://youtube.com/@Mellarrkk"],["Rust Tricks","https://youtube.com/@RustTricks"],["Rust Concepts","https://youtube.com/@RustConcepts"]]],
-  ["Kredbic","@KredbicRust",3,2,0,"Discord,Кастомные базы","solo",
-   [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","Понятные туториалы, Простые групповые базы","Clear Tutorials, Simple Group Bases","good"]],
-   "Очень понятно объясняет процесс — для новичков это золото. Делает кастомные базы. Работает в связке с S4.","Explains the process very clearly — gold for beginners. Custom bases. Partners with S4.",
-   [["Discord","https://discord.com/invite/CdV63mypkx"],["YouTube","https://youtube.com/@KredbicRust"]]],
-  ["slvtv","@slvtvRust",3,1,0,"Discord,YouTube Sponsors","solo",
-   [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","Обычные Соло/Дуо, Спонсоры в приоритете","Average Solo/Duo, Sponsor First","warn"]],
-   "С простыми базами справляется хорошо. Средний уровень без сюрпризов. Видео сначала выходят для спонсоров.","Handles simple bases well. Average level, no surprises. Videos go to sponsors first.",
-   [["Discord","https://discord.gg/9txTRYCVtQ"],["YouTube","https://youtube.com/@slvtvRust"]]],
-  ["Zypic","@ZypicRust",3,1,0,"","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Без P2W, Бюджетные","Non-P2W, Budget Friendly","good"]],
-   "Дешёвые по ресурсам базы без p2w. Есть интересные решения, но чего-то не хватает до следующего уровня.","Resource-cheap bases without p2w. Some interesting decisions, but missing next-level polish.",
-   [["YouTube","https://youtube.com/@ZypicRust"]]],
-  ["Relbuild","@relbuild",3,2,0,"","solo,trio",
-   [["Форматы","Solo — Small Groups","Solo — Small Groups",""],["Фишки","Хорошие пики, Крепкий среднячок","Good Peeks, Solid Mid-Tier","good"]],
-   "Строит неплохие базы с хорошими пиками. Но есть решения которые вызывают вопросы.","Makes decent bases with good shoot positions. Some decisions raise questions.",
-   [["YouTube","https://youtube.com/@relbuild"]]],
-  ["Lacros","@Lacros_Build",2.5,2,0,"","solo,trio",
-   [["Форматы","Solo — Small Group","Solo — Small Group",""],["Фишки","Простые механики, Комфортные","Simple Mechanics, Comfortable","warn"]],
-   "Строит простенькие базы без сложных механик. Крыши неплохие, пики хорошие. Для комфортного геймплея сойдут.","Builds simple bases without complex mechanics. Roofs are decent, peeks are good.",
-   [["YouTube","https://youtube.com/@Lacros_Build"]]],
-  ["Build Lab","@rust_build_lab",2.5,2,0,"Patreon,YouTube Sponsors","solo,trio",
-   [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Оригинальные крыши, Отключаемые шкафы","Unique Roofs, Disconnectable TCs","good"]],
-   "На канале каждое второе видео — интро к платной версии базы. Бесплатных баз мало.","Every other video on the channel is a teaser for a paid base. Few free builds available.",
-   [["Patreon","https://www.patreon.com/cw/Build_Lab"],["YouTube","https://youtube.com/@rust_build_lab"]]],
-  ["Void","@void-build",2.5,1,0,"","solo,trio",
-   [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Мобильные планировки, Классика","Mobile Layouts, Classic Shapes","warn"]],
-   "Хорошая мобильность, есть бункеры. Но много ошибок (например решётки вместо сетки). Крыши отстойные.","Good mobility, has bunkers. Has mistakes (grates instead of chainlink). Roofs are poor.",
-   [["YouTube","https://youtube.com/@void-build"]]],
-  ["RustLogic","YouTube",2.5,1,0,"","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Мета RustBaseLab, Стартовые бункеры","RustBaseLab Meta, Starter Bunkers","warn"]],
-   "Активен на rustbaselab.com. Главная проблема — не вставляет тур и не оставляет коды. Оценка неуверенная.","Active on rustbaselab.com. Main issue — no tour and no codes, hard to evaluate quality.",
-   [["YouTube","https://youtube.com/@RustLogic"]]],
-  ["Willjum","@Willjum",2,1,0,"Patreon,Discord","solo",
-   [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","Кинематографичные базы, Уютные Соло/Дуо","Cinematic Builds, Cozy Solo/Duo","warn"]],
-   "Не гайдовый строитель — у него кинематографичные соло-выживания. Базы не отличаются сложностью механик.","Not a guide-format builder — he makes cinematic solo survival content. Bases are basic.",
-   [["Patreon","https://www.patreon.com/willjum"],["Discord","https://discord.com/invite/WILLJUM"],["YouTube","https://youtube.com/@willjum"]]],
-  ["pagdawg","@pagdawg",2,1,0,"","solo",
-   [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","Сомнительные пики, Повторы контента","Questionable Peeks, Reused Content","bad"]],
-   "Выкладывает одинаковые видео. Пики не очень хорошие, крыши отстойные, решения порой странные.","Posts identical videos. Shoots aren't great, roofs are bad, decisions are strange.",
-   [["YouTube","https://youtube.com/@pagdawg"]]],
-  ["IndominusRust","@IndominusRust",2,2,0,"Patreon,Discord","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","UK-стиль, Сомнительное качество","UK Style, Controversial Quality","bad"]],
-   "Позиционирует стиль как уникальный UK-дизайн. По факту базы очень плохие.","Markets himself as a unique UK design style. In reality the bases are very poor.",
-   [["Patreon","https://www.patreon.com/IndominusRust"],["Discord","https://discord.com/invite/jgMr6YXPqC"],["YouTube","https://youtube.com/@IndominusRust"]]],
-  ["Ласти Раст","@ласти_раст",1.5,3,0,"Telegram","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Модовая мета, Слитый контент","Modded Meta, Leaked Content","bad"]],
-   "Нет понимания ванильного билдинга. Сливает платные базы Good Joint. Пиратский контент.","No understanding of vanilla building. Telegram channel leaks paid bases. Pirated content.",
-   [["Telegram","https://t.me/lastycfg"],["YouTube","https://youtube.com/@ласти_раст"]]],
-  ["Shield","@Shield-b3g",1,1,0,"","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Для абсолютных новичков, Нет места","Absolute Beginners, No Space","bad"]],
-   "Строит очень простые нубские базы. Места нет, отстрелов нет, лут забьётся за пару минут. Не советую.","Builds simple noob bases. No space, no normal shooting floors, loot fills up in minutes.",
-   [["YouTube","https://youtube.com/@Shield-b3g"]]],
-  ["zYn","@zYnRust",1,1,0,"Website","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","Для абсолютных новичков","For Absolute Beginners","bad"]],
-   "Максимально простые базы. Ужасные ошибки на уровне новичка. Продаёт их на сайте.","Maximally simple bases. Terrible beginner mistakes. Sells them on his website.",
-   [["zynvids.com","https://zynvids.com"],["YouTube","https://youtube.com/@zYnRust"]]],
-  ["Stelic","@stelicRUST",1,1,0,"","solo",
-   [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","PvP-фокус, Базовые коробки","PvP Focus, Basic Starter Boxes","bad"]],
-   "Однотипные solo–duo базы. Пики делает ужасно — это не его сильная сторона.","Cookie-cutter solo–duo bases. Shoots are terrible — that's not his strength.",
-   [["YouTube","https://youtube.com/@stelicRUST"]]],
-  ["RustyYT","YouTube",1,1,0,"TikTok,Instagram","solo",
-   [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","Мета 10 часов игры","10-Hour Player Meta","bad"]],
-   "Базы уровня игрока с 10 часами в Rust. Качество не соответствует базовым стандартам.","Bases at the level of someone with 10 hours in Rust. Quality doesn't meet basic standards.",
-   [["YouTube","https://youtube.com/@Rusty_Youtube"]]],
-  ["Santess","@SantessRust",2.5,2,0,"","trio,medium",
-   [["Форматы","Trio — Medium Group","Trio — Medium Group",""],["Фишки","Меточные клановые базы (3x3 / 4x4)","Meta clan bases (3x3 / 4x4)",""],["Минусы","Темп — ~1 видео в месяц, 7 баз всего","Slow cadence — ~1 video/month, 7 builds total","warn"]],
-   "Билингвальный канал (RU + EN заголовки). Метовые 3x3 и 4x4 клановые базы — спокойный мид-тир. Темп публикаций низкий, 7 видео за всё время. Хороший вариант для трио/мид-групп без переусложнения.","Bilingual RU/EN titles. Meta 3x3 and 4x4 clan bases — solid mid-tier. Output is slow (7 total videos). Decent fit for trios / medium groups who want straightforward designs.",
-   [["YouTube","https://youtube.com/@SantessRust"]]],
-  ["Opy4k","@Opy4k",3,2,0,"Discord","solo,trio",
-   [["Форматы","Solo — Trio","Solo — Trio",""],["Фишки","2x2 Trio (FrostLine), сложные мета-базы","2x2 Trio (FrostLine), advanced meta builds",""],["Минусы","Канал спал 2 года, тестово вернулся","Channel was dormant 2y, just restarting","warn"]],
-   "Был активен пару лет назад как 'Fastest Builder in Rust', потом канал ушёл в спячку. Недавно вернулся новой базой FrostLine (advanced 2x2 Trio). Темная лошадка — если темп удержит, оценка пойдёт вверх.","Was active 2 years ago as 'Fastest Builder in Rust', went dormant, recently returned with FrostLine (advanced 2x2 Trio meta build). Dark horse — rating moves up if cadence holds.",
-   [["Discord","https://discord.com/invite/rSh97aJUVd"],["YouTube","https://youtube.com/@Opy4k"]]],
-  ["Builder","@BuilderRust",2,1,0,"","solo,trio",
-   [["Форматы","Solo — Duo","Solo — Duo",""],["Фишки","Высокий темп публикаций (436 видео)","High output (436 videos)",""],["Минусы","Базы для новичков, нет туров и кодов","Beginner-tier builds, no tours or codes","bad"]],
-   "Огромный канал — 436 видео и стабильный темп (новое каждые 2-9 дней). Контент массовый: simple 2x2 / mini china wall / solo bunker. Главные минусы — без тура внутри базы и без кодов. Подходит как 'кликабельный' источник для совсем новичков.","Massive channel — 436 videos with steady cadence (new builds every 2-9 days). Mass-market content: 2x2, mini china wall, solo bunker. Main issues — no in-base tour, no codes. Useful as quick reference for total beginners.",
-   [["YouTube","https://youtube.com/@BuilderRust"]]],
-  ["Xgamers Vault","@XgamersVault",0,2,0,"","solo,trio",
-   [["Статус","На рассмотрении (3 видео всего)","Under review (3 videos total)","warn"]],
-   "Канал крошечный — 3 видео, последнее 10 дней назад, ~30 просмотров. Заявленный стиль — Solo, 2 walls, meta peaks 2026. Слишком мало материала чтобы оценить. Перепроверка через месяц.","Tiny channel — 3 videos, latest 10 days ago, ~30 views. Stated style — Solo, 2 walls, meta peaks 2026. Too little material to rate. Recheck in a month.",
-   [["YouTube","https://youtube.com/@XgamersVault"]]],
-  ["Walder","@Walder1x",2.5,2,0,"","solo,quad",
-   [["Форматы","Solo — Quad","Solo — Quad",""],["Фишки","Egg-base, expansion 1x2→3x3, mini china wall","Egg-base, expansion 1x2→3x3, mini china wall",""],["Минусы","Последняя база 2 мес назад","Latest build 2mo ago","warn"]],
-   "20 видео, разнообразие форматов: solo egg base, expansion 1x2→3x3, snowball-видео для дуо/трио. Темп средний — последняя база 2 месяца назад, бывают паузы. Если активность вернётся — кандидат на 3.0+","20 videos with format variety: solo egg base, 1x2→3x3 expansion, snowball duo/trio videos. Cadence is medium — latest build 2mo ago, gaps happen. Candidate for 3.0+ if cadence picks up.",
-   [["YouTube","https://youtube.com/@Walder1x"]]]
+  {
+    name: "Limi Lab",
+    handle: "@LimiLab",
+    rating: 5,
+    upkeep: 3,
+    favorite: true,
+    tags: ["Patreon","Кастомные базы","Discord","TikTok"],
+    formats: ["solo","trio","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Clan", valEN: "Solo — Clan", c: ""},
+      {label: "Фишки", valRU: "Флорстак, Пиксель-гапы, Кастом", valEN: "Floor Stack, Pixel Gaps, Custom", c: "good"},
+      {label: "Кастомные базы", valRU: "Да — через Discord", valEN: "Yes — via Discord", c: "good"}
+    ],
+    descRU: "Принимает персональные заказы на базы под конкретные нужды — через Discord. Патреон полностью оправдывает вложения — базы уникальные. Минус: иногда нужны p2w скины.",
+    descEN: "Accepts custom base orders via Discord. Patreon is worth every penny — bases are genuinely unique. Downside: some builds require p2w skins.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/PeFQnPZyPd"},
+      {t: "Patreon", u: "https://www.patreon.com/LimiLAB"},
+      {t: "YouTube", u: "https://youtube.com/@LimiLab"},
+      {t: "TikTok", u: "https://tiktok.com/@limilab"}
+    ]
+  },
+  {
+    name: "HQM Core",
+    handle: "@HQMcore",
+    rating: 4.5,
+    upkeep: 3,
+    favorite: true,
+    tags: ["Patreon"],
+    formats: ["solo","trio","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Medium Group", valEN: "Solo — Medium Group", c: ""},
+      {label: "Фишки", valRU: "Анти-рейд, Скрытые бункеры, Вайд-гапы", valEN: "Anti Siege, Hidden Bunkers, Wide Gaps", c: "good"}
+    ],
+    descRU: "Недооценённый билдер, строит великолепные базы. Ничего лишнего, нет никакого мусора, почти что идеал.",
+    descEN: "Underrated builder, makes magnificent bases. Nothing redundant, no garbage, almost ideal.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@HQMcore"},
+      {t: "Patreon", u: "https://patreon.com/cw/HQMCore"}
+    ]
+  },
+  {
+    name: "One2Do",
+    handle: "@One2Do / FunPay",
+    rating: 4,
+    upkeep: 3,
+    favorite: true,
+    tags: ["Shop","Кастомные базы"],
+    formats: ["trio","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Small Group — Medium Group", valEN: "Small Group — Medium Group", c: ""},
+      {label: "Фишки", valRU: "Таверки, Мобильность, FunPay магазин", valEN: "Towers, Mobile Layouts, FunPay Shop", c: "good"},
+      {label: "Цена кастома", valRU: "~800-1150 ₽", valEN: "~800-1150 ₽", c: "good"}
+    ],
+    descRU: "Продаёт базы на FunPay (Juckly). В основном строит таверки. Очень удобные и мобильные базы. Пики хорошие, базы достойные. Билдер явно знает своё дело.",
+    descEN: "Sells bases on FunPay (Juckly). Mostly builds towers. Very comfortable and mobile bases. Good peeks, worthy bases. Builder clearly knows his stuff.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@One2Do"},
+      {t: "Shop", u: "https://funpay.com/users/10713273/"}
+    ]
+  },
+  {
+    name: "Brader Fik",
+    handle: "@BraderFik",
+    rating: 4.5,
+    upkeep: 2,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Small Group", valEN: "Solo — Small Group", c: ""},
+      {label: "Фишки", valRU: "Дабл бункеры, Китайка, Флорстак", valEN: "Double Bunkers, China Wall, Floor Stack", c: "good"}
+    ],
+    descRU: "Автор заморачивается и не зря! Базы очень хорошие — пики супер, но проблема — крыша. Кодов не оставляет, что минус. Патреона нет. Качественный билдер.",
+    descEN: "The effort shows! Bases are very good — shoots are excellent, but weakness is the roof. No codes left. No Patreon. Quality builder.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@BraderFik"}
+    ]
+  },
+  {
+    name: "Erebus",
+    handle: "@ErebusBuilds",
+    rating: 4.5,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Discord","TikTok","Кастомные базы"],
+    formats: ["solo","trio","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Clan", valEN: "Solo — Clan", c: ""},
+      {label: "Фишки", valRU: "Реальные дефы, Мульти-шкаф, Мета-пики", valEN: "Live Defense, Multi-TC, Meta Peeks", c: "good"},
+      {label: "Цена кастома", valRU: "$50–250", valEN: "$50–250", c: "good"}
+    ],
+    descRU: "Главная фишка — реальные футажи геймплея в построенных домах. Базы качественные, но нужно будет неплохо пофармить. Кастом через Discord.",
+    descEN: "Key feature — real gameplay footage inside built bases. Bases are quality but not budget-friendly. Custom via Discord.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/NSGg8ykrx9"},
+      {t: "TikTok", u: "https://tiktok.com/@erebusbuilds"},
+      {t: "YouTube", u: "https://youtube.com/@ErebusRust"}
+    ]
+  },
+  {
+    name: "BuckyBuilds",
+    handle: "@BuckyBuildz",
+    rating: 4,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Discord"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Small Group", valEN: "Solo — Small Group", c: ""},
+      {label: "Фишки", valRU: "Бункеры, Мета-пики, Шилд-воллы", valEN: "Bunkers, Meta Peeks, Shield Walls", c: "good"}
+    ],
+    descRU: "Куча бункеров, хорошие пики, интересные решения. Для оффлайн и онлайн рейдов — золотая середина. Базы качественные, рекомендую.",
+    descEN: "Tons of bunkers, good shoots, interesting solutions. A solid middle ground for both offline and online raids. Quality bases, recommended.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/W3qGzbM3ar"},
+      {t: "YouTube", u: "https://youtube.com/@BuckyBuildz"}
+    ]
+  },
+  {
+    name: "Rat In The Dark",
+    handle: "@RatInTheDark",
+    rating: 3.25,
+    upkeep: 3,
+    favorite: false,
+    tags: ["YouTube"],
+    formats: ["solo","trio","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Clan", valEN: "Solo — Clan", c: ""},
+      {label: "Фишки", valRU: "Корейская мета, Сложные бункеры", valEN: "Korean Meta, Complex Bunkers", c: "good"},
+      {label: "Минусы", valRU: "Редко выпускает, крыши слабые", valEN: "Rare uploads, weak roofs", c: "warn"}
+    ],
+    descRU: "Корейский билдер. Показал фишки о которых не знал даже я. Есть хорошие бункеры и интересные решения. Баз мало, выпускает редко.",
+    descEN: "Korean builder. Showed tricks even I didn't know. Has good bunkers and interesting solutions. Few bases, rarely uploads.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@RatInTheDark"}
+    ]
+  },
+  {
+    name: "Crow",
+    handle: "@CrowRust",
+    rating: 3.5,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Patreon","TikTok","Discord"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Вайд гапы, Мульти-шкаф, Отключаемые шкафы", valEN: "Wide Gaps, Multi-TC, Disconnectable TCs", c: "good"},
+      {label: "Patreon", valRU: "от $5/мес · приват базы", valEN: "from $5/mo · private bases", c: "good"}
+    ],
+    descRU: "Культовые базы: Humbug, Cyclone, Jupiter, Chimera, Synchro. Видео для спонсоров дублируют Patreon-контент. Грамотный билдер.",
+    descEN: "Iconic bases: Humbug, Cyclone, Jupiter. YouTube sponsor videos mirror Patreon content. A skilled builder with deep game knowledge.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/m8WNpc6hqD"},
+      {t: "Patreon", u: "https://www.patreon.com/c/CrowBuilds"},
+      {t: "YouTube", u: "https://youtube.com/@CrowRust"},
+      {t: "TikTok", u: "https://tiktok.com/@crowbuilds"}
+    ]
+  },
+  {
+    name: "Биг джони",
+    handle: "@Бигджони",
+    rating: 3.5,
+    upkeep: 3,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Medium Group", valEN: "Solo — Medium Group", c: ""},
+      {label: "Фишки", valRU: "Сборник меты, Уникальный shell, Разрыв шаблонов", valEN: "Meta compilation, Unique shell, Breaks templates", c: "good"}
+    ],
+    descRU: "Собирает лучшие метовые фишки с других билдеров и адаптирует под себя. Много интересных решений, отличный shell. Действительно ломает шаблоны.",
+    descEN: "Collects the best meta features from other builders and adapts them. Many interesting solutions, excellent shell designs.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@Бигджони"}
+    ]
+  },
+  {
+    name: "b00bster",
+    handle: "@b00bst4r",
+    rating: 3.5,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Patreon","Boosty","Discord","Кастомные базы"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Small Group", valEN: "Solo — Small Group", c: ""},
+      {label: "Фишки", valRU: "Скрытые бункеры, Китайка, Флорстак", valEN: "Hidden Bunkers, China Wall, Floor Stack", c: "good"}
+    ],
+    descRU: "Делает базы на заказ через тикеты в Discord. Хорошие крыши, скрытые бункеры, china wall, floor stack. Середина между онлайн и оффлайн защитой.",
+    descEN: "Makes custom bases via Discord tickets. Good roofs, hidden bunkers, china wall, floor stack. Sweet spot between online and offline defense.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@b00bst4r"},
+      {t: "Patreon", u: "https://patreon.com/b00bst4r"},
+      {t: "Boosty", u: "https://boosty.to/b00bst4r"},
+      {t: "Discord", u: "https://discord.gg/DZt3D26vJY"}
+    ]
+  },
+  {
+    name: "PANG",
+    handle: "@PangSquared",
+    rating: 3.5,
+    upkeep: 3,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio","medium","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Clan", valEN: "Solo — Clan", c: ""},
+      {label: "Фишки", valRU: "Кинематографичность, Китайка, Клановые базы", valEN: "Cinematic edits, China Wall, Clan bases", c: "good"},
+      {label: "Минусы", valRU: "Отстойные крыши", valEN: "Terrible roofs", c: "warn"}
+    ],
+    descRU: "Очень красивая подача видео. Строит дорогие базы для кланов и огромных групп. Хорошие пики, китайские стены, но крыши отстойные.",
+    descEN: "Very beautiful, cinematic video presentation. Builds expensive bases for clans. Good peeks, China Walls, but roofs are terrible.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@PangSquared"}
+    ]
+  },
+  {
+    name: "2devilzz",
+    handle: "@2devilzzRust",
+    rating: 3.5,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Discord","Кастомные базы"],
+    formats: ["medium","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Small Group — Zerg", valEN: "Small Group — Zerg", c: ""},
+      {label: "Фишки", valRU: "Огромные базы, Шилд-воллы, Китайки", valEN: "Massive Bases, Shield Walls, China Walls", c: "good"},
+      {label: "Цена кастома", valRU: "Medium $60+, Large $100+", valEN: "Medium $60+, Large $100+", c: "good"}
+    ],
+    descRU: "Строит в основном очень большие базы. Кастом через Discord. Постройки качественные, отличные пики. Мобильность страдает из-за размера.",
+    descEN: "Builds primarily very large bases. Custom via Discord. Quality builds, excellent peaks. Mobility suffers due to size.",
+    links: [
+      {t: "Discord", u: "https://discord.gg/cdSEfVHYEp"},
+      {t: "YouTube", u: "https://youtube.com/@2devilzzRust"}
+    ]
+  },
+  {
+    name: "Faded",
+    handle: "@FadedRust",
+    rating: 3.5,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Shop","TikTok"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio+", valEN: "Solo — Trio+", c: ""},
+      {label: "Фишки", valRU: "Вайд гапы, Опен кор, Бункеры", valEN: "Wide Gaps, Open Core, Bunkers", c: "good"},
+      {label: "Цена базы", valRU: "€17–20", valEN: "€17–20", c: "good"}
+    ],
+    descRU: "Свой Shopify-магазин вместо Patreon — разовая покупка базы. Обновления бесплатно. Качество баз бывает неровным.",
+    descEN: "Own Shopify store instead of Patreon — one-time purchase per base. Free updates. Overall, quality is inconsistent.",
+    links: [
+      {t: "fadedbuilds.com", u: "https://fadedbuilds.com"},
+      {t: "TikTok", u: "https://tiktok.com/@fadedrust"},
+      {t: "YouTube", u: "https://youtube.com/@FadedRust"}
+    ]
+  },
+  {
+    name: "aloneintokyo",
+    handle: "@aloneintokyo",
+    rating: 3.75,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Patreon","YouTube Sponsors"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Опен кор, Ретейки, Открывашки", valEN: "Open Core, Retake Angles, Turret Openers", c: "good"}
+    ],
+    descRU: "Уникальный стиль, которого нет ни у кого. Миллион пиков, много простора, открывашки с турелями. Крыши — слабое место.",
+    descEN: "A unique style. Tons of shoots, open layouts, autoturret openers. Roofs are the weak spot, but otherwise genuinely creative.",
+    links: [
+      {t: "Patreon", u: "https://patreon.com/cw/Aloneintokyo"},
+      {t: "YouTube", u: "https://youtube.com/@aloneintokyo"}
+    ]
+  },
+  {
+    name: "Spinky",
+    handle: "@spinky",
+    rating: 3.5,
+    upkeep: 1,
+    favorite: false,
+    tags: ["Patreon","Discord"],
+    formats: ["solo","trio","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Clan", valEN: "Solo — Clan", c: ""},
+      {label: "Фишки", valRU: "Сноуболл коробки, Расширяемые стартеры", valEN: "Snowball Boxes, Expandable Starters", c: "good"}
+    ],
+    descRU: "Самый крупный активный билдер. Patreon серьёзный. Публично неровный — иногда выдаёт шедевры, иногда проходняк, но приватки стабильные.",
+    descEN: "Biggest active builder. Patreon is serious. Public content is inconsistent, but private bases are reliable.",
+    links: [
+      {t: "Discord", u: "https://discord.gg/Zcf83nJ3YV"},
+      {t: "Patreon", u: "https://www.patreon.com/spinkyRUST"},
+      {t: "YouTube", u: "https://youtube.com/@spinky"},
+      {t: "TikTok", u: "https://tiktok.com/@spinkyrust"}
+    ]
+  },
+  {
+    name: "Nini Rust",
+    handle: "@NiniRust",
+    rating: 3.5,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Patreon","TikTok","Twitch","Discord","Website"],
+    formats: ["solo","trio","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Clan", valEN: "Solo — Clan", c: ""},
+      {label: "Фишки", valRU: "Пиксель-гапы, Флорстак, Мульти-шкаф", valEN: "Pixel Gaps, Floor Stack, Multi-TC", c: "good"}
+    ],
+    descRU: "Один из самых подробных Patreon в нише — там целые гайды с реворками. Тестирует базы вживую на Twitch. Базы недешёвые по ресурсам.",
+    descEN: "One of the most detailed Patreons — full guides with reworks. Tests bases live on Twitch. Builds aren't cheap on resources.",
+    links: [
+      {t: "Website", u: "https://nini-rust.com"},
+      {t: "Discord", u: "https://discord.com/invite/fhDmyx5v9w"},
+      {t: "Patreon", u: "https://patreon.com/NiniRust"},
+      {t: "Twitch", u: "https://twitch.tv/ninirust"},
+      {t: "YouTube", u: "https://youtube.com/@NiniRust"},
+      {t: "TikTok", u: "https://tiktok.com/@ninirust"}
+    ]
+  },
+  {
+    name: "Tarre",
+    handle: "@tarrerust",
+    rating: 3,
+    upkeep: 1,
+    favorite: false,
+    tags: ["TikTok","Discord","YouTube Sponsors"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo · Duo · Trio", valEN: "Solo · Duo · Trio", c: ""},
+      {label: "Фишки", valRU: "Соло/Дуо сноуболл, Дешевые стартеры", valEN: "Solo/Duo Snowball, Cheap Starters", c: "good"}
+    ],
+    descRU: "Лучший для ДОСТУПНЫХ solo/duo snowball баз. Отлично подходит для новичков без доната.",
+    descEN: "Best for affordable solo/duo snowball bases. Perfect for beginners or players who want to hit a server without p2w gear.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/W4nQHsPCnJ"},
+      {t: "YouTube", u: "https://youtube.com/@tarrerust"},
+      {t: "TikTok", u: "https://tiktok.com/@tarrerust"}
+    ]
+  },
+  {
+    name: "XGN.",
+    handle: "@XGN_Rust",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: ["TikTok"],
+    formats: ["solo","trio","medium","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Duo — Large Group", valEN: "Duo — Large Group", c: ""},
+      {label: "Фишки", valRU: "Метовые базы, Шилд-воллы, Онлайн деф", valEN: "Meta bases, Shield wall, Online defense", c: "good"}
+    ],
+    descRU: "Строит метовые дома, хорошие пики, есть shield wall. Бункеров нет, весь упор идёт на защиту в онлайне. Количество стенок до шкафа может разочаровать.",
+    descEN: "Builds meta bases with good peeks and shield walls. No bunkers, full focus on online raid defense.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@XGN_Rust"},
+      {t: "TikTok", u: "https://tiktok.com/@xgn_rust"}
+    ]
+  },
+  {
+    name: "rookyo",
+    handle: "@rooperust",
+    rating: 3.25,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Discord","TikTok","Кастомные базы"],
+    formats: ["solo","trio","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Duo — Medium Group", valEN: "Duo — Medium Group", c: ""},
+      {label: "Фишки", valRU: "Бункеры, Ретейки, Китайка", valEN: "Bunkers, Retakes, China Wall", c: "good"},
+      {label: "Цена кастома", valRU: "€10-40 (Discord)", valEN: "€10-40 (Discord)", c: "good"}
+    ],
+    descRU: "Продаёт кастомные базы в Discord (от €10 до €40). В постройках есть бункеры, ретейк-пики, китайские стены. Крепкий стандарт.",
+    descEN: "Sells custom bases via Discord (€10 to €40). Builds feature bunkers, retake peeks, and China Walls. A solid standard.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@rooperust"},
+      {t: "TikTok", u: "https://tiktok.com/@rooperustt"},
+      {t: "Discord", u: "https://discord.com/invite/Q3ZRvGve4H"}
+    ]
+  },
+  {
+    name: "anika",
+    handle: "@anika_rust",
+    rating: 3.25,
+    upkeep: 2,
+    favorite: false,
+    tags: [],
+    formats: ["trio","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Trio — Small Group", valEN: "Trio — Small Group", c: ""},
+      {label: "Фишки", valRU: "Китайка, Анти-рейд, Водопады", valEN: "China Wall, Anti-Siege, Reverse Waterfall", c: "good"}
+    ],
+    descRU: "Отличные пики, подробные гайды. Бункеров нет. Упор на онлайн рейд. Крыши средние. Уверенный среднячок.",
+    descEN: "Great peeks, detailed guides. No bunkers. Focus on online raid defense. Roofs are average. Solid mid-tier.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@anika_rust"}
+    ]
+  },
+  {
+    name: "Akame",
+    handle: "@AkameBuilds",
+    rating: 3.25,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Boosty","Кастомные базы"],
+    formats: ["medium","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Small group — Large group", valEN: "Small group — Large group", c: ""},
+      {label: "Фишки", valRU: "Онлайн деф, Клановые планировки", valEN: "Online Raid Defense, Clan Layouts", c: "good"}
+    ],
+    descRU: "Билдер сильнейшего клана R2. Основной упор на защиту во время онлайн рейда. Работает только под заказ через Boosty.",
+    descEN: "Builder for the top clan R2. Main focus is online raid defense. Works by custom order only via Boosty.",
+    links: [
+      {t: "Boosty", u: "https://boosty.to/akamexebet"},
+      {t: "YouTube", u: "https://youtube.com/@Akame_Rust"}
+    ]
+  },
+  {
+    name: "Luca.",
+    handle: "@Luca.Builds",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Discord","Кастомные базы"],
+    formats: ["solo","trio","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Large Group", valEN: "Solo — Large Group", c: ""},
+      {label: "Фишки", valRU: "Пещерные базы, Использование рельефа", valEN: "Cave Bases, Terrain Use", c: "good"}
+    ],
+    descRU: "Билдер показывает как застраивать пещеру. Пики хорошие, но отстрелов мало и мобильность плохая. Кастом через Discord.",
+    descEN: "Shows how to build cave bases. Peaks are good, but limited shooting positions and poor mobility. Custom via Discord.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/aY8StUeJXP"},
+      {t: "YouTube", u: "https://youtube.com/@Luca.Builds"}
+    ]
+  },
+  {
+    name: "Darvel",
+    handle: "@darvels",
+    rating: 3.25,
+    upkeep: 2,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Quad", valEN: "Solo — Quad", c: ""},
+      {label: "Фишки", valRU: "Компактные бункеры, Мета Соло/Квад", valEN: "Compact Bunkers, Solo/Quad Meta", c: "good"}
+    ],
+    descRU: "Строит Solo-Quad. Есть бункеры, интересные базы. Минусы: нет Patreon, нет Discord, кодов не оставляет.",
+    descEN: "Builds Solo–Quad. Has bunkers, interesting designs. Downsides: no Patreon, no Discord, no codes left.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@darvels"}
+    ]
+  },
+  {
+    name: "GrinchTheBuilder",
+    handle: "@GrinchTheBuilder",
+    rating: 3,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Discord","Кастомные базы"],
+    formats: ["solo","medium","clan"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Zerg", valEN: "Solo — Zerg", c: ""},
+      {label: "Фишки", valRU: "Клановые таверки, Высокий апкип", valEN: "Clan Towers, High Upkeep", c: "good"}
+    ],
+    descRU: "В основном строит таверки — дорогие по ресурсам. Есть неприятные минусы: неиграбельные крыши. Из плюсов — хорошие пики.",
+    descEN: "Mostly builds large expensive bases. Some downsides: unplayable roofs. Upsides — very good shoot positions.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@GrinchTheBuilder"}
+    ]
+  },
+  {
+    name: "S4",
+    handle: "@S4Rust",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Patreon","Discord","Кастомные базы"],
+    formats: ["solo","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Medium Group", valEN: "Solo — Medium Group", c: ""},
+      {label: "Фишки", valRU: "Стандартные формы, Классика", valEN: "Standard Layouts, Classic Designs", c: "warn"}
+    ],
+    descRU: "Строит как все — максимально неинтересные базы. Работает в связке с Kredbic. Норм вариант, но ничего выдающегося.",
+    descEN: "Builds like everyone else — generic, nothing interesting. Partners with Kredbic. If you want something safe — it works.",
+    links: [
+      {t: "Discord", u: "https://discord.gg/DZRVsUcYSE"},
+      {t: "Patreon", u: "https://patreon.com/S4Rust"},
+      {t: "YouTube", u: "https://youtube.com/@S4Rust"}
+    ]
+  },
+  {
+    name: "LeftyyP",
+    handle: "@LeftyyP",
+    rating: 3,
+    upkeep: 1,
+    favorite: false,
+    tags: ["Patreon","Discord"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Доступные стартеры, Низкий апкип", valEN: "Accessible Starters, Low Upkeep", c: "good"}
+    ],
+    descRU: "Строит доступные лёгкие базы для соло-трио, без p2w фишек. Однако есть и сомнительные, мемные постройки.",
+    descEN: "Makes accessible lightweight bases for solo-trio, no p2w required. But some bases are questionable.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/THfp7TxEHJ"},
+      {t: "YouTube", u: "https://youtube.com/@LeftyyP"}
+    ]
+  },
+  {
+    name: "HiddenJoint",
+    handle: "@HiddenJoint / @GoodJoint",
+    rating: 3.25,
+    upkeep: 1,
+    favorite: false,
+    tags: ["Patreon","Boosty"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Quad", valEN: "Solo — Quad", c: ""},
+      {label: "Фишки", valRU: "Простые соло базы, Ванилла-френдли", valEN: "Simple Solo Bases, Vanilla Friendly", c: "good"}
+    ],
+    descRU: "Хорош для соло-игроков — базы простые, без переусложнения. Ведёт два канала: EN и RU.",
+    descEN: "Good for solo players — bases are clean, not overcomplicated. Runs two channels: EN and RU.",
+    links: [
+      {t: "Patreon", u: "https://www.patreon.com/c/GoodJoint"},
+      {t: "Boosty", u: "https://boosty.to/goodjoint"},
+      {t: "YouTube EN", u: "https://youtube.com/@HiddenJoint"},
+      {t: "YouTube RU", u: "https://youtube.com/@GoodJoint"}
+    ]
+  },
+  {
+    name: "Krub",
+    handle: "@KrubRust",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Discord"],
+    formats: ["solo","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Medium Group", valEN: "Solo — Medium Group", c: ""},
+      {label: "Фишки", valRU: "Мета средних групп, Гайды", valEN: "Medium Group Meta, Educational", c: "good"}
+    ],
+    descRU: "Базы неплохие, но стоимость постройки не совсем оправдана. В Discord есть обучающие посты. Связан с Pandabuilds.",
+    descEN: "Bases are mechanically decent, but the resource cost isn't fully justified. Discord has useful educational posts.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/buildingbulletin"},
+      {t: "YouTube", u: "https://youtube.com/@KrubRust"}
+    ]
+  },
+  {
+    name: "Pandabuilds",
+    handle: "@PandaBuildsRust",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Discord","Кастомные базы"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Командные базы, Кастомизация", valEN: "Team Bases, Paid Customization", c: "good"}
+    ],
+    descRU: "Делает кастомные базы под заказ. Принимает PayPal и Rust Skins с наценкой 15%. Видимо работает в команде с Krub.",
+    descEN: "Takes custom base orders via Discord. Accepts PayPal and Rust Skins with a 15% markup. Works with Krub.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/XQSztD5JHk"},
+      {t: "YouTube", u: "https://youtube.com/@PandaBuildsRust"}
+    ]
+  },
+  {
+    name: "MrSkeem",
+    handle: "@MrSkeem",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Patreon","Discord"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Измененная классика, Баланс цены", valEN: "Modified Classics, Balanced Cost", c: "good"}
+    ],
+    descRU: "Изменённая классика с удивляющими решениями. Выпускает редко, но качество стабильное.",
+    descEN: "Modified classics with surprising solutions. Uploads rarely, but quality is consistent.",
+    links: [
+      {t: "Patreon", u: "https://patreon.com/MrSkeem"},
+      {t: "Discord", u: "https://discord.gg/YnS8zHJvkh"},
+      {t: "YouTube", u: "https://youtube.com/@MrSkeem"}
+    ]
+  },
+  {
+    name: "Mellarrkk",
+    handle: "YouTube",
+    rating: 2.75,
+    upkeep: 1,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Базы для новичков, Простые бункеры", valEN: "Beginner Friendly, Basic Bunkers", c: "warn"}
+    ],
+    descRU: "Простые базы для новичков. Ведёт три канала под разными именами: Mellarrkk, Rust Tricks и Rust Concepts.",
+    descEN: "Simple beginner bases. Runs three channels under different names.",
+    links: [
+      {t: "Mellarrkk", u: "https://youtube.com/@Mellarrkk"},
+      {t: "Rust Tricks", u: "https://youtube.com/@RustTricks"},
+      {t: "Rust Concepts", u: "https://youtube.com/@RustConcepts"}
+    ]
+  },
+  {
+    name: "Kredbic",
+    handle: "@KredbicRust",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Discord","Кастомные базы"],
+    formats: ["solo"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Duo", valEN: "Solo — Duo", c: ""},
+      {label: "Фишки", valRU: "Понятные туториалы, Простые групповые базы", valEN: "Clear Tutorials, Simple Group Bases", c: "good"}
+    ],
+    descRU: "Очень понятно объясняет процесс — для новичков это золото. Делает кастомные базы. Работает в связке с S4.",
+    descEN: "Explains the process very clearly — gold for beginners. Custom bases. Partners with S4.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/CdV63mypkx"},
+      {t: "YouTube", u: "https://youtube.com/@KredbicRust"}
+    ]
+  },
+  {
+    name: "slvtv",
+    handle: "@slvtvRust",
+    rating: 3,
+    upkeep: 1,
+    favorite: false,
+    tags: ["Discord","YouTube Sponsors"],
+    formats: ["solo"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Duo", valEN: "Solo — Duo", c: ""},
+      {label: "Фишки", valRU: "Обычные Соло/Дуо, Спонсоры в приоритете", valEN: "Average Solo/Duo, Sponsor First", c: "warn"}
+    ],
+    descRU: "С простыми базами справляется хорошо. Средний уровень без сюрпризов. Видео сначала выходят для спонсоров.",
+    descEN: "Handles simple bases well. Average level, no surprises. Videos go to sponsors first.",
+    links: [
+      {t: "Discord", u: "https://discord.gg/9txTRYCVtQ"},
+      {t: "YouTube", u: "https://youtube.com/@slvtvRust"}
+    ]
+  },
+  {
+    name: "Zypic",
+    handle: "@ZypicRust",
+    rating: 3,
+    upkeep: 1,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Без P2W, Бюджетные", valEN: "Non-P2W, Budget Friendly", c: "good"}
+    ],
+    descRU: "Дешёвые по ресурсам базы без p2w. Есть интересные решения, но чего-то не хватает до следующего уровня.",
+    descEN: "Resource-cheap bases without p2w. Some interesting decisions, but missing next-level polish.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@ZypicRust"}
+    ]
+  },
+  {
+    name: "Relbuild",
+    handle: "@relbuild",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Small Groups", valEN: "Solo — Small Groups", c: ""},
+      {label: "Фишки", valRU: "Хорошие пики, Крепкий среднячок", valEN: "Good Peeks, Solid Mid-Tier", c: "good"}
+    ],
+    descRU: "Строит неплохие базы с хорошими пиками. Но есть решения которые вызывают вопросы.",
+    descEN: "Makes decent bases with good shoot positions. Some decisions raise questions.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@relbuild"}
+    ]
+  },
+  {
+    name: "Lacros",
+    handle: "@Lacros_Build",
+    rating: 2.5,
+    upkeep: 2,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Small Group", valEN: "Solo — Small Group", c: ""},
+      {label: "Фишки", valRU: "Простые механики, Комфортные", valEN: "Simple Mechanics, Comfortable", c: "warn"}
+    ],
+    descRU: "Строит простенькие базы без сложных механик. Крыши неплохие, пики хорошие. Для комфортного геймплея сойдут.",
+    descEN: "Builds simple bases without complex mechanics. Roofs are decent, peeks are good.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@Lacros_Build"}
+    ]
+  },
+  {
+    name: "Build Lab",
+    handle: "@rust_build_lab",
+    rating: 2.5,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Patreon","YouTube Sponsors"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Quad", valEN: "Solo — Quad", c: ""},
+      {label: "Фишки", valRU: "Оригинальные крыши, Отключаемые шкафы", valEN: "Unique Roofs, Disconnectable TCs", c: "good"}
+    ],
+    descRU: "На канале каждое второе видео — интро к платной версии базы. Бесплатных баз мало.",
+    descEN: "Every other video on the channel is a teaser for a paid base. Few free builds available.",
+    links: [
+      {t: "Patreon", u: "https://www.patreon.com/cw/Build_Lab"},
+      {t: "YouTube", u: "https://youtube.com/@rust_build_lab"}
+    ]
+  },
+  {
+    name: "Void",
+    handle: "@void-build",
+    rating: 2.5,
+    upkeep: 1,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Quad", valEN: "Solo — Quad", c: ""},
+      {label: "Фишки", valRU: "Мобильные планировки, Классика", valEN: "Mobile Layouts, Classic Shapes", c: "warn"}
+    ],
+    descRU: "Хорошая мобильность, есть бункеры. Но много ошибок (например решётки вместо сетки). Крыши отстойные.",
+    descEN: "Good mobility, has bunkers. Has mistakes (grates instead of chainlink). Roofs are poor.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@void-build"}
+    ]
+  },
+  {
+    name: "RustLogic",
+    handle: "YouTube",
+    rating: 2.5,
+    upkeep: 1,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Мета RustBaseLab, Стартовые бункеры", valEN: "RustBaseLab Meta, Starter Bunkers", c: "warn"}
+    ],
+    descRU: "Активен на rustbaselab.com. Главная проблема — не вставляет тур и не оставляет коды. Оценка неуверенная.",
+    descEN: "Active on rustbaselab.com. Main issue — no tour and no codes, hard to evaluate quality.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@RustLogic"}
+    ]
+  },
+  {
+    name: "Willjum",
+    handle: "@Willjum",
+    rating: 2,
+    upkeep: 1,
+    favorite: false,
+    tags: ["Patreon","Discord"],
+    formats: ["solo"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Duo", valEN: "Solo — Duo", c: ""},
+      {label: "Фишки", valRU: "Кинематографичные базы, Уютные Соло/Дуо", valEN: "Cinematic Builds, Cozy Solo/Duo", c: "warn"}
+    ],
+    descRU: "Не гайдовый строитель — у него кинематографичные соло-выживания. Базы не отличаются сложностью механик.",
+    descEN: "Not a guide-format builder — he makes cinematic solo survival content. Bases are basic.",
+    links: [
+      {t: "Patreon", u: "https://www.patreon.com/willjum"},
+      {t: "Discord", u: "https://discord.com/invite/WILLJUM"},
+      {t: "YouTube", u: "https://youtube.com/@willjum"}
+    ]
+  },
+  {
+    name: "pagdawg",
+    handle: "@pagdawg",
+    rating: 2,
+    upkeep: 1,
+    favorite: false,
+    tags: [],
+    formats: ["solo"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Duo", valEN: "Solo — Duo", c: ""},
+      {label: "Фишки", valRU: "Сомнительные пики, Повторы контента", valEN: "Questionable Peeks, Reused Content", c: "bad"}
+    ],
+    descRU: "Выкладывает одинаковые видео. Пики не очень хорошие, крыши отстойные, решения порой странные.",
+    descEN: "Posts identical videos. Shoots aren't great, roofs are bad, decisions are strange.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@pagdawg"}
+    ]
+  },
+  {
+    name: "IndominusRust",
+    handle: "@IndominusRust",
+    rating: 2,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Patreon","Discord"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "UK-стиль, Сомнительное качество", valEN: "UK Style, Controversial Quality", c: "bad"}
+    ],
+    descRU: "Позиционирует стиль как уникальный UK-дизайн. По факту базы очень плохие.",
+    descEN: "Markets himself as a unique UK design style. In reality the bases are very poor.",
+    links: [
+      {t: "Patreon", u: "https://www.patreon.com/IndominusRust"},
+      {t: "Discord", u: "https://discord.com/invite/jgMr6YXPqC"},
+      {t: "YouTube", u: "https://youtube.com/@IndominusRust"}
+    ]
+  },
+  {
+    name: "Ласти Раст",
+    handle: "@ласти_раст",
+    rating: 1.5,
+    upkeep: 3,
+    favorite: false,
+    tags: ["Telegram"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Модовая мета, Слитый контент", valEN: "Modded Meta, Leaked Content", c: "bad"}
+    ],
+    descRU: "Нет понимания ванильного билдинга. Сливает платные базы Good Joint. Пиратский контент.",
+    descEN: "No understanding of vanilla building. Telegram channel leaks paid bases. Pirated content.",
+    links: [
+      {t: "Telegram", u: "https://t.me/lastycfg"},
+      {t: "YouTube", u: "https://youtube.com/@ласти_раст"}
+    ]
+  },
+  {
+    name: "Shield",
+    handle: "@Shield-b3g",
+    rating: 1,
+    upkeep: 1,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Для абсолютных новичков, Нет места", valEN: "Absolute Beginners, No Space", c: "bad"}
+    ],
+    descRU: "Строит очень простые нубские базы. Места нет, отстрелов нет, лут забьётся за пару минут. Не советую.",
+    descEN: "Builds simple noob bases. No space, no normal shooting floors, loot fills up in minutes.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@Shield-b3g"}
+    ]
+  },
+  {
+    name: "zYn",
+    handle: "@zYnRust",
+    rating: 1,
+    upkeep: 1,
+    favorite: false,
+    tags: ["Website"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "Для абсолютных новичков", valEN: "For Absolute Beginners", c: "bad"}
+    ],
+    descRU: "Максимально простые базы. Ужасные ошибки на уровне новичка. Продаёт их на сайте.",
+    descEN: "Maximally simple bases. Terrible beginner mistakes. Sells them on his website.",
+    links: [
+      {t: "zynvids.com", u: "https://zynvids.com"},
+      {t: "YouTube", u: "https://youtube.com/@zYnRust"}
+    ]
+  },
+  {
+    name: "Stelic",
+    handle: "@stelicRUST",
+    rating: 1,
+    upkeep: 1,
+    favorite: false,
+    tags: [],
+    formats: ["solo"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Duo", valEN: "Solo — Duo", c: ""},
+      {label: "Фишки", valRU: "PvP-фокус, Базовые коробки", valEN: "PvP Focus, Basic Starter Boxes", c: "bad"}
+    ],
+    descRU: "Однотипные solo–duo базы. Пики делает ужасно — это не его сильная сторона.",
+    descEN: "Cookie-cutter solo–duo bases. Shoots are terrible — that's not his strength.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@stelicRUST"}
+    ]
+  },
+  {
+    name: "RustyYT",
+    handle: "YouTube",
+    rating: 1,
+    upkeep: 1,
+    favorite: false,
+    tags: ["TikTok","Instagram"],
+    formats: ["solo"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Duo", valEN: "Solo — Duo", c: ""},
+      {label: "Фишки", valRU: "Мета 10 часов игры", valEN: "10-Hour Player Meta", c: "bad"}
+    ],
+    descRU: "Базы уровня игрока с 10 часами в Rust. Качество не соответствует базовым стандартам.",
+    descEN: "Bases at the level of someone with 10 hours in Rust. Quality doesn't meet basic standards.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@Rusty_Youtube"}
+    ]
+  },
+  {
+    name: "Santess",
+    handle: "@SantessRust",
+    rating: 2.5,
+    upkeep: 2,
+    favorite: false,
+    tags: [],
+    formats: ["trio","medium"],
+    rows: [
+      {label: "Форматы", valRU: "Trio — Medium Group", valEN: "Trio — Medium Group", c: ""},
+      {label: "Фишки", valRU: "Меточные клановые базы (3x3 / 4x4)", valEN: "Meta clan bases (3x3 / 4x4)", c: ""},
+      {label: "Минусы", valRU: "Темп — ~1 видео в месяц, 7 баз всего", valEN: "Slow cadence — ~1 video/month, 7 builds total", c: "warn"}
+    ],
+    descRU: "Билингвальный канал (RU + EN заголовки). Метовые 3x3 и 4x4 клановые базы — спокойный мид-тир. Темп публикаций низкий, 7 видео за всё время. Хороший вариант для трио/мид-групп без переусложнения.",
+    descEN: "Bilingual RU/EN titles. Meta 3x3 and 4x4 clan bases — solid mid-tier. Output is slow (7 total videos). Decent fit for trios / medium groups who want straightforward designs.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@SantessRust"}
+    ]
+  },
+  {
+    name: "Opy4k",
+    handle: "@Opy4k",
+    rating: 3,
+    upkeep: 2,
+    favorite: false,
+    tags: ["Discord"],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Trio", valEN: "Solo — Trio", c: ""},
+      {label: "Фишки", valRU: "2x2 Trio (FrostLine), сложные мета-базы", valEN: "2x2 Trio (FrostLine), advanced meta builds", c: ""},
+      {label: "Минусы", valRU: "Канал спал 2 года, тестово вернулся", valEN: "Channel was dormant 2y, just restarting", c: "warn"}
+    ],
+    descRU: "Был активен пару лет назад как 'Fastest Builder in Rust', потом канал ушёл в спячку. Недавно вернулся новой базой FrostLine (advanced 2x2 Trio). Темная лошадка — если темп удержит, оценка пойдёт вверх.",
+    descEN: "Was active 2 years ago as 'Fastest Builder in Rust', went dormant, recently returned with FrostLine (advanced 2x2 Trio meta build). Dark horse — rating moves up if cadence holds.",
+    links: [
+      {t: "Discord", u: "https://discord.com/invite/rSh97aJUVd"},
+      {t: "YouTube", u: "https://youtube.com/@Opy4k"}
+    ]
+  },
+  {
+    name: "Builder",
+    handle: "@BuilderRust",
+    rating: 2,
+    upkeep: 1,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Duo", valEN: "Solo — Duo", c: ""},
+      {label: "Фишки", valRU: "Высокий темп публикаций (436 видео)", valEN: "High output (436 videos)", c: ""},
+      {label: "Минусы", valRU: "Базы для новичков, нет туров и кодов", valEN: "Beginner-tier builds, no tours or codes", c: "bad"}
+    ],
+    descRU: "Огромный канал — 436 видео и стабильный темп (новое каждые 2-9 дней). Контент массовый: simple 2x2 / mini china wall / solo bunker. Главные минусы — без тура внутри базы и без кодов. Подходит как 'кликабельный' источник для совсем новичков.",
+    descEN: "Massive channel — 436 videos with steady cadence (new builds every 2-9 days). Mass-market content: 2x2, mini china wall, solo bunker. Main issues — no in-base tour, no codes. Useful as quick reference for total beginners.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@BuilderRust"}
+    ]
+  },
+  {
+    name: "Xgamers Vault",
+    handle: "@XgamersVault",
+    rating: 0,
+    upkeep: 2,
+    favorite: false,
+    tags: [],
+    formats: ["solo","trio"],
+    rows: [
+      {label: "Статус", valRU: "На рассмотрении (3 видео всего)", valEN: "Under review (3 videos total)", c: "warn"}
+    ],
+    descRU: "Канал крошечный — 3 видео, последнее 10 дней назад, ~30 просмотров. Заявленный стиль — Solo, 2 walls, meta peaks 2026. Слишком мало материала чтобы оценить. Перепроверка через месяц.",
+    descEN: "Tiny channel — 3 videos, latest 10 days ago, ~30 views. Stated style — Solo, 2 walls, meta peaks 2026. Too little material to rate. Recheck in a month.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@XgamersVault"}
+    ]
+  },
+  {
+    name: "Walder",
+    handle: "@Walder1x",
+    rating: 2.5,
+    upkeep: 2,
+    favorite: false,
+    tags: [],
+    formats: ["solo","quad"],
+    rows: [
+      {label: "Форматы", valRU: "Solo — Quad", valEN: "Solo — Quad", c: ""},
+      {label: "Фишки", valRU: "Egg-base, expansion 1x2→3x3, mini china wall", valEN: "Egg-base, expansion 1x2→3x3, mini china wall", c: ""},
+      {label: "Минусы", valRU: "Последняя база 2 мес назад", valEN: "Latest build 2mo ago", c: "warn"}
+    ],
+    descRU: "20 видео, разнообразие форматов: solo egg base, expansion 1x2→3x3, snowball-видео для дуо/трио. Темп средний — последняя база 2 месяца назад, бывают паузы. Если активность вернётся — кандидат на 3.0+",
+    descEN: "20 videos with format variety: solo egg base, 1x2→3x3 expansion, snowball duo/trio videos. Cadence is medium — latest build 2mo ago, gaps happen. Candidate for 3.0+ if cadence picks up.",
+    links: [
+      {t: "YouTube", u: "https://youtube.com/@Walder1x"}
+    ]
+  }
 ];
 
 // Best-effort content-language assignment. Bilingual = ['en','ru']. Default = ['en'].
@@ -1086,7 +1889,7 @@ const subscores = {
   'LeftyyP':          [3,2,3], // Patreon, реже
   'HiddenJoint':      [3,3,4], // билингв EN+RU — большой плюс
   'Krub':             [3,3,4], // Discord-only
-  'Pandabuilds':      [3,3,3], // PayPal/скины
+  // 'Pandabuilds' — archived (см. блок `archived` ниже), вычеркнуто из subscores.
   'MrSkeem':          [3,3,3], // Patreon среднего уровня
   'Kredbic':          [3,3,3], // общий кастом
   'slvtv':            [3,2,3], // YouTube Sponsors
@@ -1100,8 +1903,10 @@ const subscores = {
   'IndominusRust':    [2,2,3], // Patreon
   'Ласти Раст':       [1,3,1], // сливает платное, пиратство — value 1 за этику
   'Shield':           [1,1,3],
-  'zYn':              [1,1,3],
-  'Stelic':           [1,1,3],
+  'zYn':               [1,1,3],
+  'Stelic':            [1,1,3],
+  'Mellarrkk':         [2,2,5], // 3 канала под разными именами, базы для новичков, бесплатно
+  'RustyYT':           [1,2,5], // мета 10 часов игры — низкое качество, активность есть, бесплатно
   // Pending → rated:
   'Santess':          [3,2,4], // приличные мета-3x3/4x4, темп низкий, бесплатно
   'Opy4k':            [3,2,4], // одна сильная база-FrostLine, канал только восстанавливается
@@ -1117,16 +1922,68 @@ const archived = {
   'RustLogic':    {lastActive:'2025', reason:'channel 404',  reasonRU:'канал удалён',       reasonEN:'channel 404'}
 };
 
+// Each entry in `raw` above is now a self-describing object. The map below
+// just copies the input fields and enriches them with derived data
+// (rendered star string, pending flag, language list, axis subscores,
+// archive metadata). Keeping all builder data in one place + one map step
+// means: fewer indices, simpler search/diff, and the schema is documented
+// by the literal keys themselves rather than a header comment.
 const builders = raw.map(b => {
-  const ss = subscores[b[0]];
-  const arc = archived[b[0]];
+  const ss = subscores[b.name];
+  const arc = archived[b.name];
   return {
-    name:b[0], handle:b[1], ratingValue:b[2], rating:getStars(b[2]), pending:b[2]===0, upkeep:b[3], favorite:!!b[4], tags:b[5]?b[5].split(','):[], fms:b[6]?b[6].split(','):[],
-    rows:b[7].map(r => ({label:r[0],valRU:r[1],valEN:r[2],c:r[3]||''})), desc:b[8], descEN:b[9], links:b[10].map(l => ({t:l[0],u:l[1]})),
-    langs: builderLangs[b[0]] || ['en'],
+    name: b.name,
+    handle: b.handle,
+    ratingValue: b.rating,
+    rating: getStars(b.rating),
+    pending: b.rating === 0,
+    upkeep: b.upkeep,
+    favorite: !!b.favorite,
+    tags: b.tags || [],
+    formats: b.formats || [],
+    rows: b.rows || [],
+    desc: b.descRU,
+    descEN: b.descEN,
+    links: b.links || [],
+    langs: builderLangs[b.name] || ['en'],
     subscores: ss ? {build:ss[0], active:ss[1], value:ss[2]} : null,
     archived: arc || null
   };
+});
+
+// --- Data integrity checks (dev-only console.warn, never throw) ---------
+// Runs once after all data tables are declared (some live further down).
+// Every key in avatarSlugs / archived / subscores / customs / builderLangs
+// MUST point at a builder name that exists in `raw`. A missing builder
+// usually means a rename or a typo that would cause silent data drift
+// (e.g. an avatar that never gets rendered, or a subscore row wired to a
+// stale name). Deferred to DOMContentLoaded so all `const` blocks below
+// have been evaluated.
+document.addEventListener('DOMContentLoaded', () => {
+  const knownNames = new Set(builders.map(b => b.name));
+  const checks = [
+    ['avatarSlugs',  Object.keys(avatarSlugs)],
+    ['archived',     Object.keys(archived)],
+    ['subscores',    Object.keys(subscores)],
+    ['builderLangs', Object.keys(builderLangs)],
+    ['customs',      customs.map(r => r[0])]
+  ];
+  const issues = [];
+  for (const [tbl, names] of checks) {
+    for (const n of names) {
+      if (!knownNames.has(n)) issues.push(`[${tbl}] unknown builder: ${JSON.stringify(n)}`);
+    }
+  }
+  // Also: every active (non-archived) builder should have subscores. Pending
+  // entries (ratingValue === 0) and archived ones are intentionally exempt.
+  for (const b of builders) {
+    if (!b.archived && !b.pending && !b.subscores) {
+      issues.push(`[subscores] builder "${b.name}" has rating ${b.ratingValue} but no axis subscores`);
+    }
+  }
+  if (issues.length) {
+    console.warn('[RustTopBuilders] data integrity:', issues.length, 'issue(s):\n  ' + issues.join('\n  '));
+  }
 });
 
 // Schema.org JSON-LD: surface the rating + reviews to Google so the
@@ -1274,6 +2131,13 @@ function setLang(l){
   document.querySelectorAll('.chip').forEach(c=>{if(c.dataset[l]) c.textContent=c.dataset[l]});
   document.querySelectorAll('[data-lang-block]').forEach(el=>{el.style.display=el.dataset.langBlock===l?'':'none'});
   document.querySelectorAll('summary span[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
+  // Append dynamic glossary term count to the summary label so adding a new
+  // term doesn't require a manual count update in two places (RU/EN).
+  const glossaryLabel = document.getElementById('glossary-summary-label');
+  if(glossaryLabel){
+    const ruCount = document.querySelectorAll('.glossary-grid[data-lang-block="ru"] .glossary-item').length;
+    glossaryLabel.textContent = (l==='ru' ? '// глоссарий: ' : '// glossary: ') + ruCount + (l==='ru' ? ' терминов' : ' terms');
+  }
   document.querySelectorAll('p[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   document.querySelectorAll('.custom-table thead th[data-ru]').forEach(el=>{el.textContent=el.dataset[l]});
   // Suggest-form: labels, options, hints, buttons, action links, meta line
@@ -1321,9 +2185,9 @@ const customs=[
   ['rookyo',       false, 'Discord',                ['10\u201340 \u20ac','10\u201340 \u20ac'],['—','—'],                         ['тарифы по размеру','size tiers'], 10],
   ['Luca.',        false, 'Discord',                ['$30 \u2192 $65','$30 \u2192 $65'],   ['—','—'],                            ['по размеру группы (соло \u2192 12+)','by group size (solo \u2192 12+)'], 30],
   ['Erebus',       false, 'Discord',                ['$50 / $100 / $250','$50 / $100 / $250'],['—','—'],                          ['Budget / Standard / Ultimate','Budget / Standard / Ultimate'], 50],
-  ['Kredbic & S4', false, 'общий Discord',           ['$50\u2013100','$50\u2013100'],       ['—','—'],                            ['S4: уточнять','S4: inquire'], 50],
+  ['Kredbic',      false, 'общий Discord (с S4)',    ['$50\u2013100','$50\u2013100'],       ['—','—'],                            ['работают в связке S4 + Kredbic','S4 + Kredbic — joint orders'], 50],
   ['2devilzz',     false, 'Discord',                ['$60+ / $100+','$60+ / $100+'],       ['крипта / скины +10%','crypto / skins +10%'],['medium / large; зерги','medium / large; zerg-tier'], 60],
-  ['Pandabuilds',  false, 'Discord',                ['индивидуально','inquire'],           ['PayPal / Rust Skins +15%','PayPal / Rust Skins +15%'],['—','—'], 9999],
+  // 'Pandabuilds' — archived (см. блок `archived`), вычеркнуто из таблицы кастомов.
   ['Akame',        false, 'Boosty (akamexebet)',    ['индивидуально','inquire'],           ['Boosty','Boosty'],                  ['ТОЛЬКО кастом, ничего ещё','custom-only, nothing else'], 9999],
   ['b00bster',     false, 'Discord (тикеты)',       ['индивидуально','inquire'],           ['—','—'],                            ['обсуждается лично','discussed individually'], 9999]
 ];
