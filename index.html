@@ -832,9 +832,9 @@ const raw = [
    [["Форматы","Solo — Clan","Solo — Clan",""],["Фишки","Флорстак, Пиксель-гапы, Кастом","Floor Stack, Pixel Gaps, Custom","good"],["Кастомные базы","Да — через Discord","Yes — via Discord","good"]],
    "Принимает персональные заказы на базы под конкретные нужды — через Discord. Патреон полностью оправдывает вложения — базы уникальные. Минус: иногда нужны p2w скины.","Accepts custom base orders via Discord. Patreon is worth every penny — bases are genuinely unique. Downside: some builds require p2w skins.",
    [["Discord","https://discord.com/invite/PeFQnPZyPd"],["Patreon","https://www.patreon.com/LimiLAB"],["YouTube","https://youtube.com/@LimiLab"],["TikTok","https://tiktok.com/@limilab"]]],
-  ["HQM Core","@HQMcore",4.5,3,1,"Patreon","solo,trio,medium",
-   [["Форматы","Solo — Medium Group","Solo — Medium Group",""],["Фишки","Анти-рейд, Скрытые бункеры, Вайд-гапы","Anti Siege, Hidden Bunkers, Wide Gaps","good"]],
-   "Недооценённый билдер, строит великолепные базы. Ничего лишнего, нет никакого мусора, почти что идеал.","Underrated builder, makes magnificent bases. Nothing redundant, no garbage, almost ideal.",
+  ["HQM Core","@HQMcore",3.75,3,0,"Patreon","solo,trio,medium",
+   [["Форматы","Solo — Medium Group","Solo — Medium Group",""],["Фишки","Анти-рейд, Скрытые бункеры, Вайд-гапы","Anti Siege, Hidden Bunkers, Wide Gaps","good"],["Минусы","Допускает ошибки во время постройки — лучше собирать на билд-сервере","Makes mistakes while building — better to assemble on a build server first","warn"]],
+   "Строит хорошие базы, но во время постройки допускает ошибки, поэтому базу лучше заранее собирать на билд-сервере. Ничего лишнего, без мусора — но не идеал.","Builds good bases, but makes mistakes during construction — better to assemble it on a build server first. No garbage, nothing redundant — but not ideal.",
    [["YouTube","https://youtube.com/@HQMcore"],["Patreon","https://patreon.com/cw/HQMCore"]]],
   ["One2Do","@One2Do / FunPay",4,3,1,"Shop,Кастомные базы","trio,medium",
    [["Форматы","Small Group — Medium Group","Small Group — Medium Group",""],["Фишки","Таверки, Мобильность, FunPay магазин","Towers, Mobile Layouts, FunPay Shop","good"],["Цена кастома","~800-1150 ₽","~800-1150 ₽","good"]],
@@ -1059,7 +1059,7 @@ const builderLangs={
 // Билдеры без записи — рендерятся как «// рейтинг по осям ещё не выставлен».
 const subscores = {
   'Limi Lab':         [5,5,3], // топ, кастом, большой канал; Patreon $7+ + p2w скины
-  'HQM Core':         [5,4,4], // "почти идеал", дешёвый Patreon $5/мес
+  'HQM Core':         [4,4,4], // хорошие базы, но допускает ошибки при постройке — собирать через билд-сервер; Patreon $5/мес
   'One2Do':           [4,3,3], // знает дело, FunPay-формат, доступно
   'Brader Fik':       [5,3,5], // "автор заморачивается"; нет Patreon, бесплатно
   'Erebus':           [5,4,2], // реальные футажи; кастом $50–250
@@ -1315,7 +1315,7 @@ function setLang(l){
 // [name, fav, where, [priceRU,priceEN], [payRU,payEN], [noteRU,noteEN], priceUSDForSort]
 const customs=[
   ['Limi Lab',     true,  'Patreon \u2192 Discord',['от $7/мес','from $7/mo'],            ['подписка','subscription'],         ['персональный onboarding','personal onboarding'], 7],
-  ['HQM Core',     true,  'Patreon',                ['от $5/мес','from $5/mo'],            ['подписка','subscription'],         ['готовые базы, не bespoke','curated, not bespoke'], 5],
+  ['HQM Core',     false, 'Patreon',                ['от $5/мес','from $5/mo'],            ['подписка','subscription'],         ['готовые базы, не bespoke','curated, not bespoke'], 5],
   ['One2Do',       true,  'FunPay',                 ['индивидуально','inquire'],           ['FunPay','FunPay'],                 ['доступно через FunPay-сделки','via FunPay escrow'], 9999],
   ['GrinchTheBuilder',false,'Discord (@chort228)', ['$15\u201320','$15\u201320'],         ['—','—'],                            ['самый дешёвый кастом','cheapest custom'], 15],
   ['rookyo',       false, 'Discord',                ['10\u201340 \u20ac','10\u201340 \u20ac'],['—','—'],                         ['тарифы по размеру','size tiers'], 10],
@@ -2316,7 +2316,7 @@ function openCompare(){
     const fav=b.favorite?' 👑':'';
     const upI=getUpkeepIcons(b.upkeep);
     const tagsH=b.tags.map(t=>`<span class="${tagClass(t)}">${esc(t)}</span>`).join('');
-    const formats=b.formats?b.formats.replace(/,/g,', '):'';
+    const formats=b.fms&&b.fms.length?b.fms.join(', '):'';
     const rowsH=b.rows.map(r=>{
       let lT=currentLang==='en'&&rowLabels.en[r.label]?rowLabels.en[r.label]:r.label;
       let vT=currentLang==='en'?r.valEN:r.valRU;
